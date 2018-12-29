@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "981073965788",
+    "firebase_url": "https://auxxa-business.firebaseio.com",
+    "project_id": "auxxa-business",
+    "storage_bucket": "auxxa-business.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:981073965788:android:6f4ae848dca2eaf2",
+        "android_client_info": {
+          "package_name": "co.auxxa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "981073965788-o3o0jrfk0ifo8ug82lo9glga48ah3k44.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuynBplZfdnAXl3h5wUjptJNJkJC6DQRI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

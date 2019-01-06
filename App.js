@@ -1,5 +1,6 @@
 import LandingScreen from "./pages/LandingScreen";
 import LoginScreen from "./pages/LoginScreen";
+import MainScreen from "./pages/MainScreen";
 import { Provider } from "react-redux";
 import store from "./redux/index";
 import { Navigation } from "react-native-navigation";
@@ -7,6 +8,12 @@ import { Navigation } from "react-native-navigation";
 Navigation.registerComponent(
   "arcmall.LoginScreen",
   () => LoginScreen,
+  store,
+  Provider
+);
+Navigation.registerComponent(
+  "arcmall.MainScreen",
+  () => MainScreen,
   store,
   Provider
 );
@@ -19,7 +26,7 @@ Navigation.registerComponent(
 
 Navigation.startSingleScreenApp({
   screen: {
-    screen: "arcmall.LandingScreen",
+    screen: "arcmall.MainScreen",
     navigatorStyle: {
       navBarHidden: true
     }

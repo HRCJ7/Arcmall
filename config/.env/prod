@@ -1,0 +1,4 @@
+ENV=production
+DEV=false
+API_BASE_URL=http://35.177.207.208
+API_REST_PREFIX=api/v1

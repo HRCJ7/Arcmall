@@ -12,6 +12,10 @@ target 'Auxxa' do
     # Pods for testing
     pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
+    pod 'react-native-fcm', :path => '../node_modules/react-native-fcm'
+
+    pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
   end
 
   target 'AuxxaTests' do

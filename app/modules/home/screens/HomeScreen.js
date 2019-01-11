@@ -8,6 +8,7 @@ import {
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import styles from './HomeScreen.styles';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 class HomeScreen extends React.Component<any, any> {
   static defaultProps: any
@@ -40,7 +41,7 @@ class HomeScreen extends React.Component<any, any> {
   render() {
     return (
       <View style={styles.container}>
-        <Text>New home screen!</Text>
+        <Text>New home <Icon name="ios-book" color="#4F8EF7" /> screen!</Text>
       </View>
     );
   }

@@ -9,7 +9,7 @@ export const PROFILE_TAB = 'Profile';
 
 export const mainTabRoutes = {
   [HOME_TAB]: {
-    screen: ProductListScreen,
+    screen: HomeScreen,
     path: `/${HOME_TAB}`,
     navigationOptions: {
       tabBarLabel: 'Home',

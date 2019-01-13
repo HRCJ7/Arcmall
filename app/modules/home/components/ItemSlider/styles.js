@@ -8,27 +8,28 @@ function wp(percentage) {
 }
 
 export const styles = StyleSheet.create({
+  item_slider_container: {
+   flex: 1,
+   backgroundColor: "#ffffff"
+  },
   card_container: {
+    flex:1,
     width: sliderItemWidth,
-   flex:1,
     paddingHorizontal: sliderItemHorizontalMargin,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#f8f8ff",
-    marginLeft: "4%",
-    marginRight : "4%"
   },
   image: {
-    width: "100%",
-    flex: 2,
-    height: "100%",
+    // width: "100%",
+    flex: 1,
+    // height: "100%",
     resizeMode: "stretch"
   },
   text_view: {
     width: slideWidth,
     flex: 1,
     alignItems: "center",
-    marginBottom:"8%",
     justifyContent: "center",
     backgroundColor: "#f8f8ff"
   },
@@ -42,10 +43,6 @@ export const styles = StyleSheet.create({
     color: "#2687ad",
     textAlign: "center"
   },
-  item_slider_container: {
-   flex:4,
-    backgroundColor: "#ffffff"
-  }
 });
 
 export const slideWidth = wp(39.4);

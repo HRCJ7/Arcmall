@@ -13,10 +13,9 @@ export default class GridView extends Component {
     return (
       <View style={styles.container}>
         <Grid>
-          <Row size={1} style={{ backgroundColor: "white", marginBottom: 5 }}>
+          <Row size={1} style={{ backgroundColor:"white", marginBottom:5,}}>
             <Image
               style={styles.image}
-             // source={require("../../../assets/rowimage1.png")}
              source={require("../../../../../assets/rowimage1.png")} 
             />
           </Row>
@@ -28,13 +27,13 @@ export default class GridView extends Component {
               />
             </Col>
             <Col>
-              <Row style={{ backgroundColor: "white", marginBottom: 5 }}>
+              <Row size={1} style={{ backgroundColor: "white", marginBottom: 5 }}>
                 <Image
                   style={styles.image}
                   source={require("../../../../../assets/columnimage2.png")}
                 />
               </Row>
-              <Row style={{ backgroundColor: "white", marginBottom: 5 }}>
+              <Row size={1} style={{ backgroundColor: "white", marginBottom: 5 }}>
                 <Image
                   style={styles.image}
                   source={require("../../../../../assets/columnimage3.png")}

@@ -2,7 +2,10 @@
 import {
   ROOT_NAV_MAIN_TAB,
   ROOT_NAV_ITEM_LIST,
-  ROOT_NAV_ITEM_DETAILS
+  ROOT_NAV_ITEM_DETAILS,
+  ROOT_NAV_SELECT_ROLE,
+  ROOT_NAV_SIGN_UP_AS_A_BUYER,
+  ROOT_NAV_SIGN_UP_AS_A_SELLER
 } from './RootRoutes';
 import {AppContainer} from './RootNavigation';
 

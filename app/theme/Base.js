@@ -6,9 +6,12 @@ const Theme = {
     secondary: '#007EA3',
     gray: '#EBEBEB',
     grayBackground: '#F8F7F7',
+    smallText: '#777777'
   },
   fontSizes: {
+    xSmall: 11,
     small: 12,
+    sMedium: 13,
     medium: 14,
     xMedium: 16,
     large: 18,
@@ -34,7 +37,9 @@ export const centerPaddedContainer = {
 }
 
 export const font = {
-  
+  fontFamily: 'SFCompactDisplay-black',
+  fontWeight: Theme.fontWeight.regular,
+  letterSpacing: 1,
 }
 
 export default Theme;

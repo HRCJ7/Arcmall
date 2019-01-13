@@ -1,11 +1,12 @@
 import { StyleSheet } from 'react-native';
+import Theme, { font } from '../../../../theme/Base';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1
   },
   itemContainer: {
-    height: 200,
+    height: 150,
     flexDirection: 'row',
     margin: 5,
     borderRadius: 10,
@@ -15,24 +16,30 @@ const styles = StyleSheet.create({
   },
   itemImage: {
     flex: 1,
-    height: 200
+    aspectRatio: 1,
   },
   itemContent: {
     flex: 2,
     flexDirection: 'column',
-    padding: 20
+    padding: 10
   },
   itemDescription: {
     flex: 1,
-    fontSize: 15
+    paddingTop: 10,
+  },
+  itemDescriptionText: {
+    ...font,
+    flex: 1,
+    fontSize: Theme.fontSizes.small,
+    color: Theme.colors.smallText,
   },
   itemDetails: {
     flex : 1,
     flexDirection: 'row'
   },
-  itemRatingIcon: {
+  ratingIcon: {
     flex: 1,
-    maxWidth: 25
+    maxWidth: 14
   },
   bottomRow: {
     flexDirection: 'row',
@@ -44,16 +51,24 @@ const styles = StyleSheet.create({
     flexDirection : 'row'
   },
   bottomRowActionText: {
+    ...font,
     fontSize: 10,
     marginLeft: 10,
     marginTop: 5
   },
   itemPrice: {
+    ...font,
     flex: 2,
-    fontSize: 20,
+    fontSize: Theme.fontSizes.large,
     textAlign: 'right',
-    fontWeight: 'bold'
+    fontWeight: Theme.fontWeight.semibold,
   },
+  blueText: {
+    ...font,
+    fontSize: Theme.fontSizes.xSmall,
+    color: Theme.colors.secondary,
+    fontWeight: Theme.fontWeight.light,
+  }
 });
 
 export default styles;

@@ -23,8 +23,11 @@ const styles = StyleSheet.create({
     ...font,
     fontSize: Theme.fontSizes.xMedium,
   },
+  headingText: {
+    ...font,
+    fontSize: Theme.fontSizes.medium,
+  },
   info: {
-    ...marginTop,
     flex: 1, 
     flexDirection:'row',
   },
@@ -38,20 +41,66 @@ const styles = StyleSheet.create({
   priceText: {
     ...font,
     flex: 1,
-    fontSize: Theme.fontSizes.large,
+    fontSize: Theme.fontSizes.xLarge,
     textAlign: 'right',
     fontWeight: Theme.fontWeight.medium,
   },
-  description: {
+  smallText: {
+    flex: 1,
+    ...font,
     ...marginTop,
+    fontSize: Theme.fontSizes.small,
+    textAlign: 'left',
+    color: Theme.colors.smallText,
+  },
+  contactSellerText: {
+    ...font,
+    flex: 1,
+    fontSize: Theme.fontSizes.small,
+    textAlign: 'right',
+    color: Theme.colors.secondary,
+  },
+  description: {
+    marginTop: 40,
     flex: 1, 
+  },
+  contactSellerView: {
+    flexDirection: 'row',
   },
   descriptionText: {
     ...font,
     ...marginTop,
     flex: 1,
-    fontSize: Theme.fontSizes.small,
+    fontSize: Theme.fontSizes.xSmall,
     textAlign: 'left',
   },
+  blueButton: {
+    right: 0,
+    alignSelf: 'flex-end',
+  },
+  blueButtonText: {
+    marginTop: 10,
+    ...font,
+    flex: 1,
+    fontSize: Theme.fontSizes.xSmall,
+    textAlign: 'right',
+    color: Theme.colors.secondary,
+  },
+  categoryText: {
+    marginTop: 10,
+    ...font,
+    flex: 1,
+    fontSize: Theme.fontSizes.xSmall,
+    textAlign: 'left',
+    color: Theme.colors.secondary,
+  },
+  ratings: {
+    ...marginTop,
+    flexDirection: 'row',
+  },
+  ratingIcon: {
+    color: Theme.colors.secondary,
+    marginRight: 10,
+  }
 });
 export default styles;

@@ -12,11 +12,12 @@ import styles from './ProductDetailScreen.styles';
 import LoadingIndicator from '../../../shared/components/loadingIndicator/LoadingIndicator';
 import NavigationBar from '../../../shared/components/NavigationBar/NavigationBar';
 import Icon from 'react-native-vector-icons/dist/EvilIcons';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 import Strings from '../../../shared/localization/localization';
 import WhiteCard from '../../../shared/components/whiteCard/WhiteCard';
 import Swiper from 'react-native-swiper';
 import {CachedImage} from 'react-native-cached-image';
-
+import ProductListItem from '../../components/productListItem/ProductListItem';
 
 class ProductDetailScreen extends React.Component<any, any> {
   static defaultProps: any
@@ -25,7 +26,7 @@ class ProductDetailScreen extends React.Component<any, any> {
     super(props);
 
     this.state = {
-      error: null,
+      isLoading: true,
     };
   }
 
@@ -81,7 +82,7 @@ class ProductDetailScreen extends React.Component<any, any> {
       return(
         <CachedImage
           key={i}
-          resizeMode = {'contain'}
+          resizeMode = 'contain'
           key={image}
           style={styles.image}
           source={{uri: image}}
@@ -100,9 +101,15 @@ class ProductDetailScreen extends React.Component<any, any> {
     )
   }
 
-  // <View style={styles.slide3}>
-  //           <Text style={styles.text}>And simple</Text>
-  //         </View>
+  renderButton = (title, action) => {
+    return(
+      <TouchableOpacity
+      style={styles.blueButton}
+      onPress={action}>
+       <Text style={styles.blueButtonText}>{Strings.CONTACT_SELLER}</Text>
+      </TouchableOpacity>
+    );
+  }
 
   renderDescriptionCard = () => {
     const {data} = this.props;
@@ -114,25 +121,49 @@ class ProductDetailScreen extends React.Component<any, any> {
           <Text style={styles.priceText}>{data.price}</Text>
         </View>
         <View style={styles.description}> 
-          <Text style={styles.titleText}>{Strings.DESCRIPTION}</Text>
-          <Text style={styles.descriptionText}>{data.description}</Text>
+          <Text style={styles.headingText}>{Strings.DESCRIPTION}</Text>
+          <Text style={styles.smallText}>{data.description}</Text>
         </View>
       </WhiteCard>
     )
   }
 
-  renderAddCardCard = () => {
-    <WhiteCard>
-        <Text style={styles.titleText}>{data.heading_title}</Text>
+  renderStoreDetailsCard = () => {
+    const {data: {seller}} = this.props;
+    return (
+      <WhiteCard>
+        <Text style={styles.headingText}>{Strings.STORE_DETAILS}</Text>
         <View style={styles.info}> 
-          <Text style={styles.categoryText}>{'category name'}</Text>
-          <Text style={styles.priceText}>{data.price}</Text>
+          <Text style={styles.smallText}>{`${seller.firstname} ${seller.lastname}`}</Text>
         </View>
-        <View style={styles.description}> 
-          <Text style={styles.titleText}>{Strings.DESCRIPTION}</Text>
-          <Text style={styles.descriptionText}>{data.description}</Text>
+        <View style={styles.ratings}>
+          <IonIcon style={styles.ratingIcon} name="ios-star" size={15}/>
+          <IonIcon style={styles.ratingIcon} name="ios-star" size={15} />
+          <IonIcon style={styles.ratingIcon} name="ios-star" size={15} />
+          <IonIcon style={styles.ratingIcon} name="ios-star-outline" size={15} />
+          <IonIcon style={styles.ratingIcon} name="ios-star-outline" size={15} />
+        </View>
+        <View style={styles.contactSellerView}> 
+          <Text style={styles.smallText}>{`281 items         28 Reviews`}</Text>
+          {this.renderButton()}
         </View>
       </WhiteCard>
+    )
+  }
+
+  renderReturnPolicyCard = () => {
+    return (
+      <WhiteCard>
+        <Text style={styles.headingText}>{Strings.RETURN_POLICY}</Text>
+        <View style={styles.info}> 
+          <Text style={styles.smallText}>{Strings.RETURN_TEXT}</Text>
+        </View>
+        <Text style={[styles.headingText, {marginTop: 20}]}>{Strings.BUYER_PROTECTION}</Text>
+        <View style={styles.info}> 
+          <Text style={styles.smallText}>{Strings.BUYER_TEXT}</Text>
+        </View>
+      </WhiteCard>
+    )
   }
 
   render() {
@@ -150,6 +181,8 @@ class ProductDetailScreen extends React.Component<any, any> {
     } else {
       const imageSwiper = this.renderImageSwiper();
       const descriptionCard = this.renderDescriptionCard();
+      const storeDetails = this.renderStoreDetailsCard();
+      const refundPolicyCard = this.renderReturnPolicyCard();
 
        content = (
         <View style={styles.container}>
@@ -157,6 +190,8 @@ class ProductDetailScreen extends React.Component<any, any> {
           <ScrollView style={styles.container}>
             {imageSwiper}
             {descriptionCard}
+            {storeDetails}
+            {refundPolicyCard}
           </ScrollView>
         </View>
        )

@@ -3,7 +3,7 @@ import {POST, GET} from '../../../services/RestService';
 
 const urlFactory = {
   getProductById: (id): string => `product/&product_id=${id}`,
-  playerRegistration: (): string => 'players/register',
+  getProductList: (): string => 'product/search',
 };
 
 const ProductService = {
@@ -12,6 +12,12 @@ const ProductService = {
     const urlParams = null;
     const headers = null;
     return GET(endpoint, urlParams, headers);
+  },
+  getProductList: async (body): Promise<any> => {
+    const endpoint: string = urlFactory.getProductList();
+    const urlParams = null;
+    const headers = null;
+    return POST(endpoint, body, urlParams, headers);
   },
 };
 

@@ -10,6 +10,8 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import styles from './LoginScreen.styles';
 import {navigateToMainTabScreen} from '../../../navigation/RootNavActions';
+import LoginActions from '../actions/LoginActions';
+import ArcmallButton from '../../shared/components/arcmallButton/ArcmallButton';
 
 class LoginScreen extends React.Component<any, any> {
   static defaultProps: any
@@ -38,19 +40,22 @@ class LoginScreen extends React.Component<any, any> {
   componentDidUpdate() {
     
   }
+  
   handleNavigatePress = () => {
     console.log(this.props)
-    this.props.navigation.dispatch(navigateToMainTabScreen());
+    this.props.dispatch(LoginActions.login('harindamail@gmail.com', 'harindamail'));
+    // this.props.navigation.dispatch(navigateToMainTabScreen());
   }
 
   render() {
     return (
       <View style={styles.container}>
         <Text>New screen!</Text>
-        <Button
-          onPress={this.handleNavigatePress}
-          title={"Navigate to tab screen"}
-        />
+          <ArcmallButton
+            style={{width: 200}}
+            onPress={this.handleNavigatePress}
+            title={"Sign in"}
+          />
       </View>
     );
   }

@@ -8,6 +8,10 @@ import {
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import styles from './HomeScreen.styles';
+import ArcmallButton from '../../shared/components/arcmallButton/ArcmallButton';
+import {navigateToItemListScreen} from '../../../navigation/RootNavActions';
+import {ROOT_NAV_ITEM_LIST} from '../../../navigation/RootRoutes';
+import ProductActions from '../../product/actions/ProductActions';
 
 class HomeScreen extends React.Component<any, any> {
   static defaultProps: any
@@ -21,7 +25,7 @@ class HomeScreen extends React.Component<any, any> {
   }
 
   componentDidMount() {
-
+    
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -37,10 +41,18 @@ class HomeScreen extends React.Component<any, any> {
     
   }
 
+  handleItemListNavigation = () => {
+    console.log(this.props)
+    this.props.navigation.dispatch(navigateToItemListScreen());
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text>New home screen!</Text>
+        <ArcmallButton
+          onPress={this.handleItemListNavigation}
+          title={'Go to item list'}
+        />
       </View>
     );
   }

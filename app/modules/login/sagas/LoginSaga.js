@@ -7,43 +7,29 @@ import {
 import type {
   Saga,
 } from 'redux-saga';
-
-// import LoginService from '@spotme-external-services/LoginService';
-// import SettingsService from '@spotme-external-services/SettingsService';
-// import {
-//   sessionActions,
-// } from '../../../storage/realm';
-// import SharedActions from '@spotme-shared/actions/SharedActions';
-// import Actions from '../actions/LoginActions';
+import Actions from '../actions/LoginActions';
+import LoginService from '../services/LoginService';
 import {
-  GET_LOGIN_VERIFICATION,
-  PLAYER_REGISTRATION,
+  LOGIN,
 } from '../actions/Types';
 
 export default () => {
-  function* getLoginVerification(action) {
+  function* login(action) {
     try {
-    //   const response = yield call(LoginService.getLoginVerification, action.payload.email, action.payload.password);
-    //   const session = yield call(sessionActions.setSession, response);
-    //   const {userId} = session;
-
-    //   try {
-    //     const response = yield call(SettingsService.getSettingsByUserId, userId);
-    //     yield put(Actions.getLoginVerificationSuccess(session));
-    //     yield put(SharedActions.getSettingsByUserIdSuccess(response));
-    //   } catch (err) {
-    //     yield put(SharedActions.getSettingsByUserIdFailure(err));
-    //   }
+      const response = yield call(LoginService.login, action.payload.email, action.payload.password);
+      yield put(Actions.loginSuccess(response));
+      console.log(response)
     } catch (error) {
-      // yield put(Actions.getLoginVerificationFailure(error.response));
+      yield put(Actions.loginFailure(error.response));
+      console.log(error)
     }
   }
 
-  function* watchGetLoginVerification(): Saga<void> {
-    yield takeLatest(GET_LOGIN_VERIFICATION, getLoginVerification);
+  function* watchLogin(): Saga<void> {
+    yield takeLatest(LOGIN, login);
   }
 
   return {
-    watchGetLoginVerification,
+    watchLogin,
   };
 };

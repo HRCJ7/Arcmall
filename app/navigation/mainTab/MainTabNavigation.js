@@ -17,23 +17,11 @@ const config = {
   }
 };
 
-const MainTabNavigator = createBottomTabNavigator(mainTabRoutes, config);
-export const AppContainer = createAppContainer(MainTabNavigator);
-
-class MainTabNavigation extends React.PureComponent<any, any> {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    return (
-      <AppContainer />
-    );
-  }
-}
+export const MainTabNavigator = createBottomTabNavigator(mainTabRoutes, config);
 
 const mapStateToProps = (state, ownProps) => {
   return {
   };
 };
 
-export default connect(mapStateToProps)(MainTabNavigation);
+export default connect(mapStateToProps)(MainTabNavigator);

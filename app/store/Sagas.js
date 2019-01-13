@@ -3,13 +3,13 @@ import {all, fork} from 'redux-saga/effects';
 import type {Saga} from 'redux-saga';
 
 import loginSaga from '../modules/login/sagas/LoginSaga';
+import productSaga from '../modules/product/sagas/ProductSaga';
 
 export default function* root(): Saga<void> {
   const createdloginSaga = loginSaga();
-
+  const createdProductSaga = productSaga();
   yield all([
-    fork(createdloginSaga.watchGetLoginVerification),
-    // fork(createdloginSaga.watchLogOut),
-    // fork(createdloginSaga.watchPlayerRegistration),
+    fork(createdloginSaga.watchLogin),
+    fork(createdProductSaga.watchGetProductById),
   ]);
 }

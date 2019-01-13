@@ -2,14 +2,14 @@
 import {POST} from './RestService';
 
 const urlFactory = {
-  login: (): string => 'accounts/player/login',
+  login: (): string => '/user_login',
   playerRegistration: (): string => 'players/register',
 };
 
 const loginService = {
   getLoginVerification: async (email: string, password: string): Promise<any> => {
     const endpoint: string = urlFactory.login();
-    const body: {email: string, password: string} = {email, password};
+    const body = {email, password};
     const urlParams = null;
     const headers = null;
 

@@ -3,6 +3,11 @@ package com.arcmall;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.RNFetchBlob.RNFetchBlobPackage;
+import com.babisoft.ReactNativeLocalization.ReactNativeLocalizationPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.github.xinthink.rnmk.ReactMaterialKitPackage;
+import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -24,6 +29,11 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNFetchBlobPackage(),
+            new ReactNativeLocalizationPackage(),
+            new VectorIconsPackage(),
+            new ReactMaterialKitPackage(),
+            new ReactNativeConfigPackage(),
             new RNGestureHandlerPackage()
       );
     }

@@ -18,20 +18,24 @@ import WhiteCard from '../../../shared/components/whiteCard/WhiteCard';
 import Swiper from 'react-native-swiper';
 import {CachedImage} from 'react-native-cached-image';
 import ProductListItem from '../../components/productListItem/ProductListItem';
+import ProductActions from '../../actions/ProductActions';
 
 class ProductDetailScreen extends React.Component<any, any> {
   static defaultProps: any
 
   constructor(props) {
     super(props);
-
     this.state = {
       isLoading: true,
     };
+    let {itemId} = this.props.navigation.state.params;
+    console.log(itemId)
+    this.props.dispatch(ProductActions.getProductById(itemId))
   }
 
   componentDidMount() {
-    
+    let {itemId} = this.props.navigation.state.params;
+    this.props.dispatch(ProductActions.getProductById(itemId))
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -48,7 +52,7 @@ class ProductDetailScreen extends React.Component<any, any> {
   }
 
   handleOnBackPress = () => {
-    this.props.navigation.goBack();
+    this.props.navigation.goBack(null);
   }
 
   renderLeftAction = () => {
@@ -60,9 +64,10 @@ class ProductDetailScreen extends React.Component<any, any> {
   }
 
   renderNavBar = () => {
+    const {data: {heading_title}} = this.props;
     return (
       <NavigationBar
-        title={Strings.PRODUCT_DETAILS}
+        title={heading_title}
         leftAction={this.renderLeftAction()}
       >
       </NavigationBar>
@@ -79,15 +84,17 @@ class ProductDetailScreen extends React.Component<any, any> {
     }
 
     return imagesArr.map(function(image, i){
-      return(
-        <CachedImage
-          key={i}
-          resizeMode = 'contain'
-          key={image}
-          style={styles.image}
-          source={{uri: image}}
-        />
-      );
+      if (image) {
+        return(
+          <CachedImage
+            key={i}
+            resizeMode = 'contain'
+            key={image}
+            style={styles.image}
+            source={{uri: image}}
+          />
+        );
+      }
     });
   }
 
@@ -130,25 +137,29 @@ class ProductDetailScreen extends React.Component<any, any> {
 
   renderStoreDetailsCard = () => {
     const {data: {seller}} = this.props;
-    return (
-      <WhiteCard>
-        <Text style={styles.headingText}>{Strings.STORE_DETAILS}</Text>
-        <View style={styles.info}> 
-          <Text style={styles.smallText}>{`${seller.firstname} ${seller.lastname}`}</Text>
-        </View>
-        <View style={styles.ratings}>
-          <IonIcon style={styles.ratingIcon} name="ios-star" size={15}/>
-          <IonIcon style={styles.ratingIcon} name="ios-star" size={15} />
-          <IonIcon style={styles.ratingIcon} name="ios-star" size={15} />
-          <IonIcon style={styles.ratingIcon} name="ios-star-outline" size={15} />
-          <IonIcon style={styles.ratingIcon} name="ios-star-outline" size={15} />
-        </View>
-        <View style={styles.contactSellerView}> 
-          <Text style={styles.smallText}>{`281 items         28 Reviews`}</Text>
-          {this.renderButton()}
-        </View>
-      </WhiteCard>
-    )
+    let content = null;
+    if (seller) {
+      content = (
+        <WhiteCard>
+          <Text style={styles.headingText}>{Strings.STORE_DETAILS}</Text>
+          <View style={styles.info}> 
+            <Text style={styles.smallText}>{`${seller.firstname} ${seller.lastname}`}</Text>
+          </View>
+          <View style={styles.ratings}>
+            <IonIcon style={styles.ratingIcon} name="ios-star" size={15}/>
+            <IonIcon style={styles.ratingIcon} name="ios-star" size={15} />
+            <IonIcon style={styles.ratingIcon} name="ios-star" size={15} />
+            <IonIcon style={styles.ratingIcon} name="ios-star-outline" size={15} />
+            <IonIcon style={styles.ratingIcon} name="ios-star-outline" size={15} />
+          </View>
+          <View style={styles.contactSellerView}> 
+            <Text style={styles.smallText}>{`281 items         28 Reviews`}</Text>
+            {this.renderButton()}
+          </View>
+        </WhiteCard>
+      )
+    }
+    return content;
   }
 
   renderReturnPolicyCard = () => {
@@ -213,6 +224,7 @@ ProductDetailScreen.defaultProps = {
 };
 
 const mapStateToProps = (state, ownProps) => {
+  console.log(state.product.productData)
   return {
     data: state.product.productData,
     isLoading: state.product.productLoading || !state.product.productData,

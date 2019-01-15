@@ -14,25 +14,30 @@ import Strings from '../../../shared/localization/localization';
 import EvilIcons from 'react-native-vector-icons/dist/EvilIcons';
 import LoadingIndicator from '../../../shared/components/loadingIndicator/LoadingIndicator';
 import ProductListItem from '../../components/productListItem/ProductListItem';
+import { navigateToItemDetails } from '../../../../navigation/RootNavActions';
+import ProductActions from '../../actions/ProductActions';
+import Toast from 'react-native-simple-toast';
 
 class ProductListScreen extends React.Component<any, any> {
   static defaultProps: any
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      error: null,
-    };
+    console.log(props)
+    const params = props.navigation.state.params;
+    props.dispatch(ProductActions.getProductList({
+      search: '',
+      category_id: params.category_id,
+    }))
   }
 
   componentDidMount() {
-
+  
   }
 
   static getDerivedStateFromProps(props, state) {
     //Return state object, retun null to update nothing;
-    return null;
+    return state;
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -41,6 +46,14 @@ class ProductListScreen extends React.Component<any, any> {
 
   componentDidUpdate() {
     
+  }
+
+  handleProductOnPress = (itemId: number) => {
+    this.props.navigation.dispatch(navigateToItemDetails({itemId}));
+  }
+
+  handleOnBackPress = () => {
+    this.props.navigation.goBack(null);
   }
 
   renderLeftAction = () => {
@@ -63,16 +76,18 @@ class ProductListScreen extends React.Component<any, any> {
 
   renderListItem = (item, index) => {
     return (
-      <ProductListItem 
+      <ProductListItem
         item={item}
-      />
+        onPress={this.handleProductOnPress}
+      /> 
     )
   }
 
   render() {
-    const {isLoading, productList, productListError} = this.props;
+    const {isLoading, productList, productListError, navigation: {state: {params: {loadingCategories}}}} = this.props;
+    console.log(productList)
     let content = null;
-    const navBar = this.renderNavBar();
+    const navBar = loadingCategories? null: this.renderNavBar();
     if (isLoading) {
       content = (
         <View style={styles.container}>
@@ -85,13 +100,14 @@ class ProductListScreen extends React.Component<any, any> {
         <View style={styles.container}>
           {navBar}
           <FlatList
+            keyExtractor={(item, index) => `${item.description}${index}`}
             data={productList}
             renderItem={this.renderListItem}
           />
         </View>
       );
     } else {
-
+      Toast.show(Strings.SOMETHING_WENT_WRONG);
     }
     return (
       content
@@ -100,18 +116,41 @@ class ProductListScreen extends React.Component<any, any> {
 }
 
 ProductListScreen.propTypes = {
-
+  isLoading: PropTypes.bool,
+  productList: PropTypes.any,
+  productListError: PropTypes.any, 
 };
 
 ProductListScreen.defaultProps = {
-
+  isLoading: true,
+  productList: null,
+  productListError: null, 
 };
 
 const mapStateToProps = (state, ownProps) => {
+  let navigation = ownProps.navigation;
+  const fromCategories = navigation.state.params.category_id;
+
+  //Change navigation object for tab bar.
+  if (fromCategories) {
+    navigation = ownProps.navigation.state.params.navigation;
+    navigation.state.params = {...navigation.state.params, ...ownProps.navigation.state.params};
+  }
+
+  const categoryId = navigation.state.params.category_id;
+  const products = state.product.productList;
+
+  let productList;
+  if (categoryId && products[categoryId]) {
+    productList = state.product.productList[categoryId].products;
+  } else {
+    productList = state.product.productList.products;
+  }
   return {
-    productList: state.product.productList.products,
+    productList: productList,
     isLoading: state.product.productListLoading,
     productListError: state.product.productListError,
+    navigation: navigation,
   };
 };
 

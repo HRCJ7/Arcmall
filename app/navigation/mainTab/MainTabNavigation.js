@@ -12,12 +12,12 @@ const config = {
       fontSize: 12,
     },
     style: {
-      backgroundColor: 'blue',
+      // backgroundColor: 'transparent',
     },
   }
 };
 
-export const MainTabNavigator = createBottomTabNavigator(mainTabRoutes, config);
+const MainTabNavigator = createBottomTabNavigator(mainTabRoutes, config);
 
 const mapStateToProps = (state, ownProps) => {
   return {

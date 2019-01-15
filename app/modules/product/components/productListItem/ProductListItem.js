@@ -6,16 +6,21 @@ import styles from "./ProductListItem.styles";
 import PropTypes from 'prop-types';
 import {
   CachedImage,
-  ImageCacheProvider
 } from 'react-native-cached-image';
 
 const ICON_SIZE = 12;
 
 export default class ProductListItem extends Component {
+
+  handleOnPress = () => {
+    const {item: {item}, onPress} = this.props;
+    onPress(item.product_id);
+  }
+
   render() {
-    const {item} = this.props.item;
+    const {item, onPress} = this.props.item;
     return (
-      <TouchableOpacity style={styles.itemContainer}>
+      <TouchableOpacity style={styles.itemContainer} onPress={this.handleOnPress}>
         <CachedImage 
           style={styles.itemImage}
           resizeMode='contain'
@@ -54,9 +59,11 @@ export default class ProductListItem extends Component {
 }
 
 ProductListItem.propTypes = {
-  item: PropTypes.object.isRequired
+  item: PropTypes.object.isRequired,
+  onPress: PropTypes.func,
 };
 
 ProductListItem.defaultProps = {
-  item: {}
+  item: {},
+  onPress: () => {},
 };

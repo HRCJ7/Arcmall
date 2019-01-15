@@ -10,8 +10,10 @@ export default function* root(): Saga<void> {
   const createdProductSaga = productSaga();
   yield all([
     fork(createdloginSaga.watchLogin),
+    fork(createdloginSaga.watchRegister),
 
     fork(createdProductSaga.watchGetProductById),
     fork(createdProductSaga.watchGetProductList),
+    fork(createdProductSaga.watchGetCategoryList),
   ]);
 }

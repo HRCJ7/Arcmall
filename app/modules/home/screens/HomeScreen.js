@@ -6,9 +6,10 @@ import {
   Image,
   ScrollView,
   SafeAreaView,
-  FlatList
+  FlatList,
+  AsyncStorage,
 } from 'react-native';
-import { SearchBar } from "react-native-elements";
+import {SearchBar} from "react-native-elements";
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import styles from './HomeScreen.styles';
@@ -16,6 +17,10 @@ import ItemSlider from "../components/ItemSlider/ItemSlider";
 import Card from "../components/ItemSlider/Card";
 import TitleBar from "../components/TitleBar/TitleBar";
 import GridView from "../components/GridView/GridView";
+import ProductActions from '../../product/actions/ProductActions';
+import LoadingIndicator from '../../shared/components/loadingIndicator/LoadingIndicator';
+import LoginActions from '../../login/actions/LoginActions';
+import { navigateToItemListScreen } from '../../../navigation/RootNavActions';
 
 const arr = ["1", "1", "1", "1", "1", "1", "1", "1", "1"];
 class HomeScreen extends React.Component<any, any> {
@@ -27,6 +32,18 @@ class HomeScreen extends React.Component<any, any> {
     this.state = {
       error: null,
     };
+    this.getCategoryList();
+  }
+
+  getCategoryList = async () => {
+    let categories = await AsyncStorage.getItem('categories');
+    if (!categories) {
+      this.props.dispatch(ProductActions.getCategoryList());
+    }
+
+    let user = await AsyncStorage.getItem('user');
+    console.log(user)
+    this.props.dispatch(LoginActions.postLogin({categories, user}));
   }
 
   componentDidMount() {
@@ -51,9 +68,15 @@ class HomeScreen extends React.Component<any, any> {
     title="{item.title}" />;
   };
 
+  handleOnGridPress = (categories) => {
+    this.props.navigation.dispatch(navigateToItemListScreen({categories}))
+  }
 
   render() {
-    return (
+    const {isLoading} = this.props;
+    let content = null;
+    if(!isLoading) {
+      content = (
         <ScrollView
           style={styles.container}>
           <View style={{flex:1}}>
@@ -79,7 +102,10 @@ class HomeScreen extends React.Component<any, any> {
             /> 
             <TitleBar name="Top Categories" />
             <View style={{flex:1}}>
-              <GridView />
+              <GridView
+                categories={this.props.categoryList}
+                onPress={this.handleOnGridPress}
+              />
             </View>
             
             {/* <FlatList
@@ -91,7 +117,16 @@ class HomeScreen extends React.Component<any, any> {
             /> */}
           </View>
         </ScrollView>
-    );
+      )
+    } else {
+      content = (
+        <View style={styles.container}>
+          <LoadingIndicator />
+        </View>
+      )
+    }
+      
+      return content;
   }
 }
 
@@ -105,7 +140,8 @@ HomeScreen.defaultProps = {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    
+    categoryList: state.product.categoryList,
+    isLoading: state.product.categoryListLoading,
   };
 };
 

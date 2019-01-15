@@ -8,6 +8,7 @@ import SelectRoleScreen from '../modules/login/screens/SelectRoleScreen';
 import SignUpAsABuyerScreen from '../modules/login/screens/SignUpAsABuyerScreen';
 import SignUpAsASellerScreen from '../modules/login/screens/SignUpAsASellerScreen';
 import MainTabNavigation from './mainTab/MainTabNavigation';
+import CategoryTabNavigator from './categoryTab/CategoryTabNavigation';
 
 export const ROOT_NAV_LOGIN = 'Login';
 export const ROOT_NAV_SELECT_ROLE = 'SelectRole';
@@ -23,7 +24,7 @@ export const rootRoutes = {
     path: `/${ROOT_NAV_MAIN_TAB}`,
   },
   [ROOT_NAV_ITEM_LIST]: {
-    screen: ProductListScreen,
+    screen: CategoryTabNavigator,
     path: `/${ROOT_NAV_ITEM_LIST}`,
   },
   [ROOT_NAV_ITEM_DETAILS]: {

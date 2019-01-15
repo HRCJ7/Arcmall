@@ -1,87 +1,63 @@
 import { StyleSheet } from "react-native";
+import Theme, { font } from "../../../theme/Base";
 
 const styles = StyleSheet.create({
-  background_image: {
-    width: "100%",
-    height: "100%"
+  container: {
+    flex: 1,
+    padding: 20,
   },
-  back_button: {
-    ...StyleSheet.absoluteFillObject,
-    alignSelf: "flex-end",
-    marginTop: "10%",
-    marginLeft: "5%",
-    position: "absolute"
+  selectRoleText: {
+    ...font,
+    color: 'black',
+    fontSize: Theme.fontSizes.large,
+    fontWeight: Theme.fontWeight.ultraLight,
   },
-  select_your_role: {
-    marginTop: "50%",
-    width: "80%",
-    alignSelf: "center",
-    fontSize: 25,
-    fontWeight: "bold",
-    color: "black"
+  descriptionText: {
+    ...font,
+    color: 'black',
+    fontSize: Theme.fontSizes.large,
+    fontWeight: Theme.fontWeight.ultraLight,
   },
-  description: {
-    marginTop: "10%",
-    width: "80%",
-    alignSelf: "center",
-    fontSize: 18,
-    color: "black",
-    marginBottom: "10%"
+  wordingText: {
+    ...font,
+    lineHeight: 20,
+    color: Theme.colors.smallText,
+    fontSize: Theme.fontSizes.small,
+    fontWeight: Theme.fontWeight.light,
+    paddingVertical: 10,
   },
-  sign_up_as_a_buyer_button: {
-    flexGrow: 0.1,
-    height: null,
-    width: "80%",
-    alignItems: "center",
-    justifyContent: "center",
-    alignSelf: "center",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#47AFA5"
+  headerComponent: {
+    flex: 1,
   },
-  sign_up_as_a_buyer_text: {
-    textAlign: "center",
-    fontSize: 20,
-    color: "#47AFA5"
+  textComponent: {
+    flex: 2,
   },
-  sign_up_as_a_seller_button: {
-    flexGrow: 0.1,
-    height: null,
-    backgroundColor: "#47AFA5",
-    width: "80%",
-    alignItems: "center",
-    justifyContent: "center",
-    alignSelf: "center",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#47AFA5"
+  footerComponent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 30,
+    flexDirection: 'row',
   },
-  sign_up_as_a_seller_text: {
-    textAlign: "center",
-    fontSize: 20,
-    color: "white"
+  label: {
+    ...font,
+    color: 'black',
+    fontSize: Theme.fontSizes.small,
+    fontWeight: Theme.fontWeight.light,
+    paddingTop: 20,
   },
-  space: {
-    height: "5%"
+  signUpText: {
+    ...font,
+    paddingTop: 20,
+    textDecorationLine: 'underline',
+    color: 'black',
+    fontSize: Theme.fontSizes.small,
+    fontWeight: Theme.fontWeight.regular,
   },
-
-  already_memeber_view: {
-    width: "100%",
-    alignSelf: "center",
-    position: "absolute",
-    bottom: 50
-  },
-  boader_line: {
-    width: "80%",
-    marginBottom: 20,
-    borderBottomColor: "black",
-    borderBottomWidth: 3,
-    alignSelf: "center"
-  },
-
-  text_row: {
-    alignSelf: "center",
-    flexDirection: "row"
+  backButton: {
+    left: -15,
+    position: 'absolute',
+    zIndex: 50,
   }
 });
 export default styles;

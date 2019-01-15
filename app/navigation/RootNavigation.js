@@ -10,17 +10,13 @@ import Theme from '../theme/Base';
 
 const STACK_NAVIGATOR_CONFIG = {
   initialRouteName: ROOT_NAV_MAIN_TAB,
-  // headerMode: 'none',
+  headerMode: 'none',
 };
 
-export const RootStackNavigation = createSwitchNavigator(rootRoutes, STACK_NAVIGATOR_CONFIG)
+export const RootStackNavigation = createStackNavigator(rootRoutes, STACK_NAVIGATOR_CONFIG)
 export const AppContainer = createAppContainer(RootStackNavigation);
 const RootNavigation = (props: any) => {
   // props.dispatch(ProductActions.getProductById(264))
-  props.dispatch(ProductActions.getProductList({
-    search: '',
-    category_id: '0',
-  }))
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: Theme.colors.primary}}>
       <AppContainer />

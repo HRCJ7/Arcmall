@@ -71,7 +71,6 @@ export const GET = async (
 
   // Create the request URL
   const url: string = `${BASE_URL}/${endpoint}${createURLParams(params)}`;
-  console.log(url)
   const options: {[string]: any} = {
     headers: {
       method: 'GET',
@@ -103,10 +102,7 @@ export const POST = async (
     body: getForm(body),
   };
 
-  
-  console.log(options)
   const response = await fetch(url, options);
-  console.log(response)
   // Handle the response before returning
   return handleResponseStatus(response);
 };

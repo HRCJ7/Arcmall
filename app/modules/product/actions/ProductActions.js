@@ -5,7 +5,10 @@ import {
   GET_PRODUCT_BY_ID_FAILURE,
   GET_PRODUCT_LIST,
   GET_PRODUCT_LIST_FAILURE,
-  GET_PRODUCT_LIST_SUCCESS
+  GET_PRODUCT_LIST_SUCCESS,
+  GET_CATEGORY_LIST,
+  GET_CATEGORY_LIST_SUCCESS,
+  GET_CATEGORY_LIST_FAILURE
 } from "./Types";
 
 const getProductById = (product_id: number) => ({
@@ -50,6 +53,27 @@ const getProductListFailure = (error: any) => ({
   },
 });
 
+const getCategoryList = (data) => ({
+  type: GET_CATEGORY_LIST,
+  payload: {
+    ...data,
+  },
+});
+
+const getCategoryListSuccess = (data: any) => ({
+  type: GET_CATEGORY_LIST_SUCCESS,
+  payload: {
+    data,
+  },
+});
+
+const getCategoryListFailure = (error: any) => ({
+  type: GET_CATEGORY_LIST_FAILURE,
+  payload: {
+    error,
+  },
+});
+
 export default {
   getProductById,
   getProductByIdSuccess,
@@ -58,4 +82,8 @@ export default {
   getProductList,
   getProductListSuccess,
   getProductListFailure,
+  
+  getCategoryList,
+  getCategoryListSuccess,
+  getCategoryListFailure
 }

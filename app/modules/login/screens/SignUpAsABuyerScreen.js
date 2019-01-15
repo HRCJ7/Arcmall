@@ -3,7 +3,7 @@ import React from "react";
 import {
   Text,
   View,
-  TouchableHighlight,
+  TouchableOpacity,
   SafeAreaView,
   TextInput,
   Button,
@@ -11,10 +11,17 @@ import {
 } from "react-native";
 
 import PropTypes from "prop-types";
+import { CheckBox } from 'react-native-elements'
 import { connect } from "react-redux";
 import styles from "./SignUpAsABuyerScreen.styles";
 import { navigateToMainTabScreen } from "../../../navigation/RootNavActions";
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/EvilIcons";
+import NavigationBar from "../../shared/components/NavigationBar/NavigationBar";
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
+import ArcmallButton from "../../shared/components/arcmallButton/ArcmallButton";
+import Theme from "../../../theme/Base";
+import LoginActions from "../actions/LoginActions";
+import Toast from 'react-native-simple-toast';
 
 class SignUpAsABuyerScreen extends React.Component<any, any> {
   static defaultProps: any;
@@ -23,7 +30,13 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
     super(props);
 
     this.state = {
-      error: null
+      checked: false,
+      firstname: null,
+      email: null,
+      password: null,
+      confirm: null,
+      lastname: null,
+      error: null,
     };
   }
 
@@ -31,6 +44,7 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
 
   static getDerivedStateFromProps(props, state) {
     //Return state object, retun null to update nothing;
+    // const {error} = state;
     return null;
   }
 
@@ -39,69 +53,101 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
   }
 
   componentDidUpdate() {}
+
   handleNavigatePress = () => {
-    console.log(this.props);
     this.props.navigation.dispatch(navigateToMainTabScreen());
   };
 
+  handleOnBackPress = () => {
+    this.props.navigation.goBack(null);
+  }
+
+  handleRegister = () => {
+    const {checked, firstname, email, password, lastname} = this.state;
+    if(checked && firstname && lastname && email && password) {
+      this.props.dispatch(LoginActions.registration(this.state))
+    }
+  }
+
+  renderLeftAction = () => {
+    return (
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={this.handleOnBackPress}>
+        <Icon name='chevron-left' color='white' size={50}/>
+      </TouchableOpacity>
+    )
+  }
+
   render() {
+    let {checked, error} = this.state;
+    if (error) {
+      let string = '';
+      for (let key in error) {
+        string.concat(`${error[key]} \n`);
+      }
+      // Toast.show(string, Toast.LONG);
+    }
+
     return (
       <ImageBackground
         source={require("../../../../assets/login_background.png")}
-        style={styles.background_image}
+        style={styles.container}
       >
-        <Icon
-          name="arrow-left"
-          size={25}
-          color="#ffffff"
-          style={styles.back_button}
-        />
-        <Text style={styles.select_your_role}>Sign up as a Buyer</Text>
-        <Text style={styles.description}>
-          A wonderful collection of products awaits you.Let's get your all set
-          up to explore a world of glamourous fashion
-        </Text>
-
-        <View style={styles.detail_view}>
-          <View>
-            <Text>Your Name</Text>
-            <TextInput style={styles.text_input} placeholder="TJohn Smith" />
-          </View>
-          <View>
-            <Text>E-mail</Text>
-            <TextInput
-              style={styles.text_input}
-              placeholder="johnsmiath@gmail.com"
-            />
-          </View>
-          <View>
-            <Text>password</Text>
-            <TextInput
-              secureTextEntry={true}
-              style={styles.text_input}
-              placeholder="abcde"
-            />
-          </View>
-        </View>
-
-        <View style={styles.already_memeber_view}>
-          <View style={styles.text_row}>
-            <View style={styles.check_box} />
-            <View
-              style={{
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-            >
-              <Text style={styles.agreement_text}>
-                I agree to Terms and Condition of Arcmall
+        {this.renderLeftAction()}
+        <KeyboardAwareScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.headerComponent}>
+          <View style={styles.headerComponent}>
+            <View style={styles.headerComponent}></View>
+            <View style={styles.textComponent}>
+              <Text style={styles.selectRoleText}>Sign up as a Buyer</Text>
+              <Text style={styles.wordingText}>
+                A wonderful collection of products awaits you.Let's get your all set
+                up to explore a world of glamourous fashion
               </Text>
+              <Text style={[styles.label, {paddingTop: 20}]}>{'First Name'}</Text>
+              <TextInput
+                onChangeText={(firstname) => this.setState({firstname})}
+                style={styles.textInput}
+              />
+              <Text style={[styles.label, {paddingTop: 20}]}>{'Last Name'}</Text>
+              <TextInput
+              onChangeText={(lastname) => this.setState({lastname})}
+              style={styles.textInput}
+              />
+              <Text style={[styles.label, {paddingTop: 20}]}>{'Email'}</Text>
+              <TextInput
+                onChangeText={(email) => this.setState({email})}
+                style={styles.textInput}
+              />
+              <Text style={[styles.label, {paddingTop: 20}]}>{'Password'}</Text>
+              <TextInput
+                onChangeText={(password) => this.setState({password, confirm: password})}
+                secureTextEntry={true}
+                style={styles.textInput}
+              />
+            </View>
+            
+            <View style={styles.footerComponent}>
+              <View style={styles.checkBoxRow}>
+                <CheckBox
+                  containerStyle={{flex: 1, backgroundColor: 'transparent', borderWidth: 0}}
+                  textStyle={styles.acceptText}
+                  title='I agree to Terms and Condition of Arcmall'
+                  checked={this.state.checked}
+                  checkedColor={Theme.colors.smallText}
+                  onPress={()=> this.setState({checked: !checked})}
+                />
+              </View>
+              <ArcmallButton
+                title='Register'
+                onPress={this.handleRegister}
+              />
             </View>
           </View>
-          <TouchableHighlight style={styles.remember_button}>
-            <Text style={styles.remember_text}>Register</Text>
-          </TouchableHighlight>
-        </View>
+        </KeyboardAwareScrollView>
+        
       </ImageBackground>
     );
   }
@@ -113,7 +159,10 @@ SignUpAsABuyerScreen.defaultProps = {};
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    ...state
+    ...state,
+    registrationdata: state.login.registrationData,
+    isLoading: state.login.registrationLoading,
+    error: state.login.registrationError,
   };
 };
 

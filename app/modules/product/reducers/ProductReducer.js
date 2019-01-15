@@ -1,3 +1,4 @@
+import {AsyncStorage} from 'react-native';
 import {createReducer} from 'reduxsauce';
 import {
   GET_PRODUCT_BY_ID,
@@ -6,7 +7,11 @@ import {
   GET_PRODUCT_LIST,
   GET_PRODUCT_LIST_SUCCESS,
   GET_PRODUCT_LIST_FAILURE,
+  GET_CATEGORY_LIST,
+  GET_CATEGORY_LIST_SUCCESS,
+  GET_CATEGORY_LIST_FAILURE,
 } from '../actions/Types';
+import {POST_LOGIN} from '../../login/actions/Types';
 
 const INITIAL_STATE = {
   productData: {},
@@ -16,6 +21,10 @@ const INITIAL_STATE = {
   productList: {},
   productListLoading: true,
   productListError: null,
+
+  categoryList: {},
+  categoryListLoading: {},
+  categoryListError: null,
 };
 
 export const getProductById = (state = INITIAL_STATE, {payload} : any) => ({
@@ -40,11 +49,19 @@ const getProductList = (state = INITIAL_STATE, {payload} : any) => ({
   productListLoading: true,
 });
 
-const getProductListSuccess = (state = INITIAL_STATE, {payload} : any) => ({
-  ...state,
-  productListLoading: false,
-  productList: payload.data,
-});
+const getProductListSuccess = (state = INITIAL_STATE, {payload} : any) => {
+  let productList = {...state.productList};
+  let categoryId = payload.data.category_id;
+  if (categoryId) {
+    productList[payload.data.category_id] = payload.data;
+  }
+  
+  return {
+    ...state,
+    productListLoading: false,
+    productList: productList,
+  }
+}
 
 const getProductListFailure = (state, {payload} : any) => ({
   ...state,
@@ -52,6 +69,41 @@ const getProductListFailure = (state, {payload} : any) => ({
   productListError: payload.error,
 });
 
+const getCategoryList = (state = INITIAL_STATE, {payload} : any) => ({
+  ...state,
+  categoryListLoading: true,
+});
+
+const getCategoryListSuccess = async (state = INITIAL_STATE, {payload} : any) => {
+  console.log(JSON.stringify(payload.data.categories[0].categories))
+
+  try {
+    await AsyncStorage.setItem('categories', JSON.stringify(payload.data.categories[0].categories));
+  } catch(err) {
+    console.log(err)
+  }
+  
+  return {
+    ...state,
+    categoryListLoading: false,
+    categoryList: payload.data.categories[0].categories,
+  }
+};
+
+const getCategoryListFailure = (state, {payload} : any) => ({
+  ...state,
+  categoryListLoading: false,
+  categoryListError: payload.error,
+});
+
+export const postLogin = (state = INITIAL_STATE, {payload} : any) => {
+  categories = JSON.parse(payload.categories);
+  return {
+    ...state,
+    categoryList: categories,
+    categoryListLoading: false,
+  }
+};
 
 const ACTION_HANDLERS = {
   [GET_PRODUCT_BY_ID]: getProductById,
@@ -61,6 +113,12 @@ const ACTION_HANDLERS = {
   [GET_PRODUCT_LIST]: getProductList,
   [GET_PRODUCT_LIST_SUCCESS]: getProductListSuccess,
   [GET_PRODUCT_LIST_FAILURE]: getProductListFailure,
+
+  [GET_CATEGORY_LIST]: getCategoryList,
+  [GET_CATEGORY_LIST_SUCCESS]: getCategoryListSuccess,
+  [GET_CATEGORY_LIST_FAILURE]: getCategoryListFailure,
+
+  [POST_LOGIN]: postLogin,
 };
 
 export default createReducer(INITIAL_STATE, ACTION_HANDLERS);

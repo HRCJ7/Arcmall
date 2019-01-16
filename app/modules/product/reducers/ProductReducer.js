@@ -11,7 +11,7 @@ import {
   GET_CATEGORY_LIST_SUCCESS,
   GET_CATEGORY_LIST_FAILURE,
 } from '../actions/Types';
-import {POST_LOGIN} from '../../login/actions/Types';
+import {POST_LOGIN, SIGN_OUT} from '../../login/actions/Types';
 
 const INITIAL_STATE = {
   productData: {},
@@ -97,13 +97,19 @@ const getCategoryListFailure = (state, {payload} : any) => ({
 });
 
 export const postLogin = (state = INITIAL_STATE, {payload} : any) => {
-  categories = JSON.parse(payload.categories);
+  let categories = JSON.parse(payload.categories);
   return {
     ...state,
-    categoryList: categories,
+    categoryList: categories? categories: state.categoryList,
     categoryListLoading: false,
   }
 };
+
+// export const signOut = (state = INITIAL_STATE, payload: any) => {
+//   return {
+//     ...INITIAL_STATE,
+//   };
+// };
 
 const ACTION_HANDLERS = {
   [GET_PRODUCT_BY_ID]: getProductById,

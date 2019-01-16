@@ -9,6 +9,7 @@ import MainTabNavigation from '../mainTab/MainTabNavigation';
 import NavigationBar from '../../modules/shared/components/NavigationBar/NavigationBar';
 import Strings from '../../modules/shared/localization/localization';
 import EvilIcons from 'react-native-vector-icons/dist/EvilIcons';
+import { splitCategoryName } from '../../services/ExternalServices';
 
 const config = {
   swipeEnabled: true,
@@ -50,11 +51,13 @@ class CategoryTabNavigation extends React.Component {
       console.log(categories)
       for (let categoryIndex in categories) {
         const category = categories[categoryIndex];
-        routes[category.name] = {
+        // const {name, count} = splitCategoryName(category.name);
+        const name = category.name;
+        routes[name] = {
           screen: ProductListScreen,
-          path: `/${category.name}`,
+          path: `/${name}`,
           navigationOptions: {
-            tabBarLabel: category.name,
+            tabBarLabel: name,
           },
           params: {
             loadingCategories: true,

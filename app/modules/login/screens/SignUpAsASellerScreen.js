@@ -47,7 +47,11 @@ class SignUpAsASellerScreen extends React.Component<any, any> {
     return null;
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  async shouldComponentUpdate(nextProps, nextState) {
+    let user = await AsyncStorage.getItem('user');
+    if(user) {
+      this.props.navigation.navigate(HOME_TAB);
+    }
     return true;
   }
 

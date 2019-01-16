@@ -27,7 +27,7 @@ export default class ProductListItem extends Component {
           source={{uri: item.thumb}}/>
         <View style={styles.itemContent}>
           <View style={styles.itemDescription}>
-            <Text style={styles.itemDescriptionText}>{item.description}</Text>
+            <Text style={styles.itemDescriptionText}>{item.name}</Text>
           </View>
           <View style={styles.itemDetails}>
             <View style={styles.container}>

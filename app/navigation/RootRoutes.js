@@ -9,6 +9,7 @@ import SignUpAsABuyerScreen from '../modules/login/screens/SignUpAsABuyerScreen'
 import SignUpAsASellerScreen from '../modules/login/screens/SignUpAsASellerScreen';
 import MainTabNavigation from './mainTab/MainTabNavigation';
 import CategoryTabNavigator from './categoryTab/CategoryTabNavigation';
+import CategoryListScreen from '../modules/product/screens/categoryList/CategoryListScreen';
 
 export const ROOT_NAV_LOGIN = 'Login';
 export const ROOT_NAV_SELECT_ROLE = 'SelectRole';
@@ -17,6 +18,7 @@ export const ROOT_NAV_ITEM_LIST = 'ItemList';
 export const ROOT_NAV_ITEM_DETAILS = 'ItemDetails';
 export const ROOT_NAV_SIGN_UP_AS_A_BUYER = 'SignUpAsABuyerScreen';
 export const ROOT_NAV_SIGN_UP_AS_A_SELLER = 'SignUpAsASellerScreen';
+export const ROOT_NAV_ALL_CATEGORIES = 'AllCategories';
 
 export const rootRoutes = {
   [ROOT_NAV_MAIN_TAB]: {
@@ -51,4 +53,8 @@ export const rootRoutes = {
     screen: SignUpAsASellerScreen,
     path: `/${ROOT_NAV_SIGN_UP_AS_A_SELLER}`,
   },
+  [ROOT_NAV_ALL_CATEGORIES]: {
+    screen: CategoryListScreen,
+    path: `/${ROOT_NAV_ALL_CATEGORIES}`,
+  }
 };

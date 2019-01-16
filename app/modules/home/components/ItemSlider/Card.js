@@ -9,17 +9,18 @@ import {
 
 const Card = ({ title }) => (
   <View
-     style={styles.card_container}
+     style={styles.container}
   >
-    <Image
+   <Image
       style={styles.image}
+      resizeMode='stretch'
       source={require("../../../../../assets/sliderimage1.png")}
     />
     <View
-      style={styles.text_view}
+      style={styles.textView}
     >
       <Text
-        style={styles.text_description}
+        style={styles.textDescription}
       >
         Ladies Wedding dress latest trend model
       </Text>

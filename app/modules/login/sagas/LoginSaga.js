@@ -18,10 +18,8 @@ export default () => {
     try {
       const response = yield call(LoginService.login, action.payload.email, action.payload.password);
       yield put(Actions.loginSuccess(response));
-      console.log(response)
     } catch (error) {
       yield put(Actions.loginFailure(error.response));
-      console.log(error)
     }
   }
 
@@ -33,13 +31,11 @@ export default () => {
     try {
       const response = yield call(LoginService.register, action.payload);
       let resposeErr = null;
-      console.log(response)
       for (let key in response) {
         let error = key.split('_');
-        console.log(error)
         if (error[0] === 'error') {
-          resposeErr = resposeErr? resposeErr: {};
-          if(response[key].length>0) {
+          if(response[key] instanceof String && response[key] !== '') {
+            resposeErr = resposeErr? resposeErr: {};
             resposeErr[error[1]] = response[key];
           }
         }
@@ -47,11 +43,13 @@ export default () => {
       if (resposeErr) {
         yield put(Actions.registrationFailure(resposeErr));
       } else {
-        yield put(Actions.registrationSuccess(response));
+        yield put(Actions.registrationSuccess({
+          ...response,
+          email: action.payload.email,
+          password: action.payload.password}));
       }
     } catch (error) {
       yield put(Actions.registrationFailure(error.response));
-      console.log(error)
     }
   }
 

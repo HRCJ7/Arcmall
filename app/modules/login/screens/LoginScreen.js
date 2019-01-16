@@ -40,7 +40,11 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
     return null;
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  async shouldComponentUpdate(nextProps, nextState) {
+    let user = await AsyncStorage.getItem('user');
+    if(user) {
+      this.props.navigation.goBack(null);
+    }
     return true;
   }
 
@@ -135,7 +139,8 @@ SignUpAsABuyerScreen.defaultProps = {};
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    ...state
+    ...state,
+    user: state.login.user,
   };
 };
 

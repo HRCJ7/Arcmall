@@ -1,4 +1,5 @@
 import { Dimensions,StyleSheet } from "react-native";
+import Theme, { font } from "../../../../theme/Base";
 
 const { width: viewportWidth } = Dimensions.get("window");
 
@@ -8,41 +9,41 @@ function wp(percentage) {
 }
 
 export const styles = StyleSheet.create({
-  item_slider_container: {
-   flex: 1,
-   backgroundColor: "#ffffff"
-  },
-  card_container: {
+  container: {
     flex:1,
-    width: sliderItemWidth,
-    paddingHorizontal: sliderItemHorizontalMargin,
+    width: 160,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  image: {
+    flex: 1,
+    height: 150,
+    width: '100%',
+  },
+  textView: {
+    flex: 1,
+    width: '100%',
+    padding: 10,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#f8f8ff",
   },
-  image: {
-    // width: "100%",
-    flex: 1,
-    // height: "100%",
-    resizeMode: "stretch"
-  },
-  text_view: {
-    width: slideWidth,
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#f8f8ff"
-  },
-  text_description: {
+  textDescription: {
+    ...font,
+    fontSize: Theme.fontSizes.small,
+    color: Theme.colors.smallText,
     color: "black",
     textAlign: "center",
-    marginBottom: 5,
-    marginTop: 5
   },
   text_amount: {
     color: "#2687ad",
     textAlign: "center"
   },
+  list: {
+    flex: 1, 
+    marginHorizontal: 10,
+    // height: 210,
+  }
 });
 
 export const slideWidth = wp(39.4);

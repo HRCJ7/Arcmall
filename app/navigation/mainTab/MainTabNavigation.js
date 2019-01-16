@@ -2,19 +2,31 @@
 import React from 'react';
 import {createBottomTabNavigator, createAppContainer} from 'react-navigation';
 import {connect} from 'react-redux';
-import {mainTabRoutes} from './MainTabRoutes';
+import {mainTabRoutes, HOME_TAB, PROFILE_TAB} from './MainTabRoutes';
+import Ionicon from 'react-native-vector-icons/Ionicons';
+import Theme, { font } from '../../theme/Base';
 
 const config = {
   swipeEnabled: true,
   tabBarOptions: {
-    activeTintColor: '#e91e63',
+    activeTintColor: 'black',
     labelStyle: {
-      fontSize: 12,
+      ...font,
+      fontSize: Theme.fontSizes.xSmall,
     },
-    style: {
-      // backgroundColor: 'transparent',
+  },
+  defaultNavigationOptions: ({ navigation }) => ({
+    tabBarIcon: ({ focused, horizontal, tintColor }) => {
+      const { routeName } = navigation.state;
+      let iconName  = '';
+      if (routeName === HOME_TAB) {
+        iconName = 'ios-home'; 
+      } else if (routeName === PROFILE_TAB) {
+        iconName = 'ios-contact';
+      }
+      return <Ionicon name={iconName} size={23} color={tintColor} />;
     },
-  }
+  }),
 };
 
 const MainTabNavigator = createBottomTabNavigator(mainTabRoutes, config);

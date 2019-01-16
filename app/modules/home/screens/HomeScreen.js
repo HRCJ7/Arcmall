@@ -15,12 +15,12 @@ import {connect} from 'react-redux';
 import styles from './HomeScreen.styles';
 import ItemSlider from "../components/ItemSlider/ItemSlider";
 import Card from "../components/ItemSlider/Card";
-import TitleBar from "../components/TitleBar/TitleBar";
+import SeeMoreTitleBar from "../components/seeMoreTitleBar/SeeMoreTitleBar";
 import GridView from "../components/GridView/GridView";
 import ProductActions from '../../product/actions/ProductActions';
 import LoadingIndicator from '../../shared/components/loadingIndicator/LoadingIndicator';
 import LoginActions from '../../login/actions/LoginActions';
-import { navigateToItemListScreen } from '../../../navigation/RootNavActions';
+import {navigateToItemListScreen, navigateToAllCategories} from '../../../navigation/RootNavActions';
 
 const arr = ["1", "1", "1", "1", "1", "1", "1", "1", "1"];
 class HomeScreen extends React.Component<any, any> {
@@ -42,8 +42,8 @@ class HomeScreen extends React.Component<any, any> {
     }
 
     let user = await AsyncStorage.getItem('user');
-    console.log(user)
     this.props.dispatch(LoginActions.postLogin({categories, user}));
+    
   }
 
   componentDidMount() {
@@ -72,6 +72,10 @@ class HomeScreen extends React.Component<any, any> {
     this.props.navigation.dispatch(navigateToItemListScreen({categories}))
   }
 
+  hanleOnSeeMoreCategoriesPressed = () => {
+    this.props.navigation.dispatch(navigateToAllCategories());
+  }
+
   render() {
     const {isLoading} = this.props;
     let content = null;
@@ -79,29 +83,34 @@ class HomeScreen extends React.Component<any, any> {
       content = (
         <ScrollView
           style={styles.container}>
-          <View style={{flex:1}}>
-            <SearchBar
-              containerStyle={{ backgroundColor: "white" }}
-              inputStyle={{ backgroundColor: "white" }}
-              lightTheme
-              placeholder="Search"
-            />
+          <View style={styles.container}>
+            <View style={styles.searchBarView}>
+              <SearchBar
+                containerStyle={styles.searchBar}
+                inputStyle={{ backgroundColor: "white" }}
+                lightTheme
+                placeholder="Search"
+              />
+            </View>
             <Image
-              style={styles.app_image}
-              resizeMode='contain'
+              style={styles.headerImage}
+              resizeMode='stretch'
               source={require("../../../../assets/arcmall.png")}
             />
-            <TitleBar name="Featured Shop" />
-            <View style={styles.slider_view}>
+            <View style={styles.sliderView}>
               <ItemSlider />
-            </View>   
-            <TitleBar name="Featured Shop" />
-            <Image
-              style={styles.featuredShopsImage}
-              source={require("../../../../assets/salepromo.png")}
-            /> 
-            <TitleBar name="Top Categories" />
-            <View style={{flex:1}}>
+            </View>
+            <View style={styles.seeMoreView}>
+              <SeeMoreTitleBar name="Featured Shops" />
+              <Image
+                style={styles.featuredShopsImage}
+                resizeMode='contain'
+                source={require("../../../../assets/salepromo.png")}
+              /> 
+              <SeeMoreTitleBar 
+                name="Top Categories"
+                onPress={this.hanleOnSeeMoreCategoriesPressed}
+              />
               <GridView
                 categories={this.props.categoryList}
                 onPress={this.handleOnGridPress}

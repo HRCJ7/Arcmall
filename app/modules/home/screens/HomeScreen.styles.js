@@ -10,20 +10,21 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  app_image: {
+  headerImage: {
     flex: 1,
-    width: width,
     height: 150,
+    width: '100%',
     resizeMode: 'cover',
   },
   featuredShopsImage: {
     flex: 1,
-    height: 150,
-    resizeMode: 'cover',
+    height: 100,
+    width: '100%',
     paddingHorizontal: 50,
   },  
-  slider_view: {
+  sliderView: {
     flex: 1,
+    marginTop: 20,
   },
   row: {
     flex: 1,
@@ -32,5 +33,19 @@ const styles = StyleSheet.create({
   flatList: {
     flex: 1,
   },
+  searchBar: {
+    backgroundColor: "white", 
+    borderWidth: 0.5, 
+    borderColor: 'gray', 
+    borderRadius: 10,
+  },
+  searchBarView: {
+    flex: 1,
+    padding: 10,
+  },
+  seeMoreView: {
+    paddingHorizontal: 15,
+    paddingTop: 10,
+  }
 });
 export default styles;

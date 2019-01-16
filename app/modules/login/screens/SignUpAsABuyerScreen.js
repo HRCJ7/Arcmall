@@ -7,7 +7,8 @@ import {
   SafeAreaView,
   TextInput,
   Button,
-  ImageBackground
+  ImageBackground,
+  AsyncStorage
 } from "react-native";
 
 import PropTypes from "prop-types";
@@ -22,6 +23,7 @@ import ArcmallButton from "../../shared/components/arcmallButton/ArcmallButton";
 import Theme from "../../../theme/Base";
 import LoginActions from "../actions/LoginActions";
 import Toast from 'react-native-simple-toast';
+import { HOME_TAB } from "../../../navigation/mainTab/MainTabRoutes";
 
 class SignUpAsABuyerScreen extends React.Component<any, any> {
   static defaultProps: any;
@@ -48,7 +50,19 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
     return null;
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+   async shouldComponentUpdate(nextProps, nextState) {
+    // const {registrationdata} = nextProps;
+    // if (registrationdata) {
+    //   console.log(registrationData)
+    //   this.props.dispatch(LoginActions.login({
+    //     email: registrationdata.email,
+    //     password: registrationdata.password,
+    //   }))
+    // }
+    let user = await AsyncStorage.getItem('user');
+    if(user) {
+      this.props.navigation.navigate(HOME_TAB);
+    }
     return true;
   }
 

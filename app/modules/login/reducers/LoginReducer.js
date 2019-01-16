@@ -10,7 +10,8 @@ import {
   POST_LOGIN,
   REGISTRATION,
   REGISTRATION_SUCCESS,
-  REGISTRATION_FAILURE
+  REGISTRATION_FAILURE,
+  SIGN_OUT
 } from '../actions/Types';
 import { NativeIconAPI } from 'react-native-vector-icons/dist/lib/create-icon-set';
 
@@ -19,7 +20,7 @@ const INITIAL_STATE = {
   error: null,
   isLoading: false,
 
-  registrationData: {},
+  registrationData: null,
   registrationError: null,
   registrationLoading: true,
 };
@@ -32,6 +33,7 @@ export const login = (state = INITIAL_STATE, {payload} : any) => ({
 
 export const loginSuccess = async (state = INITIAL_STATE, {payload} : any) => {
   let data = {...payload.data}
+  console.log(data)
   delete data['password']; 
   await AsyncStorage.setItem('user', JSON.stringify(data));
   return {
@@ -53,7 +55,8 @@ export const registration = (state = INITIAL_STATE, {payload} : any) => ({
   registrationError: null,
 });
 
-export const registrationSuccess = async (state = INITIAL_STATE, {payload} : any) => {
+export const registrationSuccess = (state = INITIAL_STATE, {payload} : any) => {
+  console.log(payload)
   return {
     ...state,
     registrationData: payload.data,
@@ -68,6 +71,7 @@ export const registrationFailure = (state, {payload} : any) => ({
 });
 
 export const postLogin = (state = INITIAL_STATE, {payload} : any) => {
+  let user = {};
   if (payload.user) {
     user = JSON.parse(payload.user);
   }
@@ -75,7 +79,16 @@ export const postLogin = (state = INITIAL_STATE, {payload} : any) => {
   return {
     ...state,
     user: user,
+    registrationData: {}
   }
+};
+
+export const signOut = async (state = INITIAL_STATE, {payload} : any) => {
+  await AsyncStorage.multiRemove(['user']);
+  return {
+    registrationData: {},
+    user: {},
+  };
 };
 
 const ACTION_HANDLERS = {
@@ -83,6 +96,7 @@ const ACTION_HANDLERS = {
   [LOGIN_SUCCESS]: loginSuccess,
   [LOGIN_FAILURE]: loginFailure,
   [POST_LOGIN]: postLogin,
+  [SIGN_OUT]: signOut,
 
   [REGISTRATION]: registration,
   [REGISTRATION_SUCCESS]: registrationSuccess,

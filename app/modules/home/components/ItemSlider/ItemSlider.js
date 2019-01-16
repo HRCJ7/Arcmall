@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View} from "react-native";
+import {View, FlatList} from "react-native";
 
 import Carousel from "react-native-snap-carousel";
 
@@ -24,26 +24,24 @@ export default class ItemSlider extends Component {
     ]
   };
 
-  renderListComponent = ({ item }) => <Card title={item.title} />;
+  renderListComponent = ({ item }) => {
+
+    return (
+      <View style={styles.list}>
+        <Card title={item.title} />
+      </View>
+    )
+
+  };
 
   render() {
     return (
-      <View style={styles.item_slider_container}>
-        <Carousel
-          containerCustomStyle={{ backgroundColor: "white" }}
-          contentContainerCustomStyle={{
-            backgroundColor: "#ffffff",
-            height: 200
-          }}
-          data={this.state.data}
-          renderItem={this.renderListComponent}
-          sliderWidth={sliderWidth}
-          itemWidth={sliderItemWidth}
-          activeSlideAlignment={"start"}
-          inactiveSlideScale={1}
-          inactiveSlideOpacity={1}
-        />
-      </View>
+      <FlatList
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        data={this.state.data}
+        renderItem={this.renderListComponent}
+      />
     );
   }
 }

@@ -3,66 +3,65 @@ import { TouchableOpacity, View,Text, Image } from "react-native";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import {styles} from "./styles";
 import {CachedImage} from 'react-native-cached-image';
-import PhotoGrid from 'react-native-thumbnail-grid';
+import { splitCategoryName } from "../../../../services/ExternalServices";
 export default class GridView extends Component {
   constructor(props) {
     super(props);
+    let categories = [];
+    if (props.categories) {
+      if (props.all) {
+        categories = props.categories;
+      } else {
+        categories = props.categories.slice(0, 4);
+      }
+    }
     this.state = {
-      categories: props.categories? props.categories.slice(0, 4): [],
+      categories: categories,
+      // categories: props.categories,
     };
   }
 
-  // getGridItem = () => {
-  //   const {categories} = this.state;
-  //   let views = [];
-  //   for (let i=0; i<categories.length; i++) {
-  //     const category = categories[i];
-  //     switch (i) {
-  //       case 2:
-  //         views.add(
-  //           <Row size={2} style={{ backgroundColor:"white", marginBottom:5,}}>
-  //             <CachedImage
-  //               style={styles.image}
-  //               source={{uri: category.image}} 
-  //             />
-  //           </Row>
-  //         )
-  //       break;
-  //       default: 
-  //         views.add(
-  //           <Row size={1} style={{ backgroundColor:"white", marginBottom:5,}}>
-  //             <CachedImage
-  //               style={styles.image}
-  //               source={{uri: category.image}} 
-  //             />
-  //           </Row>
-  //         )
-  //     }
-  //   }
-  //   return views;
-  // }
-
   getImages = () => {
     const {categories} = this.state;
+    const {onPress} = this.props;
     let images = [];
     for (let category in categories) {
-      images.push(categories[category].image);
+
+      let {name, count} = splitCategoryName(categories[category].name);
+      
+      images.push(
+        <TouchableOpacity 
+        style={styles.container}
+        onPress={() => {
+          key=`category${category}`
+          this.handleOnImagePressed(categories[category].categories)
+        }}>
+          <CachedImage 
+            style={styles.image}
+            resizeMode= 'cover'
+            source={{uri: categories[category].image}}
+          />
+          <View style={styles.imageText}>
+            <Text style={styles.text}>{name}</Text>
+            <Text style={styles.countText}>{`${count} items`}</Text>
+          </View>
+        </TouchableOpacity>
+      );
     }
     return images;
   }
 
-  handleOnImagePressed = () => {
-    this.props.onPress(categories[0].categories);
+  handleOnImagePressed = (categories) => {
+    this.props.onPress(categories);
   }
 
   render() {
     const {categories} = this.state;
     const images = this.getImages()
     return (
-      <PhotoGrid 
-        source={images}
-        onPressImage={this.handleOnImagePressed}
-      />
+      <View style={{flex: 1}}>
+        {images}
+      </View>
 
 
 

@@ -1,5 +1,5 @@
 //@flow
-import {LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE, POST_LOGIN, REGISTRATION, REGISTRATION_SUCCESS, REGISTRATION_FAILURE} from "./Types";
+import {LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE, POST_LOGIN, REGISTRATION, REGISTRATION_SUCCESS, REGISTRATION_FAILURE, SIGN_OUT} from "./Types";
 
 const login = (email: string, password: string) => ({
     type: LOGIN,
@@ -28,6 +28,11 @@ const postLogin = (data) => ({
   payload: data,
 });
 
+const signOut = (data) => ({
+  type: SIGN_OUT,
+  payload: data,
+});
+
 const registration = (data) => ({
   type: REGISTRATION,
   payload: data,
@@ -52,6 +57,7 @@ export default {
   loginSuccess,
   loginFailure,
   postLogin,
+  signOut,
 
   registration,
   registrationSuccess,

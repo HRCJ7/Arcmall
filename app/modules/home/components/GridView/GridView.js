@@ -32,8 +32,8 @@ export default class GridView extends Component {
       images.push(
         <TouchableOpacity 
         style={styles.container}
+        key={`category${category}`}
         onPress={() => {
-          key=`category${category}`
           this.handleOnImagePressed(categories[category].categories)
         }}>
           <CachedImage 

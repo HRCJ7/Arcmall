@@ -25,19 +25,20 @@ export default class ItemSlider extends Component {
   };
 
   renderListComponent = ({ item }) => {
-
     return (
-      <View style={styles.list}>
+      <View 
+        style={styles.list}
+      >
         <Card title={item.title} />
       </View>
     )
-
   };
 
   render() {
     return (
       <FlatList
         horizontal
+        keyExtractor={(item)=> item.title}
         showsHorizontalScrollIndicator={false}
         data={this.state.data}
         renderItem={this.renderListComponent}

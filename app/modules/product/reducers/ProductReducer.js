@@ -22,7 +22,7 @@ const INITIAL_STATE = {
   productListLoading: true,
   productListError: null,
 
-  categoryList: {},
+  categoryList: null,
   categoryListLoading: {},
   categoryListError: null,
 };
@@ -74,19 +74,13 @@ const getCategoryList = (state = INITIAL_STATE, {payload} : any) => ({
   categoryListLoading: true,
 });
 
-const getCategoryListSuccess = async (state = INITIAL_STATE, {payload} : any) => {
-  console.log(JSON.stringify(payload.data.categories[0].categories))
-
-  try {
-    await AsyncStorage.setItem('categories', JSON.stringify(payload.data.categories[0].categories));
-  } catch(err) {
-    console.log(err)
-  }
+const getCategoryListSuccess = (state = INITIAL_STATE, {payload} : any) => {
+  let categories = payload.data.categories[0].categories;
   
   return {
     ...state,
     categoryListLoading: false,
-    categoryList: payload.data.categories[0].categories,
+    categoryList: categories,
   }
 };
 

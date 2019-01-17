@@ -30,20 +30,9 @@ class HomeScreen extends React.Component<any, any> {
     super(props);
 
     this.state = {
-      error: null,
+      categories: null,
     };
-    this.getCategoryList();
-  }
-
-  getCategoryList = async () => {
-    let categories = await AsyncStorage.getItem('categories');
-    if (!categories) {
-      this.props.dispatch(ProductActions.getCategoryList());
-    }
-
-    let user = await AsyncStorage.getItem('user');
-    this.props.dispatch(LoginActions.postLogin({categories, user}));
-    
+    this.getCategoryList(props);
   }
 
   componentDidMount() {
@@ -56,10 +45,42 @@ class HomeScreen extends React.Component<any, any> {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    return true;
+    let shouldUpdate = true;
+    const {categoryList: newCategories} = nextProps;
+    const {categoryList: oldCategories} = this.props;
+    
+    if (!oldCategories && newCategories) {
+      this.saveCategoryList(nextProps.categoryList)
+      shouldUpdate = false;
+    }
+    
+    return shouldUpdate;
   }
 
   componentDidUpdate() {
+    
+  }
+
+  saveCategoryList = async (categories) => {
+    this.setState({
+      categories: categories,
+    })
+    await AsyncStorage.setItem('categories', JSON.stringify(categories));
+  }
+
+  getCategoryList = async (props) => {
+    let categories = await AsyncStorage.getItem('categories');
+    console.log(categories)
+    if (!categories) {
+      this.props.dispatch(ProductActions.getCategoryList());
+    } else {
+      this.setState({
+        categories: JSON.parse(categories),
+      })
+    }
+
+    let user = await AsyncStorage.getItem('user');
+    this.props.dispatch(LoginActions.postLogin({categories, user}));
     
   }
 
@@ -78,8 +99,10 @@ class HomeScreen extends React.Component<any, any> {
 
   render() {
     const {isLoading} = this.props;
+    const {categories} = this.state;
+    console.log(categories)
     let content = null;
-    if(!isLoading) {
+    if(!isLoading && categories) {
       content = (
         <ScrollView
           style={styles.container}>
@@ -112,7 +135,7 @@ class HomeScreen extends React.Component<any, any> {
                 onPress={this.hanleOnSeeMoreCategoriesPressed}
               />
               <GridView
-                categories={this.props.categoryList}
+                categories={categories}
                 onPress={this.handleOnGridPress}
               />
             </View>

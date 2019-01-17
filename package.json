@@ -4,7 +4,27 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "android": "react-native run-android",
+    "android:dev": "npm run android",
+    "android:qa": "npm run android:bundle && react-native run-android --variant=qa",
+    "android:stag": "npm run android:bundle && react-native run-android --variant=staging",
+    "android:prod": "npm run android:bundle && react-native run-android --variant=release",
+    "android:build:qa": "npm run android:bundle && cd android && ./gradlew app:assembleQa && cd ..",
+    "android:build:stag": "npm run android:bundle && cd android && ./gradlew app:assembleStaging && cd ..",
+    "android:build:prod": "npm run android:bundle && cd android && ./gradlew app:assembleRelease && cd ..",
+    "android:deploy:qa": "npm run android:bundle && cd android && bundle exec fastlane android qa && cd ..",
+    "android:deploy:stag": "npm run android:bundle && cd android && bundle exec fastlane android stag && cd ..",
+    "android:deploy:prod": "npm run android:bundle && cd android && bundle exec fastlane android prod && cd ..",
+    "android:bundle": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
+    "ios": "cd ./ios && pod install && cd .. && react-native run-ios --scheme 'SpotMeMobile - Dev'",
+    "ios:qa": "react-native run-ios --scheme 'SpotMeMobile - QA'",
+    "ios:stag": "react-native run-ios --scheme 'SpotMeMobile - Stag'",
+    "ios:prod": "react-native run-ios --scheme 'SpotMeMobile - Prod'",
+    "ios:deploy:qa": "cd ios && bundle exec fastlane ios qa && cd ..",
+    "ios:deploy:stag": "cd ios && bundle exec fastlane ios stag && cd ..",
+    "ios:deploy:prod": "cd ios && bundle exec fastlane ios prod && cd ..",
+    "clean-vector": "rm -f ./node_modules/react-native/local-cli/core/__fixtures__/files/package.json"
   },
   "dependencies": {
     "react": "16.6.3",

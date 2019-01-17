@@ -8,7 +8,7 @@ export default class GridView extends Component {
   constructor(props) {
     super(props);
     let categories = [];
-    if (props.categories) {
+    if (props.categories && props.categories.length > 0) {
       if (props.all) {
         categories = props.categories;
       } else {
@@ -17,7 +17,6 @@ export default class GridView extends Component {
     }
     this.state = {
       categories: categories,
-      // categories: props.categories,
     };
   }
 

@@ -9,6 +9,7 @@ export default enStrings = {
     PASSWORD: 'Password',
     FORGOT_PASSWORD: 'Forgot Password?',
     PRODUCT_DETAILS: 'Product Details',
+    ALL_CATEGORIES: 'All Categories',
     DESCRIPTION: 'Description',
     STORE_DETAILS: 'Store Details',
     CONTACT_SELLER: 'Contact Seller',

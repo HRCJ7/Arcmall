@@ -15,7 +15,7 @@ import Strings from '../../../shared/localization/localization';
 import LoadingIndicator from '../../../shared/components/loadingIndicator/LoadingIndicator';
 import {navigateToItemListScreen } from '../../../../navigation/RootNavActions';
 import ProductActions from '../../actions/ProductActions';
-import GridView from '../../../home/components/GridView/GridView';
+import GridView from '../../components/GridView/GridView';
 import EvilIcons from 'react-native-vector-icons/dist/EvilIcons';
 
 class CategoryListScreen extends React.Component<any, any> {
@@ -67,7 +67,7 @@ class CategoryListScreen extends React.Component<any, any> {
   renderNavBar = () => {
     return (
       <NavigationBar
-        title={Strings.PRODUCT_DETAILS}
+        title={Strings.ALL_CATEGORIES}
         leftAction={this.renderLeftAction()}
       >
       </NavigationBar>

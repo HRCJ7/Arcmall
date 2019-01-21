@@ -19,6 +19,8 @@ import Swiper from 'react-native-swiper';
 import {CachedImage} from 'react-native-cached-image';
 import ProductListItem from '../../components/productListItem/ProductListItem';
 import ProductActions from '../../actions/ProductActions';
+import CategoryTabNavigation from '../../../../navigation/categoryTab/CategoryTabNavigation';
+import { navigateToReviews } from '../../../../navigation/RootNavActions';
 
 class ProductDetailScreen extends React.Component<any, any> {
   static defaultProps: any
@@ -53,6 +55,11 @@ class ProductDetailScreen extends React.Component<any, any> {
 
   handleOnBackPress = () => {
     this.props.navigation.goBack(null);
+  }
+
+  handleOnReviewsPress = () => {
+    let {itemId} = this.props.navigation.state.params;
+    this.props.navigation.dispatch(navigateToReviews({product_id: itemId}))
   }
 
   renderLeftAction = () => {
@@ -113,7 +120,7 @@ class ProductDetailScreen extends React.Component<any, any> {
       <TouchableOpacity
       style={styles.blueButton}
       onPress={action}>
-       <Text style={styles.blueButtonText}>{Strings.CONTACT_SELLER}</Text>
+       <Text style={styles.blueButtonText}>{title}</Text>
       </TouchableOpacity>
     );
   }
@@ -130,6 +137,17 @@ class ProductDetailScreen extends React.Component<any, any> {
         <View style={styles.description}> 
           <Text style={styles.headingText}>{Strings.DESCRIPTION}</Text>
           <Text style={styles.smallText}>{data.description}</Text>
+        </View>
+      </WhiteCard>
+    )
+  }
+
+  renderReviewsCard = () => {
+    return (
+      <WhiteCard>
+        <Text style={styles.headingText}>{Strings.REVIEWS}</Text>
+        <View style={styles.rightButton}> 
+          {this.renderButton(Strings.SHOW_ALL, this.handleOnReviewsPress)}
         </View>
       </WhiteCard>
     )
@@ -154,7 +172,7 @@ class ProductDetailScreen extends React.Component<any, any> {
           </View>
           <View style={styles.contactSellerView}> 
             <Text style={styles.smallText}>{`281 items         28 Reviews`}</Text>
-            {this.renderButton()}
+            {this.renderButton(Strings.CONTACT_SELLER)}
           </View>
         </WhiteCard>
       )
@@ -192,8 +210,10 @@ class ProductDetailScreen extends React.Component<any, any> {
     } else {
       const imageSwiper = this.renderImageSwiper();
       const descriptionCard = this.renderDescriptionCard();
+      const reviewsCard = this.renderReviewsCard()
       const storeDetails = this.renderStoreDetailsCard();
       const refundPolicyCard = this.renderReturnPolicyCard();
+      
 
        content = (
         <View style={styles.container}>
@@ -201,6 +221,7 @@ class ProductDetailScreen extends React.Component<any, any> {
           <ScrollView style={styles.container}>
             {imageSwiper}
             {descriptionCard}
+            {reviewsCard}
             {storeDetails}
             {refundPolicyCard}
           </ScrollView>

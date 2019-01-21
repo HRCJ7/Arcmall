@@ -7,6 +7,7 @@ import LoginScreen from "../../modules/login/screens/LoginScreen";
 import SignUpAsABuyerScreen from "../../modules/login/screens/SignUpAsABuyerScreen";
 import SelectRoleScreen from "../../modules/login/screens/SelectRoleScreen";
 import SignUpAsASellerScreen from "../../modules/login/screens/SignUpAsASellerScreen";
+import ReviewsScreen from "../../modules/product/screens/reviews/ReviewsScreen";
 
 export const HOME_TAB = 'Home';
 export const PROFILE_TAB = 'Profile';

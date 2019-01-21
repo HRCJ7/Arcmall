@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   textInput: {
     ...font,
     color: Theme.colors.smallText,
-    height: 30,
+    height: 40,
     fontSize: Theme.fontSizes.small,
     fontWeight: Theme.fontWeight.light,
     borderBottomWidth: 0.5,

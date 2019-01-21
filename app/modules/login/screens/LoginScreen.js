@@ -28,8 +28,8 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
   constructor(props) {
     super(props);
     this.state = {
-      email: 'harindamail@gmail.com',
-      password: 'harindamail',
+      email: null,
+      password: null,
     };
   }
 
@@ -103,14 +103,12 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
             <TextInput
               onChangeText={(email) => this.setState({email})}
               style={styles.textInput}
-              value='harindamail@gmail.com'
             />
             <Text style={[styles.label, {paddingTop: 40}]}>{Strings.PASSWORD}</Text>
             <TextInput
               onChangeText={(password) => this.setState({password})}
               secureTextEntry={true}
               style={styles.textInput}
-              value='harindamail'
             />
             <TouchableOpacity>
               <Text style={styles.forgotPasswordText}>{Strings.FORGOT_PASSWORD}</Text>

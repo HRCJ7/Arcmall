@@ -7,7 +7,8 @@ import {
   ROOT_NAV_SIGN_UP_AS_A_BUYER,
   ROOT_NAV_SIGN_UP_AS_A_SELLER,
   ROOT_NAV_LOGIN,
-  ROOT_NAV_ALL_CATEGORIES
+  ROOT_NAV_ALL_CATEGORIES,
+  ROOT_NAV_REVIEWS
 } from './RootRoutes';
 import {AppContainer} from './RootNavigation';
 
@@ -57,4 +58,10 @@ export const navigateToAllCategories = (navParams: any) => {
   return AppContainer
   .router
   .getActionForPathAndParams(`/${ROOT_NAV_ALL_CATEGORIES}`, navParams);
+};
+
+export const navigateToReviews = (navParams: any) => {
+  return AppContainer
+  .router
+  .getActionForPathAndParams(`/${ROOT_NAV_REVIEWS}`, navParams);
 };

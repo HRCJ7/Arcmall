@@ -14,6 +14,7 @@ import {
   GET_PRODUCT_BY_ID,
   GET_PRODUCT_LIST,
   GET_CATEGORY_LIST,
+  GET_REVIEWS,
 } from '../actions/Types';
 import ProductService from '../services/ProductService';
 import ProductActions from '../actions/ProductActions';
@@ -64,9 +65,25 @@ export default () => {
     yield takeLatest(GET_CATEGORY_LIST, getCategoryList);
   }
 
+  function* getReviews({payload}) {
+    try {
+      const response = yield call(ProductService.getReviews, payload);
+      console.log(response)
+      yield put(ProductActions.getReviewsSuccess(response));
+    } catch (error) {
+      console.log(error)
+      yield put(ProductActions.getReviewsFailure(error.response));
+    }
+  }
+
+  function* watchGetReviews(): Saga<void> {
+    yield takeLatest(GET_REVIEWS, getReviews);
+  }
+
   return {
     watchGetProductById,
     watchGetProductList,
     watchGetCategoryList,
+    watchGetReviews,
   };
 };

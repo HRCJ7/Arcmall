@@ -15,5 +15,6 @@ export default function* root(): Saga<void> {
     fork(createdProductSaga.watchGetProductById),
     fork(createdProductSaga.watchGetProductList),
     fork(createdProductSaga.watchGetCategoryList),
+    fork(createdProductSaga.watchGetReviews),
   ]);
 }

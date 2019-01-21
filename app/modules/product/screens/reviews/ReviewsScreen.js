@@ -32,9 +32,6 @@ class ReviewsScreen extends React.Component<any, any> {
   }
 
   componentDidMount() {
-    // this.props.dispatch(ProductActions.getReviews({
-    //   product_id: 203,
-    // }));
   }
 
   static getDerivedStateFromProps(props, state) {

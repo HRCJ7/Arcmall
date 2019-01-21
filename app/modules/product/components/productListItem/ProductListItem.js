@@ -34,7 +34,7 @@ export default class ProductListItem extends Component {
             <View style={styles.container}>
               <Text style={styles.blueText}>{'item.categotyName'}</Text>
             </View>
-            <View style={styles.container}>
+            <View style={styles.starContainer}>
               <RatingItem 
                 rating={item.rating}
               />

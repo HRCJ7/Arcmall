@@ -68,6 +68,10 @@ const styles = StyleSheet.create({
     fontSize: Theme.fontSizes.xSmall,
     color: Theme.colors.secondary,
     fontWeight: Theme.fontWeight.light,
+  },
+  starContainer: {
+    flex: 1,
+    alignItems: 'flex-end'
   }
 });
 

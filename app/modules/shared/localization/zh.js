@@ -19,7 +19,6 @@ export default zhStrings = {
     BUYER_TEXT: 'To ensure that every buyer is protected when purchasing from arcmall, we have the following refund options. \n\n' + 
     '- Full refund if you don\'t reviever your item.\n- Full or partial refund if the item is not as described or is damaged.',
     SOMETHING_WENT_WRONG: 'Something went wrong. Please try again later.',
-    REVIEWS: 'Reviews',
     SHOW_ALL: 'Show All',
     FORGET_PASSWORD:'忘记密码 ?',
     WISH_LIST:"愿望清单",
@@ -44,6 +43,7 @@ export default zhStrings = {
     CHINESE_SIMPLIFIED: '简体中文',
     COMPANY_NAME:'公司名',
     SEARCH:"搜索项目",
+    SETTINGS: '设置',
 
     SEE_MORE: 'See more',
     SELECT_YOUR_ROLE: 'Select your role',

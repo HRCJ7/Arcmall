@@ -136,7 +136,7 @@ class SettingsScreen extends React.Component<any, any> {
   renderNavBar = () => {
     return (
       <NavigationBar
-        title={Strings.REVIEWS}
+        title={Strings.SETTINGS}
         leftAction={this.renderLeftAction()}
       >
       </NavigationBar>

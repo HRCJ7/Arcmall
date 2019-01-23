@@ -24,7 +24,6 @@ export default enStrings = {
     WISH_LIST:"Wish List",
     PAYMENT_METHOD:"Payment method",
     DESCRIPTION:"Description",
-    REVIEWS:"Reviews",
     SHIPPING_INFORMATION:"Shipping information",
     SHIPPING_ADDRESS:"Shipping address",
     BILLING_ADDRESS:"Billing address",
@@ -43,6 +42,7 @@ export default enStrings = {
     CHINESE_SIMPLIFIED: '简体中文',
     COMPANY_NAME:'Company name',
     SEARCH: 'Search',
+    SETTINGS: 'Settings',
 
     SEE_MORE: 'See more',
     SELECT_YOUR_ROLE: 'Select your role',

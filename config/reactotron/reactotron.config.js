@@ -1,5 +1,5 @@
 // @flow
-import Reactotron, {trackGlobalErrors} from 'reactotron-react-native';
+import Reactotron, {trackGlobalErrors, asyncStorage} from 'reactotron-react-native';
 import {reactotronRedux} from 'reactotron-redux';
 
 Reactotron
@@ -7,6 +7,7 @@ Reactotron
   .useReactNative() // add all built-in react native plugins
   .use(trackGlobalErrors()) // Track all global errors
   .use(reactotronRedux()) // Redux
+  .use(asyncStorage()) //Async Storage
   .connect(); // let's connect!
 
 /**

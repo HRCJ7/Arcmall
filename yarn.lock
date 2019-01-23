@@ -2450,7 +2450,7 @@ inquirer@^6.1.0:
     strip-ansi "^5.0.0"
     through "^2.3.6"
 
-invariant@^2.2.2, invariant@^2.2.4:
+invariant@^2.1.0, invariant@^2.2.2, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   dependencies:
@@ -4362,6 +4362,12 @@ react-native-config@^0.11.7:
   version "0.11.7"
   resolved "https://registry.yarnpkg.com/react-native-config/-/react-native-config-0.11.7.tgz#a2b323f2ecd76a4df88cbb6bc86eaa2ef9febee7"
 
+"react-native-cookies@https://github.com/joeferraro/react-native-cookies#48240c34cfd9dbfa0a590f0b740c74b2211cec93":
+  version "3.3.0"
+  resolved "https://github.com/joeferraro/react-native-cookies#48240c34cfd9dbfa0a590f0b740c74b2211cec93"
+  dependencies:
+    invariant "^2.1.0"
+
 react-native-easy-grid@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/react-native-easy-grid/-/react-native-easy-grid-0.2.0.tgz#4718031aa1baaa2613b829fc807da288eb0d2797"
@@ -5006,6 +5012,10 @@ serve-static@^1.13.1:
 set-blocking@^2.0.0, set-blocking@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/set-blocking/-/set-blocking-2.0.0.tgz#045f9782d011ae9a6803ddd382b24392b3d890f7"
+
+"set-cookie-parser@https://github.com/nfriedly/set-cookie-parser/":
+  version "2.3.0"
+  resolved "https://github.com/nfriedly/set-cookie-parser/#3b41eff10439cc5c0d09706b6c3f41bdae04e029"
 
 set-value@^0.4.3:
   version "0.4.3"

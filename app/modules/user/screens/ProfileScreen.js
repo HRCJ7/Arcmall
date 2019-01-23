@@ -10,9 +10,11 @@ import {
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import styles from './ProfileScreen.styles';
-import {navigateToMainTabScreen, navigateToLoginScreen, navigateToSignInBuyerScreen} from '../../../navigation/RootNavActions';
+import {navigateToMainTabScreen, navigateToLoginScreen, navigateToSignInBuyerScreen, navigateToSettings} from '../../../navigation/RootNavActions';
 import { PROFILE_TAB, HOME_TAB } from '../../../navigation/mainTab/MainTabRoutes';
 import LoginActions from '../../login/actions/LoginActions';
+import UserActions from '../actions/UserActions';
+import { ACTIVE_SCREEN_SETTINGS } from '../../../Constants';
 
 class ProfileScreen extends React.Component<any, any> {
   static defaultProps: any
@@ -59,13 +61,21 @@ class ProfileScreen extends React.Component<any, any> {
     this.props.navigation.navigate(HOME_TAB);
   }
 
+  handleSettingPress = () => {
+    this.props.navigation.dispatch(navigateToSettings());
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Text>New PROFILE screen!</Text>
         <Button
           onPress={this.handleNavigatePress}
-          title={"Singn out"}
+          title={"Sign out"}
+        />
+        <Button
+          onPress={this.handleSettingPress}
+          title={"Settings"}
         />
       </View>
     );

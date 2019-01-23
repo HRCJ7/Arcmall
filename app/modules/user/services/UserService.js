@@ -1,35 +1,19 @@
 // @flow
-import {POST} from './RestService';
+import { POST } from "../../../services/RestService";
+import { COOKIE_LANGUAGE } from "../../../Constants";
 
 const urlFactory = {
-  login: (): string => 'accounts/player/login',
-  playerRegistration: (): string => 'players/register',
+  setLanguage: (): string => 'language/set',
 };
 
-const loginService = {
-  getLoginVerification: async (email: string, password: string): Promise<any> => {
-    const endpoint: string = urlFactory.login();
-    const body: {email: string, password: string} = {email, password};
+const UserService = {
+  setLanguage: async (code): Promise<any> => {
+    const endpoint: string = urlFactory.setLanguage();
+    const body = {code}
     const urlParams = null;
     const headers = null;
-
-    return POST(endpoint, body, urlParams, headers);
+    return POST(endpoint, body, urlParams, headers, [COOKIE_LANGUAGE]);
   },
-  playerRegistration:
-    async (firstName: string, lastName: string, email: string, password: string, birthday: string):
-      Promise<any> => {
-      const endpoint: string = urlFactory.playerRegistration();
-      const body = {
-        firstName,
-        lastName,
-        email,
-        password,
-        'DateOfBirth': birthday,
-      };
-      const urlParams = null;
-      const headers = null;
-      return POST(endpoint, body, urlParams, headers);
-    },
 };
 
-export default loginService;
+export default UserService;

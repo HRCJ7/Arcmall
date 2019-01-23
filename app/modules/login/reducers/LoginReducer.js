@@ -79,6 +79,7 @@ export const postLogin = (state = INITIAL_STATE, {payload} : any) => {
   return {
     ...state,
     user: user,
+    language: payload.language,
     registrationData: {}
   }
 };

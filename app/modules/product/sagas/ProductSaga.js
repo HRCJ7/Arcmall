@@ -23,7 +23,6 @@ export default () => {
   function* getProductById({payload}) {
     try {
       const response = yield call(ProductService.getProductById, payload.product_id);
-      console.log(response)
       yield put(ProductActions.getProductByIdSuccess(response));
     } catch (error) {
       console.log(error)

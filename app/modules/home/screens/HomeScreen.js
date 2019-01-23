@@ -70,7 +70,6 @@ class HomeScreen extends React.Component<any, any> {
 
   getCategoryList = async (props) => {
     let categories = await AsyncStorage.getItem('categories');
-    console.log(categories)
     if (!categories) {
       this.props.dispatch(ProductActions.getCategoryList());
     } else {

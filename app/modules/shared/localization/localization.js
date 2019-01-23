@@ -4,7 +4,7 @@ import enStrings from './en'
 
 let Strings = new LocalizedStrings({
  en:enStrings,
- it: {
+ zh: {
     PRODUCT_DETAILS:"Come vuoi il tuo uovo oggi?",
     boiledEgg:"Uovo sodo",
     softBoiledEgg:"Uovo alla coque",

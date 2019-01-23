@@ -78,6 +78,7 @@ const getProductListFailure = (state, {payload} : any) => ({
 
 const getCategoryList = (state = INITIAL_STATE, {payload} : any) => ({
   ...state,
+  categoryList: null,
   categoryListLoading: true,
 });
 

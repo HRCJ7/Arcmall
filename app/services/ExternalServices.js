@@ -12,7 +12,5 @@ export const splitCategoryName = (string) => {
     vals.name = name[0];
   }
 
-  console.log(vals)
-
   return vals;
 }

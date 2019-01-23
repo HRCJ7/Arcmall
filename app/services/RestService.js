@@ -1,6 +1,11 @@
 // @flow
-import {NetInfo} from 'react-native';
+import {NetInfo, AsyncStorage} from 'react-native';
 import Config from 'react-native-config';
+import CookieManager from 'react-native-cookies';
+import setCookie from 'set-cookie-parser'
+import { COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY } from '../Constants';
+
+let cookieString = null;
 
 const isConnected = async () => {
   const connectionInfo = await NetInfo.getConnectionInfo();
@@ -13,7 +18,43 @@ const defaultRequestHeaders: {[string]: string} = {
   'Accept': '*/*',
   'accept-encoding':'gzip, deflate',
   'Content-Type': 'multipart/form-data',
+  'credentials': 'same-origin',
 };
+
+const cookieToString = function(cookie, suffix) {
+  return `${cookie.name}=${cookie.value}${suffix}`;
+}  
+
+const setCookies = async function(response, keys, newSession) {
+  var combinedCookieHeader = response.headers.get('Set-Cookie');
+  var splitCookieHeaders = setCookie.splitCookiesString(combinedCookieHeader)
+  var cookies = setCookie.parse(splitCookieHeaders, {
+    map: true 
+  });
+  console.log(cookies)
+  const set = [];
+  for (let key of keys) {
+    set.push([key, cookieToString(cookies[key], '')])
+    console.log(key)
+  }
+  await AsyncStorage.multiSet(set);
+}
+
+const getCookie = async function() {
+  // if (!cookieString) {
+    cookieString = '';
+    await AsyncStorage.multiGet([COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY], (err, stores) => {
+      stores.map((result, i, store) => {
+        let name = store[i][0];
+        let value = store[i][1];
+        cookieString = cookieString.concat(`${value}; `);
+      });
+    });
+    cookieString = cookieString === ''? null: cookieString;
+  // }
+  // console.log(cookieString);
+  return cookieString;
+}
 
 const getForm = function(data) {
   let bodyData = new FormData();
@@ -57,52 +98,75 @@ export const buildAuthorizationHeader = (): {Authorization: string} => {
   }
 
   const {token} = session;
-
   return {
     Authorization: `Bearer ${token}`,
   };
 };
 
 export const GET = async (
-  endpoint: string, params: {[string]: any} | null, headers: {[string]: any} | null
+  endpoint: string, params: {[string]: any} | null, headers: {[string]: any} | null, updateCookieKeys: any = null
 ): Promise<any> => {
   // Wait for connection
   await isConnected();
 
   // Create the request URL
   const url: string = `${BASE_URL}/${endpoint}${createURLParams(params)}`;
+  let cookie = await getCookie();
   const options: {[string]: any} = {
     headers: {
       method: 'GET',
       ...defaultRequestHeaders,
       ...headers,
-      credentials: 'include',
+      cookie: cookie,
     },
   };
+  if (!cookie) {
+    delete options.headers.Cookie;
+  }
+  
   const response = await fetch(url, options);
+  console.log(response)
 
+  if(!cookie) {
+    await setCookies(response, [COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY], true);
+  } else if (updateCookieKeys) {
+    await setCookies(response, updateCookieKeys, false);
+  }
   // Handle the response before returning
   return handleResponseStatus(response);
 };
 
 export const POST = async (
-  endpoint: string, body: {[string]: any} | null, params: {[string]: any} | null, headers: {[string]: any} | null
+  endpoint: string, body: {[string]: any} | null, params: {[string]: any} | null, headers: {[string]: any} | null, updateCookieKeys: any = null
 ): Promise<any> => {
   // Wait for connection
   await isConnected();
 
   // Create the request URL
   const url: string = `${BASE_URL}/${endpoint}${createURLParams(params)}`;
+  let cookie = await getCookie();
   const options: {[string]: any} = {
     method: 'POST',
     headers: {
       ...defaultRequestHeaders,
       ...headers,
+      cookie: cookie,
     },
     body: getForm(body),
   };
 
+  if (!cookie) {
+    delete options.headers.Cookie;
+  }
+
   const response = await fetch(url, options);
+  console.log(response)
+
+  if(!cookie) {
+    await setCookies(response, [COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY], true);
+  } else if (updateCookieKeys) {
+    await setCookies(response, updateCookieKeys, false);
+  }
   // Handle the response before returning
   return handleResponseStatus(response);
 };

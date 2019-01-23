@@ -10,6 +10,8 @@ import SignUpAsASellerScreen from '../modules/login/screens/SignUpAsASellerScree
 import MainTabNavigation from './mainTab/MainTabNavigation';
 import CategoryTabNavigator from './categoryTab/CategoryTabNavigation';
 import CategoryListScreen from '../modules/product/screens/categoryList/CategoryListScreen';
+import CartDetailsScreen from '../modules/cart/screens/cartDetails/CartDetailsScreen';
+
 
 export const ROOT_NAV_LOGIN = 'Login';
 export const ROOT_NAV_SELECT_ROLE = 'SelectRole';
@@ -19,6 +21,7 @@ export const ROOT_NAV_ITEM_DETAILS = 'ItemDetails';
 export const ROOT_NAV_SIGN_UP_AS_A_BUYER = 'SignUpAsABuyerScreen';
 export const ROOT_NAV_SIGN_UP_AS_A_SELLER = 'SignUpAsASellerScreen';
 export const ROOT_NAV_ALL_CATEGORIES = 'AllCategories';
+export const ROOT_NAV_YOUR_CART = 'CartDetailsScreen';
 
 export const rootRoutes = {
   [ROOT_NAV_MAIN_TAB]: {
@@ -56,5 +59,9 @@ export const rootRoutes = {
   [ROOT_NAV_ALL_CATEGORIES]: {
     screen: CategoryListScreen,
     path: `/${ROOT_NAV_ALL_CATEGORIES}`,
+  },
+  [ROOT_NAV_YOUR_CART]: {
+    screen: CartDetailsScreen,
+    path: `/${ROOT_NAV_YOUR_CART}`,
   }
 };

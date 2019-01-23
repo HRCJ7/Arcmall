@@ -7,9 +7,11 @@ import LoginScreen from "../../modules/login/screens/LoginScreen";
 import SignUpAsABuyerScreen from "../../modules/login/screens/SignUpAsABuyerScreen";
 import SelectRoleScreen from "../../modules/login/screens/SelectRoleScreen";
 import SignUpAsASellerScreen from "../../modules/login/screens/SignUpAsASellerScreen";
+import CartDetailsScreen from '../../modules/cart/screens/cartDetails/CartDetailsScreen';
 
 export const HOME_TAB = 'Home';
 export const PROFILE_TAB = 'Profile';
+export const YOUR_CART = 'CartDetailsScreen';
 
 export const mainTabRoutes = {
   [HOME_TAB]: {
@@ -24,6 +26,13 @@ export const mainTabRoutes = {
     path: `/${PROFILE_TAB}`,
     navigationOptions: {
       tabBarLabel: 'Profile',
+    },
+  },
+  [YOUR_CART]: {
+    screen: CartDetailsScreen,
+    path: `/${YOUR_CART}`,
+    navigationOptions: {
+      tabBarLabel: 'Your cart',
     },
   },
 };

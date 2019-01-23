@@ -25,7 +25,6 @@ export default () => {
       const response = yield call(ProductService.getProductById, payload.product_id);
       yield put(ProductActions.getProductByIdSuccess(response));
     } catch (error) {
-      console.log(error)
       yield put(ProductActions.getProductByIdFailure(error.response));
     }
   }
@@ -37,10 +36,8 @@ export default () => {
   function* getProductList({payload}) {
     try {
       const response = yield call(ProductService.getProductList, payload);
-      console.log(response)
       yield put(ProductActions.getProductListSuccess(response));
     } catch (error) {
-      console.log(error)
       yield put(ProductActions.getProductListFailure(error.response));
     }
   }
@@ -52,10 +49,8 @@ export default () => {
   function* getCategoryList({payload}) {
     try {
       const response = yield call(ProductService.getCatrgoryList, payload);
-      console.log(response)
       yield put(ProductActions.getCategoryListSuccess(response));
     } catch (error) {
-      console.log(error)
       yield put(ProductActions.getCategoryListFailure(error.response));
     }
   }
@@ -67,10 +62,8 @@ export default () => {
   function* getReviews({payload}) {
     try {
       const response = yield call(ProductService.getReviews, payload);
-      console.log(response)
       yield put(ProductActions.getReviewsSuccess(response));
     } catch (error) {
-      console.log(error)
       yield put(ProductActions.getReviewsFailure(error.response));
     }
   }

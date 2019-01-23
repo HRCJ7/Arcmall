@@ -33,7 +33,6 @@ export const login = (state = INITIAL_STATE, {payload} : any) => ({
 
 export const loginSuccess = async (state = INITIAL_STATE, {payload} : any) => {
   let data = {...payload.data}
-  console.log(data)
   delete data['password']; 
   await AsyncStorage.setItem('user', JSON.stringify(data));
   return {
@@ -56,7 +55,6 @@ export const registration = (state = INITIAL_STATE, {payload} : any) => ({
 });
 
 export const registrationSuccess = (state = INITIAL_STATE, {payload} : any) => {
-  console.log(payload)
   return {
     ...state,
     registrationData: payload.data,
@@ -75,7 +73,6 @@ export const postLogin = (state = INITIAL_STATE, {payload} : any) => {
   if (payload.user) {
     user = JSON.parse(payload.user);
   }
-  console.log(user)
   return {
     ...state,
     user: user,

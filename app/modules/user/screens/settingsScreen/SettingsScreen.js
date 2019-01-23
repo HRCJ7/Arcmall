@@ -21,16 +21,11 @@ import Theme from '../../../../theme/Base';
 import {CheckBox} from 'react-native-elements'
 import CookieManager from 'react-native-cookies';
 import UserActions from '../../actions/UserActions';
-import { COOKIE_LANGUAGE, COOKIE_LANGUAGE_CHINESE } from '../../../../Constants';
+import { COOKIE_LANGUAGE, COOKIE_LANGUAGE_CHINESE, CODE_ENGLISH, CODE_CHINESE } from '../../../../Constants';
 import LoadingIndicator from '../../../shared/components/loadingIndicator/LoadingIndicator';
 
 const ACTIVE_SCREEN_SETTINGS = 'Settings';
 const ACTIVE_SCREEN_LANGUAGE = 'Language';
-const ENGLISH = 'English';
-const CHINESE = 'Chinese';
-const ENGLISH_CODE = 'en';
-const CHINESE_CODE = 'zh';
-
 
 class SettingsScreen extends React.Component<any, any> {
   static defaultProps: any
@@ -50,7 +45,7 @@ class SettingsScreen extends React.Component<any, any> {
       isLoading: false,
       activeScreen: activeScreen,
       activeList: activeList,
-      language: ENGLISH_CODE,
+      language: CODE_ENGLISH,
     };
 
     this.getLanguage();    
@@ -75,7 +70,7 @@ class SettingsScreen extends React.Component<any, any> {
 
   getLanguage = async () => {
     let language = await AsyncStorage.getItem(COOKIE_LANGUAGE);
-    language = language && language === COOKIE_LANGUAGE_CHINESE? CHINESE_CODE: ENGLISH_CODE;
+    language = language && language === COOKIE_LANGUAGE_CHINESE? CODE_CHINESE: CODE_ENGLISH;
     this.setState({
       language: language,
     });
@@ -109,12 +104,10 @@ class SettingsScreen extends React.Component<any, any> {
         subList: {
           list: [
             {
-              name: ENGLISH,
-              action: () => this.changeLanguage(ENGLISH_CODE)
+              name: Strings.ENG_US,
             },
             {
-              name: CHINESE,
-              action: () => this.changeLanguage(CHINESE_CODE)
+              name: Strings.CHINESE_SIMPLIFIED,
             }
           ]
         }
@@ -122,16 +115,6 @@ class SettingsScreen extends React.Component<any, any> {
       {
         name: 'Change Address',
         nextScreen: ACTIVE_SCREEN_LANGUAGE,
-        subList: {
-          list: [
-            {
-              name: 'English',
-            },
-            {
-              name: 'Chinese',
-            }
-          ]
-        }
       },
     ];
 
@@ -162,9 +145,7 @@ class SettingsScreen extends React.Component<any, any> {
 
   renderFlatlistItem = ({item}) => {
     const {name, nextScreen, subList, action} = item;
-    // console.log(item)
     const onPress = () => {
-      // console.log(subList.list)
       if (nextScreen) {
         this.props.navigation.dispatch(navigateToSettings({
           activeScreen: nextScreen,
@@ -192,26 +173,24 @@ class SettingsScreen extends React.Component<any, any> {
     return (
       <View style={{flex: 1}}>
         <View style={styles.listItemWrapper}>
-          <Text style={styles.settingText}>{english.name}</Text>
+          <Text style={styles.settingText}>{Strings.ENG_US}</Text>
           <CheckBox
             containerStyle={styles.checkBox}
-            checked={this.state.language === ENGLISH_CODE}
+            checked={this.state.language === CODE_ENGLISH}
             checkedColor={Theme.colors.smallText}
             onPress={()=> {
-              // this.setState({language: ENGLISH_CODE})}
-              this.setLanguage(ENGLISH_CODE)
+              this.setLanguage(CODE_ENGLISH)
             }}
           />
         </View>
         <View style={styles.listItemWrapper}>
-          <Text style={styles.settingText}>{chinese.name}</Text>
+          <Text style={styles.settingText}>{Strings.CHINESE_SIMPLIFIED}</Text>
           <CheckBox
             containerStyle={styles.checkBox}
-            checked={this.state.language === CHINESE_CODE}
+            checked={this.state.language === CODE_CHINESE}
             checkedColor={Theme.colors.smallText}
             onPress={()=> {
-              // this.setState({language: ENGLISH_CODE})}
-              this.setLanguage(CHINESE_CODE);
+              this.setLanguage(CODE_CHINESE);
             }}
           />
         </View>
@@ -221,7 +200,6 @@ class SettingsScreen extends React.Component<any, any> {
 
   renderSettingsPage = () => {
     let {activeList} = this.state;
-    // console.log(activeList)
     return (
       <View style={styles.container}>
         <FlatList

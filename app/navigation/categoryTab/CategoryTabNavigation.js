@@ -45,10 +45,8 @@ class CategoryTabNavigation extends React.Component {
 
   getRoutes = () => {
     let routes = {};
-    console.log(this.props)
     if (this.props.navigation && this.props.navigation.state) {
       let {navigation : {state: {params: {categories}}}} = this.props;
-      console.log(categories)
       for (let categoryIndex in categories) {
         const category = categories[categoryIndex];
         // const {name, count} = splitCategoryName(category.name);

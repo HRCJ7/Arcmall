@@ -23,7 +23,6 @@ class ProductListScreen extends React.Component<any, any> {
 
   constructor(props) {
     super(props);
-    console.log(props)
     const params = props.navigation.state.params;
     props.dispatch(ProductActions.getProductList({
       search: '',
@@ -85,7 +84,6 @@ class ProductListScreen extends React.Component<any, any> {
 
   render() {
     const {isLoading, productList, productListError, navigation: {state: {params: {loadingCategories}}}} = this.props;
-    console.log(productList)
     let content = null;
     const navBar = loadingCategories? null: this.renderNavBar();
     if (isLoading) {

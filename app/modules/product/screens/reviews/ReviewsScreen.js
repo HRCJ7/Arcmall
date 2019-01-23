@@ -24,7 +24,6 @@ class ReviewsScreen extends React.Component<any, any> {
 
   constructor(props) {
     super(props);
-    console.log(props)
     const params = props.navigation.state.params;
     this.props.dispatch(ProductActions.getReviews({
       product_id: params.product_id,

@@ -31,7 +31,6 @@ class ProductDetailScreen extends React.Component<any, any> {
       isLoading: true,
     };
     let {itemId} = this.props.navigation.state.params;
-    console.log(itemId)
     this.props.dispatch(ProductActions.getProductById(itemId))
   }
 
@@ -245,7 +244,6 @@ ProductDetailScreen.defaultProps = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(state.product.productData)
   return {
     data: state.product.productData,
     isLoading: state.product.productLoading || !state.product.productData,

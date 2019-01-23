@@ -24,6 +24,7 @@ import Theme from "../../../theme/Base";
 import LoginActions from "../actions/LoginActions";
 import Toast from 'react-native-simple-toast';
 import { HOME_TAB } from "../../../navigation/mainTab/MainTabRoutes";
+import Strings from "../../shared/localization/localization";
 
 class SignUpAsABuyerScreen extends React.Component<any, any> {
   static defaultProps: any;
@@ -117,25 +118,24 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
             <View style={styles.textComponent}>
               <Text style={styles.selectRoleText}>Sign up as a Buyer</Text>
               <Text style={styles.wordingText}>
-                A wonderful collection of products awaits you.Let's get your all set
-                up to explore a world of glamourous fashion
+                {Strings.SIGN_AS_BUYER_DESC}
               </Text>
-              <Text style={[styles.label, {paddingTop: 20}]}>{'First Name'}</Text>
+              <Text style={[styles.label, {paddingTop: 20}]}>{Strings.FIRST_NAME}</Text>
               <TextInput
                 onChangeText={(firstname) => this.setState({firstname})}
                 style={styles.textInput}
               />
-              <Text style={[styles.label, {paddingTop: 20}]}>{'Last Name'}</Text>
+              <Text style={[styles.label, {paddingTop: 20}]}>{Strings.LAST_NAME}</Text>
               <TextInput
               onChangeText={(lastname) => this.setState({lastname})}
               style={styles.textInput}
               />
-              <Text style={[styles.label, {paddingTop: 20}]}>{'Email'}</Text>
+              <Text style={[styles.label, {paddingTop: 20}]}>{Strings.EMAIL}</Text>
               <TextInput
                 onChangeText={(email) => this.setState({email})}
                 style={styles.textInput}
               />
-              <Text style={[styles.label, {paddingTop: 20}]}>{'Password'}</Text>
+              <Text style={[styles.label, {paddingTop: 20}]}>{Strings.PASSWORD}</Text>
               <TextInput
                 onChangeText={(password) => this.setState({password, confirm: password})}
                 secureTextEntry={true}

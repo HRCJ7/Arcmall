@@ -21,6 +21,8 @@ import ProductActions from '../../product/actions/ProductActions';
 import LoadingIndicator from '../../shared/components/loadingIndicator/LoadingIndicator';
 import LoginActions from '../../login/actions/LoginActions';
 import {navigateToItemListScreen, navigateToAllCategories} from '../../../navigation/RootNavActions';
+import Strings from '../../shared/localization/localization';
+import {COOKIE_LANGUAGE_CHINESE, CODE_CHINESE, CODE_ENGLISH, COOKIE_LANGUAGE} from '../../../Constants';
 
 const arr = ["1", "1", "1", "1", "1", "1", "1", "1", "1"];
 class HomeScreen extends React.Component<any, any> {
@@ -31,6 +33,7 @@ class HomeScreen extends React.Component<any, any> {
 
     this.state = {
       categories: null,
+      languageLoading: true,
     };
     this.getCategoryList(props);
   }
@@ -78,9 +81,15 @@ class HomeScreen extends React.Component<any, any> {
       })
     }
 
+    let language = await AsyncStorage.getItem(COOKIE_LANGUAGE);
+    language = language === COOKIE_LANGUAGE_CHINESE? CODE_CHINESE: CODE_ENGLISH;
+    Strings.setLanguage(language);
+    this.setState({
+      languageLoading: false,
+    })
+
     let user = await AsyncStorage.getItem('user');
     this.props.dispatch(LoginActions.postLogin({categories, user}));
-    
   }
 
   _renderItem = ({ item }) => {
@@ -98,8 +107,8 @@ class HomeScreen extends React.Component<any, any> {
 
   render() {
     const {isLoading} = this.props;
-    const {categories} = this.state;
-    console.log(categories)
+    const {categories, languageLoading} = this.state;
+    console.log(languageLoading)
     let content = null;
     if(!isLoading && categories) {
       content = (
@@ -111,7 +120,7 @@ class HomeScreen extends React.Component<any, any> {
                 containerStyle={styles.searchBar}
                 inputStyle={{ backgroundColor: "white" }}
                 lightTheme
-                placeholder="Search"
+                placeholder={Strings.SEARCH}
               />
             </View>
             <Image
@@ -149,7 +158,7 @@ class HomeScreen extends React.Component<any, any> {
           </View>
         </ScrollView>
       )
-    } else {
+    } else if(isLoading || languageLoading){
       content = (
         <View style={styles.container}>
           <LoadingIndicator />

@@ -41,18 +41,15 @@ const setCookies = async function(response, keys, newSession) {
 }
 
 const getCookie = async function() {
-  // if (!cookieString) {
-    cookieString = '';
-    await AsyncStorage.multiGet([COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY], (err, stores) => {
-      stores.map((result, i, store) => {
-        let name = store[i][0];
-        let value = store[i][1];
-        cookieString = cookieString.concat(`${value}; `);
-      });
+  cookieString = '';
+  await AsyncStorage.multiGet([COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY], (err, stores) => {
+    stores.map((result, i, store) => {
+      let name = store[i][0];
+      let value = store[i][1];
+      cookieString = cookieString.concat(`${value}; `);
     });
-    cookieString = cookieString === ''? null: cookieString;
-  // }
-  // console.log(cookieString);
+  });
+  cookieString = cookieString === ''? null: cookieString;
   return cookieString;
 }
 

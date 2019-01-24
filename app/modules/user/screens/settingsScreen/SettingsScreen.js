@@ -31,6 +31,7 @@ import Config from 'react-native-config';
 import {getForm, defaultRequestHeaders, getCookie} from '../../../../services/RestService';
 import ArcmallButton from '../../../shared/components/arcmallButton/ArcmallButton';
 import { getUser } from '../../../../store/AsyncStorageHelper';
+import { MAIN_TAB_HOME } from '../../../../navigation/mainTab/MainTabRoutes';
 
 const BASE_URL: string = `${Config.API_URL}`;
 
@@ -66,9 +67,9 @@ class SettingsScreen extends React.Component<any, any> {
 
     if (activeScreen === ACTIVE_SCREEN_SHIPPING) {
       this.props.dispatch(UserActions.getAddresses())
+    } else if (activeScreen === ACTIVE_SCREEN_LANGUAGE) {
+      this.getLanguage();
     }
-
-    this.getLanguage(); 
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -82,7 +83,7 @@ class SettingsScreen extends React.Component<any, any> {
     }
     
     return {
-      isLoading: props.languageLoading,
+      // isLoading: props.languageLoading,
       countries: countries,
     };
   }
@@ -100,6 +101,7 @@ class SettingsScreen extends React.Component<any, any> {
 
   getLanguage = async () => {
     let language = await AsyncStorage.getItem(COOKIE_LANGUAGE);
+    console.log(language)
     language = language && language === COOKIE_LANGUAGE_CHINESE? CODE_CHINESE: CODE_ENGLISH;
     this.setState({
       language: language,
@@ -109,15 +111,17 @@ class SettingsScreen extends React.Component<any, any> {
   setLanguage = async (language) => {
     const {activeScreen} = this.state;
     const {languageLoading} = this.props;
-    if (activeScreen === ACTIVE_SCREEN_LANGUAGE) {
-      AsyncStorage.setItem(COOKIE_LANGUAGE, `language=${language}`);
+    console.log(activeScreen)
+    // if (activeScreen === ACTIVE_SCREEN_LANGUAGE) {
+      console.log(language)
+      await AsyncStorage.setItem(COOKIE_LANGUAGE, `language=${language}`);
       this.props.dispatch(UserActions.setLanguage(language))
       Strings.setLanguage(language);
       this.setState({
         language: language,
-        isLoading: languageLoading,
+        // isLoading: languageLoading,
       })
-    }
+    // }
   }
 
   changeActiveScreen(screen) {
@@ -150,6 +154,11 @@ class SettingsScreen extends React.Component<any, any> {
           nextScreen: ACTIVE_SCREEN_SHIPPING_ADD,
         }
       },
+      {
+        name: 'Log out',
+        action: this.handleLogout,
+        hideArrow: true,
+      },
     ];
 
     return settingsList;
@@ -169,6 +178,11 @@ class SettingsScreen extends React.Component<any, any> {
   handleOnAddShipingPressed = () => {
     const {addressFormValues} = this.state;
 
+  }
+
+  handleLogout = () => {
+    this.props.dispatch(LoginActions.signOut());
+    this.props.navigation.navigate(MAIN_TAB_HOME);
   }
 
   renderLeftAction = () => {
@@ -199,7 +213,7 @@ class SettingsScreen extends React.Component<any, any> {
   }
 
   renderFlatlistItem = ({item}) => {
-    const {name, nextScreen, subList, action} = item;
+    const {name, nextScreen, subList, action, hideArrow} = item;
     const onPress = () => {
       if (nextScreen) {
         this.props.navigation.dispatch(navigateToSettings({
@@ -210,13 +224,19 @@ class SettingsScreen extends React.Component<any, any> {
         action();
       }
     }
+    let arrow = null;
+    if (!hideArrow) {
+      arrow = (
+        <EvilIcons
+          style={styles.rightIcon}
+          name='chevron-right' color={Theme.colors.darkGray} size={30}/>
+      )
+    }
     return(
       <TouchableOpacity style={styles.listItem} onPress={onPress}>
         <View style={styles.listItemWrapper}>
           <Text style={styles.settingText}>{name}</Text>
-          <EvilIcons
-            style={styles.rightIcon}
-            name='chevron-right' color={Theme.colors.darkGray} size={30}/>
+          {arrow}
         </View>
       </TouchableOpacity>
     )
@@ -297,22 +317,32 @@ class SettingsScreen extends React.Component<any, any> {
 
   renderShippingContent = () => {
     const {addresses} = this.props;
-    return (
-      <View style={styles.container}>
-        {this.renderNavBar(this.renderRightAction())}
-        <FlatList
-          style={{flex: 1}}
-          extraData={this.state}
-          data={addresses? addresses: []}
-          keyExtractor={(item, index) => item.address_id.toString()}
-          renderItem={this.renderShipingRow}
-        />
-      </View>
-    )
+    let content = null;
+    if(addresses) {
+      content = (
+        <View style={styles.container}>
+          {this.renderNavBar(this.renderRightAction())}
+          <FlatList
+            style={{flex: 1}}
+            extraData={this.state}
+            data={addresses? addresses: []}
+            keyExtractor={(item, index) => item.address_id.toString()}
+            renderItem={this.renderShipingRow}
+          />
+        </View>
+      )
+    } else {
+      content = (
+        <View style={styles.container}>
+          {this.renderNavBar()}
+          <LoadingIndicator />
+        </View>
+      )
+    }
+    return content;
   }
 
   onChange = async (value) => {
-    console.log(value)
     let zones = this.state.countryZones;
     if (value.country_id != this.state.addressFormValues.country_id) {
       let response = await fetch(`${BASE_URL}/address/getZones`, {
@@ -345,7 +375,6 @@ class SettingsScreen extends React.Component<any, any> {
     let data =  {...this.state.addressFormValues};
     data.firstname = user.firstname;
     data.lastname = user.lastname;
-    console.log(cookies)
     let response = await fetch(`${BASE_URL}/address/save`, {
       method: 'POST',
       headers: {
@@ -358,7 +387,6 @@ class SettingsScreen extends React.Component<any, any> {
       this.props.dispatch(LoginActions.signOut());
     } else {
       const parsedJson = await response.json();
-      console.log(parsedJson)
       if('error' in parsedJson) {
       } else {
         this.props.dispatch(UserActions.getAddresses())

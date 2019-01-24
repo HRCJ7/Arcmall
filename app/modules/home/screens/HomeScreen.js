@@ -109,7 +109,6 @@ class HomeScreen extends React.Component<any, any> {
   render() {
     const {isLoading} = this.props;
     const {categories, languageLoading} = this.state;
-    console.log(languageLoading)
     let content = null;
     if(!isLoading && categories) {
       content = (

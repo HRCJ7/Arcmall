@@ -49,5 +49,9 @@ export default enStrings = {
     SELECT_YOUR_ROLE: 'Select your role',
     SELECT_ROLE_DESC: 'Signing up as a Buyer lets you purchase items and Signing up as a Seller allows you to both purhase and set up your own store.',
     SIGN_AS_BUYER_DESC: 'A wonderful collection of products awaits you.Let\'s get your all set up to explore a world of glamourous fashion',
+    YOUR_ACCOUNT: 'Your Account',
+    PROCESSING: 'Processing',
+    SHIPPED: 'Shipped',
+    COMPLETED: 'Completed',
 
 }

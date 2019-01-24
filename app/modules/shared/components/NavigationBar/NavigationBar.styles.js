@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'flex-end',
     justifyContent: 'center',
+    paddingRight: 10,
   },
   titleLeftContainer: {
     flex: 10,

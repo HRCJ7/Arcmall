@@ -13,7 +13,7 @@ const UserService = {
     const body = {code}
     const urlParams = null;
     const headers = null;
-    return POST(endpoint, body, urlParams, headers, [COOKIE_LANGUAGE]);
+    return POST(endpoint, body, urlParams, headers);
   },
   getAddresses: async (): Promise<any> => {
     const endpoint: string = urlFactory.getAddresses();

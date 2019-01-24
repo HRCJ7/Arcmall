@@ -30,6 +30,12 @@ const styles = StyleSheet.create({
     flex: 1,
     aspectRatio: 1,
   },
+  itemSelect: {
+    flex: 0.25,
+    borderRightWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   itemContent: {
     flex: 2,
     flexDirection: 'column',
@@ -112,7 +118,13 @@ const styles = StyleSheet.create({
     fontSize: Theme.fontSizes.small,
     textAlign: 'left',
     fontWeight: Theme.fontWeight.regular,
-  }
+  },
+  circle: {
+    width: 20,
+    height: 20,
+    borderRadius: 20/2,
+    backgroundColor: Theme.colors.secondary
+}
   
 });
 

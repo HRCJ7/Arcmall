@@ -15,9 +15,9 @@ import CartActions from "../../actions/CartActions";
 import Toast from "react-native-simple-toast";
 
 const products = [
-  { _id: 1, name: 'Item 1', price: 50, quantity: 0 },
-  { _id: 2, name: 'Item 2', price: 29, quantity: 0 },
-  { _id: 3, name: 'Item 3', price: 200, quantity: 0 },
+  { _id: 1, name: "Item 1", price: 50, quantity: 0 },
+  { _id: 2, name: "Item 2", price: 29, quantity: 0 },
+  { _id: 3, name: "Item 3", price: 200, quantity: 0 }
 ];
 class CartDetailsScreen extends React.Component<any, any> {
   static defaultProps: any;
@@ -27,7 +27,7 @@ class CartDetailsScreen extends React.Component<any, any> {
     console.log(props);
     const params = props.navigation.state.params;
     this.state = {
-      products,
+      products
     };
   }
 
@@ -74,23 +74,23 @@ class CartDetailsScreen extends React.Component<any, any> {
     const products = [...this.state.products];
     products[index].quantity -= 1;
     this.setState({ products });
-  }
+  };
 
   onAdd = (item, index) => {
     const products = [...this.state.products];
     products[index].quantity += 1;
     this.setState({ products });
-  }
+  };
 
   render() {
     const { products } = this.state;
     let totalQuantity = 0;
     let totalPrice = 0;
     const navBar = this.renderNavBar();
-    products.forEach((item) => {
+    products.forEach(item => {
       totalQuantity += item.quantity;
       totalPrice += item.quantity * item.price;
-    })
+    });
     return (
       <View style={styles.container}>
         {navBar}
@@ -99,9 +99,12 @@ class CartDetailsScreen extends React.Component<any, any> {
           keyExtractor={item => item._id}
           data={products}
           renderItem={({ item, index }) => (
-            <CartListItem item={item}
-            onSubtract={() => this.onSubtract(item, index)}
-            onAdd={() => this.onAdd(item, index)} onPress={this.handleProductOnPress} />
+            <CartListItem
+              item={item}
+              onSubtract={() => this.onSubtract(item, index)}
+              onAdd={() => this.onAdd(item, index)}
+              onPress={this.handleProductOnPress}
+            />
           )}
         />
 
@@ -124,10 +127,10 @@ class CartDetailsScreen extends React.Component<any, any> {
             <Text style={styles.textNormal}>$1500</Text>
           </View>
           <ArcmallButton
-              // onPress={this.handleLoginPress}
-              title={Strings.CHECKOUT}
-              style={{marginTop: 20,width: "80%",}}
-            />
+            // onPress={this.handleLoginPress}
+            title={Strings.CHECKOUT}
+            style={{ marginTop: 20, width: "80%" }}
+          />
         </View>
       </View>
     );

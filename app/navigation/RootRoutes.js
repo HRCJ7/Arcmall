@@ -25,6 +25,8 @@ export const ROOT_NAV_REVIEWS = 'Reviews';
 
 export const ROOT_NAV_SETTINGS = 'Settings';
 export const ROOT_NAV_SETTINGS_LANGUAGE = 'SettingsLanguage';
+export const ROOT_NAV_SETTINGS_SHIPPING = 'SettingsShipping';
+export const ROOT_NAV_SETTINGS_SHIPPING_ADD = 'SettingsShippingAdd';
 
 export const rootRoutes = {
   [ROOT_NAV_MAIN_TAB]: {
@@ -74,5 +76,13 @@ export const rootRoutes = {
   [ROOT_NAV_SETTINGS_LANGUAGE]: {
     screen: SettingsScreen,
     path: `/${ROOT_NAV_SETTINGS_LANGUAGE}`,
+  },
+  [ROOT_NAV_SETTINGS_SHIPPING]: {
+    screen: SettingsScreen,
+    path: `/${ROOT_NAV_SETTINGS_SHIPPING}`,
+  },
+  [ROOT_NAV_SETTINGS_SHIPPING_ADD]: {
+    screen: SettingsScreen,
+    path: `/${ROOT_NAV_SETTINGS_SHIPPING_ADD}`,
   },
 };

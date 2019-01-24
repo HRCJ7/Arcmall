@@ -12,6 +12,7 @@ import LoginService from '../services/LoginService';
 import {
   LOGIN, REGISTRATION,
 } from '../actions/Types';
+import { COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY } from '../../../Constants';
 
 export default () => {
   function* login(action) {

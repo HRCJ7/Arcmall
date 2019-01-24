@@ -22,7 +22,8 @@ import LoadingIndicator from '../../shared/components/loadingIndicator/LoadingIn
 import LoginActions from '../../login/actions/LoginActions';
 import {navigateToItemListScreen, navigateToAllCategories} from '../../../navigation/RootNavActions';
 import Strings from '../../shared/localization/localization';
-import {COOKIE_LANGUAGE_CHINESE, CODE_CHINESE, CODE_ENGLISH, COOKIE_LANGUAGE} from '../../../Constants';
+import {COOKIE_LANGUAGE_CHINESE, CODE_CHINESE, CODE_ENGLISH, COOKIE_LANGUAGE, STORAGE_USER, STORAGE_CATEGORIES} from '../../../Constants';
+import { getUser } from '../../../store/AsyncStorageHelper';
 
 const arr = ["1", "1", "1", "1", "1", "1", "1", "1", "1"];
 class HomeScreen extends React.Component<any, any> {
@@ -68,11 +69,11 @@ class HomeScreen extends React.Component<any, any> {
     this.setState({
       categories: categories,
     })
-    await AsyncStorage.setItem('categories', JSON.stringify(categories));
+    await AsyncStorage.setItem(STORAGE_CATEGORIES, JSON.stringify(categories));
   }
 
   getCategoryList = async (props) => {
-    let categories = await AsyncStorage.getItem('categories');
+    let categories = await AsyncStorage.getItem(STORAGE_CATEGORIES);
     if (!categories) {
       this.props.dispatch(ProductActions.getCategoryList());
     } else {
@@ -88,7 +89,7 @@ class HomeScreen extends React.Component<any, any> {
       languageLoading: false,
     })
 
-    let user = await AsyncStorage.getItem('user');
+    let user = await getUser();
     this.props.dispatch(LoginActions.postLogin({categories, user}));
   }
 

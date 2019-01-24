@@ -1,5 +1,6 @@
 // @flow
 import {POST} from '../../../services/RestService';
+import { COOKIE_PHPSSID, COOKIE_CURENCY, COOKIE_LANGUAGE } from '../../../Constants';
 
 const urlFactory = {
   login: (): string => 'user_login',
@@ -14,7 +15,7 @@ const loginService = {
     const urlParams = null;
     const headers = null;
 
-    return POST(endpoint, body, urlParams, headers);
+    return POST(endpoint, body, urlParams, headers, [COOKIE_PHPSSID, COOKIE_CURENCY, COOKIE_LANGUAGE]);
   },
   register: async (data): Promise<any> => {
     const endpoint: string = urlFactory.register();

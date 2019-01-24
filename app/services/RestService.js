@@ -4,6 +4,7 @@ import Config from 'react-native-config';
 import CookieManager from 'react-native-cookies';
 import setCookie from 'set-cookie-parser'
 import { COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY } from '../Constants';
+import { getCookies } from '../store/AsyncStorageHelper';
 
 let cookieString = null;
 
@@ -14,7 +15,7 @@ const isConnected = async () => {
 
 const BASE_URL: string = `${Config.API_URL}`;
 
-const defaultRequestHeaders: {[string]: string} = {
+export const defaultRequestHeaders: {[string]: string} = {
   'Accept': '*/*',
   'accept-encoding':'gzip, deflate',
   'Content-Type': 'multipart/form-data',
@@ -40,20 +41,20 @@ const setCookies = async function(response, keys, newSession) {
   await AsyncStorage.multiSet(set);
 }
 
-const getCookie = async function() {
+export const getCookie = async function() {
   cookieString = '';
-  await AsyncStorage.multiGet([COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY], (err, stores) => {
+  await getCookies((err, stores) => {
     stores.map((result, i, store) => {
       let name = store[i][0];
       let value = store[i][1];
       cookieString = cookieString.concat(`${value}; `);
     });
-  });
+  })
   cookieString = cookieString === ''? null: cookieString;
   return cookieString;
 }
 
-const getForm = function(data) {
+export const getForm = function(data) {
   let bodyData = new FormData();
   for (let key in data) {
     bodyData.append(key, data[key]);
@@ -80,6 +81,7 @@ const handleResponseStatus = async (response) => {
   if (response && response.status < 200 || response.status >= 300) {
     const error: any = new Error(response.statusText);
     error.response = await response.json();
+    error.status = response.status;
 
     throw error;
   }

@@ -47,7 +47,8 @@
     "redux": "^4.0.1",
     "redux-saga": "^0.16.2",
     "reduxsauce": "^1.0.1",
-    "set-cookie-parser": "https://github.com/nfriedly/set-cookie-parser/"
+    "set-cookie-parser": "https://github.com/nfriedly/set-cookie-parser/",
+    "tcomb-form-native": "^0.6.20"
   },
   "devDependencies": {
     "babel-jest": "23.6.0",

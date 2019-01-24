@@ -23,6 +23,8 @@ import Theme from "../../../theme/Base";
 import LoginActions from "../actions/LoginActions";
 import Toast from 'react-native-simple-toast';
 import Strings from "../../shared/localization/localization";
+import { STORAGE_USER } from "../../../Constants";
+import { getUser } from "../../../store/AsyncStorageHelper";
 
 class SignUpAsASellerScreen extends React.Component<any, any> {
   static defaultProps: any;
@@ -49,7 +51,7 @@ class SignUpAsASellerScreen extends React.Component<any, any> {
   }
 
   async shouldComponentUpdate(nextProps, nextState) {
-    let user = await AsyncStorage.getItem('user');
+    let user = await getUser();
     if(user) {
       this.props.navigation.navigate(HOME_TAB);
     }

@@ -1,6 +1,8 @@
 export const COOKIE_PHPSSID = 'PHPSESSID';
 export const COOKIE_CURENCY = 'currency';
 export const COOKIE_LANGUAGE = 'language';
+export const STORAGE_USER = 'user';
+export const STORAGE_CATEGORIES = 'categories';
 
 export const COOKIE_LANGUAGE_ENGLISH = 'language=en';
 export const COOKIE_LANGUAGE_CHINESE = 'language=zh';

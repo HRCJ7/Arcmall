@@ -21,5 +21,6 @@ export default function* root(): Saga<void> {
     fork(createdProductSaga.watchGetReviews),
 
     fork(createdUserSaga.watchSetLanguage),
+    fork(createdUserSaga.watchGetAddreses),
   ]);
 }

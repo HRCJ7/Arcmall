@@ -30,6 +30,28 @@ const styles = StyleSheet.create({
   checkBox: {
     backgroundColor: 'transparent', 
     borderWidth: 0,
+  },
+  addressView: {
+    flex: 1, 
+    padding: 20,
+    paddingLeft: 30,
+    borderBottomColor: Theme.colors.darkGray,
+    borderBottomWidth: 0.5,
+  },
+  addressName: {
+    ...font,
+    fontWeight: Theme.fontWeight.medium,
+    fontSize: Theme.fontSizes.sMedium,
+  },
+  address: {
+    ...font,
+    paddingTop: 5,
+    fontWeight: Theme.fontWeight.light,
+    fontSize: Theme.fontSizes.small,
+  },
+  formStyle: {
+    flex: 1,
+    padding: 20
   }
 });
 export default styles;

@@ -12,6 +12,7 @@ import {
   GET_LOGIN_VERIFICATION,
   PLAYER_REGISTRATION,
   SET_LANGUAGE,
+  GET_ADDRESSES,
 } from '../actions/Types';
 import UserService from '../services/UserService';
 import UserActions from '../actions/UserActions';
@@ -33,7 +34,21 @@ export default () => {
     yield takeLatest(SET_LANGUAGE, setLanguage);
   }
 
+  function* getAddreses(action) {
+    try {
+      const response = yield call(UserService.getAddresses);
+      yield put(UserActions.getAddressesSuccess(response));
+    } catch (error) {
+      yield put(UserActions.getAddressesFailure(error.response));
+    }
+  }
+
+  function* watchGetAddreses(): Saga<void> {
+    yield takeLatest(GET_ADDRESSES, getAddreses);
+  }
+
   return {
     watchSetLanguage,
+    watchGetAddreses,
   };
 };

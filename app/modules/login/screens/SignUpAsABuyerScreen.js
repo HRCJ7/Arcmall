@@ -25,6 +25,8 @@ import LoginActions from "../actions/LoginActions";
 import Toast from 'react-native-simple-toast';
 import { HOME_TAB } from "../../../navigation/mainTab/MainTabRoutes";
 import Strings from "../../shared/localization/localization";
+import { STORAGE_USER } from "../../../Constants";
+import { getUser } from "../../../store/AsyncStorageHelper";
 
 class SignUpAsABuyerScreen extends React.Component<any, any> {
   static defaultProps: any;
@@ -60,7 +62,7 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
     //     password: registrationdata.password,
     //   }))
     // }
-    let user = await AsyncStorage.getItem('user');
+    let user = await getUser();
     if(user) {
       this.props.navigation.navigate(HOME_TAB);
     }

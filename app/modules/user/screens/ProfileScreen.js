@@ -11,19 +11,20 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import styles from './ProfileScreen.styles';
 import {navigateToMainTabScreen, navigateToLoginScreen, navigateToSignInBuyerScreen, navigateToSettings} from '../../../navigation/RootNavActions';
-import { PROFILE_TAB, HOME_TAB } from '../../../navigation/mainTab/MainTabRoutes';
+import { MAIN_TAB_PROFILE, MAIN_TAB_HOME } from '../../../navigation/mainTab/MainTabRoutes';
 import LoginActions from '../../login/actions/LoginActions';
 import UserActions from '../actions/UserActions';
-import { ACTIVE_SCREEN_SETTINGS } from '../../../Constants';
+import { ACTIVE_SCREEN_SETTINGS, STORAGE_USER, COOKIE_PHPSSID } from '../../../Constants';
+import { getUser } from '../../../store/AsyncStorageHelper';
 
 class ProfileScreen extends React.Component<any, any> {
   static defaultProps: any
 
   static navigationOptions: any = ({navigation}) => ({
     tabBarOnPress: async ({previousScene, scene, jumpToIndex}) => {
-      let user = await AsyncStorage.getItem('user');
+      let user = await getUser();
       if (user) {
-        navigation.navigate(PROFILE_TAB);
+        navigation.navigate(MAIN_TAB_PROFILE);
       } else {
         navigation.dispatch(navigateToLoginScreen());
       }
@@ -56,9 +57,9 @@ class ProfileScreen extends React.Component<any, any> {
   componentDidUpdate() {
     
   }
-  handleNavigatePress = () => {
+  handleNavigatePress = async () => {
     this.props.dispatch(LoginActions.signOut());
-    this.props.navigation.navigate(HOME_TAB);
+    this.props.navigation.navigate(MAIN_TAB_HOME);
   }
 
   handleSettingPress = () => {

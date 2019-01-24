@@ -8,6 +8,9 @@ import {
   AsyncStorage,
   FlatList,
   TouchableOpacity,
+  ScrollView,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
@@ -23,9 +26,18 @@ import CookieManager from 'react-native-cookies';
 import UserActions from '../../actions/UserActions';
 import { COOKIE_LANGUAGE, COOKIE_LANGUAGE_CHINESE, CODE_ENGLISH, CODE_CHINESE } from '../../../../Constants';
 import LoadingIndicator from '../../../shared/components/loadingIndicator/LoadingIndicator';
+import t from 'tcomb-form-native';
+import Config from 'react-native-config';
+import {getForm, defaultRequestHeaders, getCookie} from '../../../../services/RestService';
+import ArcmallButton from '../../../shared/components/arcmallButton/ArcmallButton';
+import { getUser } from '../../../../store/AsyncStorageHelper';
+
+const BASE_URL: string = `${Config.API_URL}`;
 
 const ACTIVE_SCREEN_SETTINGS = 'Settings';
 const ACTIVE_SCREEN_LANGUAGE = 'Language';
+const ACTIVE_SCREEN_SHIPPING = 'Shipping';
+const ACTIVE_SCREEN_SHIPPING_ADD = 'ShippingAdd';
 
 class SettingsScreen extends React.Component<any, any> {
   static defaultProps: any
@@ -36,24 +48,42 @@ class SettingsScreen extends React.Component<any, any> {
 
     let activeScreen = ACTIVE_SCREEN_SETTINGS;
     let activeList = this.getSettingsList();
-    if (Object.keys(params).length > 0) {
+    if (params && Object.keys(params).length > 0) {
       activeScreen = params.activeScreen;
       activeList = params.activeList;
     }
 
     this.state = {
       isLoading: false,
+      showAddAdressOverlay: false,
       activeScreen: activeScreen,
       activeList: activeList,
       language: CODE_ENGLISH,
+      countryZones: null,
+      countries: null,
+      addressFormValues: {},
     };
 
-    this.getLanguage();    
+    if (activeScreen === ACTIVE_SCREEN_SHIPPING) {
+      this.props.dispatch(UserActions.getAddresses())
+    }
+
+    this.getLanguage(); 
   }
 
   static getDerivedStateFromProps(props, state) {
+    const {countries: origCountries} = props;
+    let countries = null;
+    if (origCountries) {
+      countries = {};
+      for (const country of origCountries) {
+        countries[country.country_id] = country.name;
+      }
+    }
+    
     return {
       isLoading: props.languageLoading,
+      countries: countries,
     };
   }
 
@@ -113,8 +143,12 @@ class SettingsScreen extends React.Component<any, any> {
         }
       },
       {
-        name: 'Change Address',
-        nextScreen: ACTIVE_SCREEN_LANGUAGE,
+        name: 'Shipping Details',
+        nextScreen: ACTIVE_SCREEN_SHIPPING,
+        subList: {
+          name: 'Add Shipping',
+          nextScreen: ACTIVE_SCREEN_SHIPPING_ADD,
+        }
       },
     ];
 
@@ -125,6 +159,18 @@ class SettingsScreen extends React.Component<any, any> {
     this.props.navigation.goBack();
   }
 
+  handleOnAddAddressPress = () => {
+    this.props.navigation.dispatch(navigateToSettings({
+      activeScreen: ACTIVE_SCREEN_SHIPPING_ADD,
+      activeList: null,
+    }))
+  }
+
+  handleOnAddShipingPressed = () => {
+    const {addressFormValues} = this.state;
+
+  }
+
   renderLeftAction = () => {
     return (
       <TouchableOpacity onPress={this.handleOnBackPress}>
@@ -133,11 +179,20 @@ class SettingsScreen extends React.Component<any, any> {
     )
   }
 
-  renderNavBar = () => {
+  renderRightAction = () => {
+    return (
+      <TouchableOpacity onPress={this.handleOnAddAddressPress}>
+        <Text>Add</Text>
+      </TouchableOpacity>
+    )
+  }
+
+  renderNavBar = (right = null) => {
     return (
       <NavigationBar
         title={Strings.SETTINGS}
         leftAction={this.renderLeftAction()}
+        rightAction={right}
       >
       </NavigationBar>
     )
@@ -202,6 +257,7 @@ class SettingsScreen extends React.Component<any, any> {
     let {activeList} = this.state;
     return (
       <View style={styles.container}>
+        {this.renderNavBar()}
         <FlatList
           data={activeList}
           renderItem={this.renderFlatlistItem}
@@ -214,9 +270,165 @@ class SettingsScreen extends React.Component<any, any> {
     let {activeList} = this.state;
     return (
       <View style={styles.container}>
+        {this.renderNavBar()}
         {this.renderLanguageSelectionItem(activeList)}
       </View>
     )
+  }
+
+  renderShipingRow = ({item}) => {
+    let address2 = null;
+    if (item.address_2 !== '') {
+      address2 = (<Text style={styles.address}>{`${item.address_2}`}</Text>)
+    }
+
+    return (
+      <View style={styles.addressView}>
+        <Text style={styles.addressName}>{`${item.firstname} ${item.lastname}`}</Text>
+        <Text style={styles.address}>{`${item.address_1}`}</Text>
+        {address2}
+        <Text style={styles.address}>{`${item.city}`}</Text>
+        <Text style={styles.address}>{`${item.country}`}</Text>
+        <Text style={styles.address}>{`${item.postcode}`}</Text>
+      </View>
+      
+    )
+  }
+
+  renderShippingContent = () => {
+    const {addresses} = this.props;
+    return (
+      <View style={styles.container}>
+        {this.renderNavBar(this.renderRightAction())}
+        <FlatList
+          style={{flex: 1}}
+          extraData={this.state}
+          data={addresses? addresses: []}
+          keyExtractor={(item, index) => item.address_id.toString()}
+          renderItem={this.renderShipingRow}
+        />
+      </View>
+    )
+  }
+
+  onChange = async (value) => {
+    console.log(value)
+    let zones = this.state.countryZones;
+    if (value.country_id != this.state.addressFormValues.country_id) {
+      let response = await fetch(`${BASE_URL}/address/getZones`, {
+        method: 'POST',
+        headers: {
+          ...defaultRequestHeaders,
+        },
+        body: getForm({country_id: value.country_id})
+      });
+
+      const {zones: oriZones} = await response.json();
+  
+      if (oriZones) {
+        zones = {};
+        for (const zone of oriZones) {
+          zones[zone.zone_id] = zone.name;
+        }
+      }
+    }
+    
+    this.setState({
+      addressFormValues: value,
+      countryZones: zones,
+    })
+  }
+
+  onAddressFormSubmit = async () => {
+    let cookies = await getCookie()
+    let user = await getUser();
+    let data =  {...this.state.addressFormValues};
+    data.firstname = user.firstname;
+    data.lastname = user.lastname;
+    console.log(cookies)
+    let response = await fetch(`${BASE_URL}/address/save`, {
+      method: 'POST',
+      headers: {
+        ...defaultRequestHeaders,
+        cookie: cookies,
+      },
+      body: getForm(data)
+    });
+    if (response.status === 406) {
+      this.props.dispatch(LoginActions.signOut());
+    } else {
+      const parsedJson = await response.json();
+      console.log(parsedJson)
+      if('error' in parsedJson) {
+      } else {
+        this.props.dispatch(UserActions.getAddresses())
+        this.props.navigation.goBack();
+      }
+    }
+  }
+
+  renderShippingAddContent = () => {
+    let content = null;
+    let {countries} = this.state;
+    var Form = t.form.Form;
+
+    if (countries) {
+      const stateZones = this.state.countryZones;
+      let Zones = t.enums(stateZones? stateZones: {});
+      let Countries = t.enums(countries);
+      // here we are: define your domain model
+      let Address = t.struct({
+        address_1: t.String, 
+        address_2: t.String,
+        city: t.String,
+        postcode: t.maybe(t.String),
+        country_id: Countries,
+        zone_id: Zones,
+      });
+
+      var options = {
+        fields: {
+          address_1: {
+            label: 'Address line 1'
+          },
+          address_2: {
+            label: 'Address line 2'
+          },
+          country_id: {
+            label: 'Country'
+          },
+          zone_id: {
+            label: 'Zone'
+          },
+        }
+      };
+
+      content = (
+        <View style={styles.container}>
+          {this.renderNavBar()}
+          <TouchableWithoutFeedback
+            onPress={Keyboard.dismiss} 
+            accessible={false}
+            style={styles.container}>
+            <ScrollView style={styles.formStyle}>
+              <Form
+                ref="form"
+                type={Address}
+                value={this.state.addressFormValues}
+                onChange={this.onChange}
+                options={options}
+              />
+              <ArcmallButton 
+                title={'Save'}
+                onPress={this.onAddressFormSubmit}
+              />
+            </ScrollView>
+          </TouchableWithoutFeedback>
+        </View>
+      )
+    }
+
+    return content;
   }
 
   render() {
@@ -236,14 +448,20 @@ class SettingsScreen extends React.Component<any, any> {
           content = this.renderChangeLanguagePage();
           break;
         }
+        case ACTIVE_SCREEN_SHIPPING: {
+          content = this.renderShippingContent();
+          break;
+        }
+        case ACTIVE_SCREEN_SHIPPING_ADD: {
+          content = this.renderShippingAddContent();
+          break;
+        }
       }
     }
 
-    
-
+  
     return (
       <View style={styles.container}>
-        {this.renderNavBar()}
         {content}
       </View>
     );
@@ -262,6 +480,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     ...state,
     languageLoading: state.user.languageLoading,
+    addresses: state.user.addressesData,
+    countries: state.user.countries,
   }
 };
 

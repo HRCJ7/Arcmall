@@ -1,9 +1,10 @@
 // @flow
-import { POST } from "../../../services/RestService";
+import { POST, GET } from "../../../services/RestService";
 import { COOKIE_LANGUAGE } from "../../../Constants";
 
 const urlFactory = {
   setLanguage: (): string => 'language/set',
+  getAddresses: (): string => '/address',
 };
 
 const UserService = {
@@ -13,6 +14,12 @@ const UserService = {
     const urlParams = null;
     const headers = null;
     return POST(endpoint, body, urlParams, headers, [COOKIE_LANGUAGE]);
+  },
+  getAddresses: async (): Promise<any> => {
+    const endpoint: string = urlFactory.getAddresses();
+    const urlParams = null;
+    const headers = null;
+    return GET(endpoint, urlParams, headers);
   },
 };
 

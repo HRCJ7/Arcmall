@@ -52,6 +52,11 @@ const styles = StyleSheet.create({
   formStyle: {
     flex: 1,
     padding: 20
+  },
+  addText: {
+    ...font,
+    color: 'white',
+    paddingRight: 10,
   }
 });
 export default styles;

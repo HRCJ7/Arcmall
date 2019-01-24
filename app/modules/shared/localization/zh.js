@@ -45,6 +45,7 @@ export default zhStrings = {
     SEARCH:"搜索项目",
     SETTINGS: '设置',
 
+    ADD: 'Add',
     SEE_MORE: 'See more',
     SELECT_YOUR_ROLE: 'Select your role',
     SELECT_ROLE_DESC: 'Signing up as a Buyer lets you purchase items and Signing up as a Seller allows you to both purhase and set up your own store.',

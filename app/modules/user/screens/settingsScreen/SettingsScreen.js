@@ -182,7 +182,7 @@ class SettingsScreen extends React.Component<any, any> {
   renderRightAction = () => {
     return (
       <TouchableOpacity onPress={this.handleOnAddAddressPress}>
-        <Text>Add</Text>
+        <Text style={styles.addText}>{Strings.ADD}</Text>
       </TouchableOpacity>
     )
   }

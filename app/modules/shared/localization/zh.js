@@ -54,4 +54,5 @@ export default zhStrings = {
     PROCESSING: 'Processing',
     SHIPPED: 'Shipped',
     COMPLETED: 'Completed',
+    SELECT: 'Select',
 }

@@ -15,7 +15,7 @@ export const MAIN_TAB_PROFILE = 'Profile';
 
 export const mainTabRoutes = {
   [MAIN_TAB_HOME]: {
-    screen: HomeScreen,
+    screen: ProductDetailScreen,
     path: `/${MAIN_TAB_HOME}`,
     navigationOptions: {
       tabBarLabel: 'Home',

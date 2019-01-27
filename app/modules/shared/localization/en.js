@@ -53,5 +53,6 @@ export default enStrings = {
     PROCESSING: 'Processing',
     SHIPPED: 'Shipped',
     COMPLETED: 'Completed',
+    SELECT: 'Select',
 
 }

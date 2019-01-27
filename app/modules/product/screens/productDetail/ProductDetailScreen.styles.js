@@ -105,6 +105,17 @@ const styles = StyleSheet.create({
   ratingIcon: {
     color: Theme.colors.secondary,
     marginRight: 10,
-  }
+  },
+  optionContainer: {
+    // flex: 1,
+    borderBottomColor: Theme.colors.darkGray,
+    borderBottomWidth: 0.5,
+  },
+  optionsHeadingText: {
+    ...font,
+    fontSize: Theme.fontSizes.medium,
+    color: Theme.colors.darkGray,
+    marginLeft: -16,
+  },
 });
 export default styles;

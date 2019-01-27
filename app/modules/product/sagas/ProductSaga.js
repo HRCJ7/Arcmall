@@ -15,6 +15,10 @@ import {
   GET_PRODUCT_LIST,
   GET_CATEGORY_LIST,
   GET_REVIEWS,
+  ADD_TO_CART,
+  REMOVE_CART,
+  EDIT_CART,
+  GET_CART,
 } from '../actions/Types';
 import ProductService from '../services/ProductService';
 import ProductActions from '../actions/ProductActions';
@@ -72,10 +76,69 @@ export default () => {
     yield takeLatest(GET_REVIEWS, getReviews);
   }
 
+  function* addToCart({payload}) {
+    try {
+      const response = yield call(ProductService.addToCart, payload);
+      yield put(ProductActions.addToCartSuccess(response));
+    } catch (error) {
+      yield put(ProductActions.addToCartFailure(error.response));
+    }
+  }
+
+  function* watchaddToCart(): Saga<void> {
+    yield takeLatest(ADD_TO_CART, addToCart);
+  }
+
+  function* removeFromCart({payload}) {
+    try {
+      const response = yield call(ProductService.removeFromCart, payload);
+      yield put(ProductActions.removeFromCartSuccess(response));
+    } catch (error) {
+      yield put(ProductActions.removeFromCartSuccess(error.response));
+    }
+  }
+
+  function* watchRemoveFromCart(): Saga<void> {
+    yield takeLatest(REMOVE_CART, removeFromCart);
+  }
+
+  function* editCart({payload}) {
+    try {
+      const response = yield call(ProductService.editCart, payload);
+      yield put(ProductActions.editCartSuccess(response));
+    } catch (error) {
+      yield put(ProductActions.editCartFailure(error.response));
+    }
+  }
+
+  function* watchEditCart(): Saga<void> {
+    yield takeLatest(EDIT_CART, editCart);
+  }
+
+  function* getCart({payload}) {
+    try {
+      const response = yield call(ProductService.getCart, payload);
+      yield put(ProductActions.getCartSuccess(response));
+    } catch (error) {
+      yield put(ProductActions.getCartFailure(error.response));
+    }
+  }
+
+  function* watchGetCart(): Saga<void> {
+    yield takeLatest(GET_CART, getCart);
+  }
+
   return {
     watchGetProductById,
     watchGetProductList,
+
     watchGetCategoryList,
+
     watchGetReviews,
+
+    watchaddToCart,
+    watchRemoveFromCart,
+    watchEditCart,
+    watchGetCart,
   };
 };

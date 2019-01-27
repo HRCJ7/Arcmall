@@ -28,6 +28,9 @@
 		<string>SFCOMPACTDISPLAY-SEMIBOLD.OTF</string>
 		<string>SFCOMPACTDISPLAY-THIN.OTF</string>
 		<string>SFCOMPACTDISPLAY-ULTRALIGHT.OTF</string>
+		<string>Roboto_medium.ttf</string>
+		<string>Roboto.ttf</string>
+		<string>rubicon-icon-font.ttf</string>
 	</array>
 	<key>LSApplicationCategoryType</key>
 	<string/>

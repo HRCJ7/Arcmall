@@ -13,6 +13,18 @@ import {
   GET_REVIEWS,
   GET_REVIEWS_SUCCESS,
   GET_REVIEWS_FAILURE,
+  ADD_TO_CART,
+  ADD_TO_CART_SUCCESS,
+  ADD_TO_CART_FAILURE,
+  EDIT_CART,
+  EDIT_CART_SUCCESS,
+  EDIT_CART_FAILURE,
+  REMOVE_CART,
+  REMOVE_CART_SUCCESS,
+  REMOVE_CART_FAILURE,
+  GET_CART,
+  GET_CART_SUCCESS,
+  GET_CART_FAILURE,
 } from '../actions/Types';
 import {POST_LOGIN, SIGN_OUT} from '../../login/actions/Types';
 
@@ -32,6 +44,13 @@ const INITIAL_STATE = {
   reviews: null,
   reviewsLoading: {},
   reviewsError: null,
+
+  cartData: null,
+  removeCartData: {},
+  editCartData: {},
+  addCartData: {},
+  cartLoaing: {},
+  cartError: null,
 };
 
 export const getProductById = (state = INITIAL_STATE, {payload} : any) => ({
@@ -133,6 +152,83 @@ const getReviewsFailure = (state, {payload} : any) => ({
   reviewsError: payload.error,
 });
 
+
+const addToCart = (state = INITIAL_STATE, {payload} : any) => ({
+  ...state,
+  cartLoaing: true,
+});
+
+const addToCartSuccess = (state = INITIAL_STATE, {payload} : any) => {  
+  return {
+    ...state,
+    cartLoaing: false,
+    addCartData: payload.data,
+  }
+};
+
+const addToCartFailure = (state, {payload} : any) => ({
+  ...state,
+  cartLoaing: false,
+  cartError: payload.error,
+});
+
+const editCart = (state = INITIAL_STATE, {payload} : any) => ({
+  ...state,
+  cartLoaing: true,
+});
+
+const editCartSuccess = (state = INITIAL_STATE, {payload} : any) => {  
+  return {
+    ...state,
+    cartLoaing: false,
+    editCartData: payload.data,
+  }
+};
+
+const editCartFailure = (state, {payload} : any) => ({
+  ...state,
+  cartLoaing: false,
+  cartError: payload.error,
+});
+
+const removeFromCart = (state = INITIAL_STATE, {payload} : any) => ({
+  ...state,
+  cartLoaing: true,
+});
+
+const removeFromCartSuccess = (state = INITIAL_STATE, {payload} : any) => {  
+  return {
+    ...state,
+    cartLoaing: false,
+    removeCartData: payload.data,
+  }
+};
+
+const removeFromCartFailure = (state, {payload} : any) => ({
+  ...state,
+  cartLoaing: false,
+  cartError: payload.error,
+});
+
+const getCart = (state = INITIAL_STATE, {payload} : any) => ({
+  ...state,
+  cartLoaing: true,
+});
+
+const getCartSuccess = (state = INITIAL_STATE, {payload} : any) => {  
+  return {
+    ...state,
+    cartLoaing: false,
+    cartData: payload.data,
+  }
+};
+
+const getCartFailure = (state, {payload} : any) => ({
+  ...state,
+  cartLoaing: false,
+  cartError: payload.error,
+});
+
 const ACTION_HANDLERS = {
   [GET_PRODUCT_BY_ID]: getProductById,
   [GET_PRODUCT_BY_ID_SUCCESS]: getProductByIdSuccess,
@@ -151,6 +247,22 @@ const ACTION_HANDLERS = {
   [GET_REVIEWS]: getReviews,
   [GET_REVIEWS_SUCCESS]: getReviewsSuccess,
   [GET_REVIEWS_FAILURE]: getReviewsFailure,
+
+  [ADD_TO_CART]: addToCart,
+  [ADD_TO_CART_SUCCESS]: addToCartSuccess,
+  [ADD_TO_CART_FAILURE]: addToCartFailure,
+
+  [EDIT_CART]: editCart,
+  [EDIT_CART_SUCCESS]: editCartSuccess,
+  [EDIT_CART_FAILURE]: editCartFailure,
+
+  [REMOVE_CART]: removeFromCart,
+  [REMOVE_CART_SUCCESS]: removeFromCartSuccess,
+  [REMOVE_CART_FAILURE]: removeFromCartFailure,
+
+  [GET_CART]: getCart,
+  [GET_CART_SUCCESS]: getCartSuccess,
+  [GET_CART_FAILURE]: getCartFailure,
 };
 
 export default createReducer(INITIAL_STATE, ACTION_HANDLERS);

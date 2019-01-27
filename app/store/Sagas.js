@@ -20,6 +20,11 @@ export default function* root(): Saga<void> {
     fork(createdProductSaga.watchGetCategoryList),
     fork(createdProductSaga.watchGetReviews),
 
+    fork(createdProductSaga.watchaddToCart),
+    fork(createdProductSaga.watchRemoveFromCart),
+    fork(createdProductSaga.watchEditCart),
+    fork(createdProductSaga.watchGetCart),
+
     fork(createdUserSaga.watchSetLanguage),
     fork(createdUserSaga.watchGetAddreses),
   ]);

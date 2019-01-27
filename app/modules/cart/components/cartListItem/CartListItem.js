@@ -28,7 +28,7 @@ class CartListItem extends Component {
   render() {
     const { item } = this.props;
     return (
-      <View style={styles.itemContainer}>
+      <TouchableOpacity style={styles.itemContainer} onPress={this.props.handleProductOnPress}>
         <View style={styles.itemImageContainer}>
           <View style={styles.itemSelect}>
           <View style={styles.circle}>
@@ -89,7 +89,7 @@ class CartListItem extends Component {
             <Text style={styles.textNormal}>White</Text>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 }

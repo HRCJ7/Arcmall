@@ -15,9 +15,9 @@ import CartActions from "../../actions/CartActions";
 import Toast from "react-native-simple-toast";
 
 const products = [
-  { _id: 1, name: "Item 1", price: 50, quantity: 0 },
-  { _id: 2, name: "Item 2", price: 29, quantity: 0 },
-  { _id: 3, name: "Item 3", price: 200, quantity: 0 }
+  { _id: 1, name: "Item 1", price: 50, quantity: 0,toggle: false, },
+  { _id: 2, name: "Item 2", price: 29, quantity: 0,toggle: false, },
+  { _id: 3, name: "Item 3", price: 200, quantity: 0,toggle: false, }
 ];
 class CartDetailsScreen extends React.Component<any, any> {
   static defaultProps: any;
@@ -44,8 +44,20 @@ class CartDetailsScreen extends React.Component<any, any> {
 
   componentDidUpdate() {}
 
-  handleProductOnPress = (itemId: number) => {
-    // this.props.navigation.dispatch(navigateToItemDetails({ itemId }));
+  handleProductOnPress = (item, index) => {
+    const products = [...this.state.products];
+
+    // if (products[index].toggle == false)
+    // {
+    //   products[index].toggle = true;
+    //   this.setState({ products });
+      
+    // }
+    // else {
+    //   products[index].toggle = false;
+    //   this.setState({ products });
+    // }
+   
   };
 
   handleOnBackPress = () => {
@@ -103,7 +115,7 @@ class CartDetailsScreen extends React.Component<any, any> {
               item={item}
               onSubtract={() => this.onSubtract(item, index)}
               onAdd={() => this.onAdd(item, index)}
-              onPress={this.handleProductOnPress}
+              onPress={this.handleProductOnPress(item, index)}
             />
           )}
         />

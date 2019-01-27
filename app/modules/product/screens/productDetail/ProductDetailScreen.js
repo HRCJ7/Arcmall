@@ -391,7 +391,7 @@ const mapStateToProps = (state, ownProps) => {
     data: state.product.productData,
     isLoading: state.product.productLoading || !state.product.productData,
     error: state.product.productError,
-    cartLoading: state.product.cartLoading,
+    cartLoading: state.cart.cartLoading,
   };
 };
 

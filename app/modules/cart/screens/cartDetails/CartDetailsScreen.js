@@ -13,13 +13,6 @@ import { navigateToItemDetails } from "../../../../navigation/RootNavActions";
 import ArcmallButton from "../../../shared/components/arcmallButton/ArcmallButton";
 import CartActions from "../../actions/CartActions";
 import Toast from "react-native-simple-toast";
-import ProductActions from "../../../product/actions/ProductActions";
-
-// const products = [
-//   { _id: 1, name: "Item 1", price: 50, quantity: 0,toggle: false, },
-//   { _id: 2, name: "Item 2", price: 29, quantity: 0,toggle: false, },
-//   { _id: 3, name: "Item 3", price: 200, quantity: 0,toggle: false, }
-// ];
 
 const getValueFromCurrency = (currency) => {
   return Number(currency.replace(/[^0-9.-]+/g,''));
@@ -30,7 +23,6 @@ class CartDetailsScreen extends React.Component<any, any> {
 
   constructor(props) {
     super(props);
-    console.log(props);
     const params = props.navigation.state.params;
     this.state = {
       isLoading: true,
@@ -41,7 +33,7 @@ class CartDetailsScreen extends React.Component<any, any> {
       shipping: 0
     };
 
-    this.props.dispatch(ProductActions.getCart());
+    this.props.dispatch(CartActions.getCart());
 
   }
 
@@ -50,7 +42,6 @@ class CartDetailsScreen extends React.Component<any, any> {
   static getDerivedStateFromProps(props, state) {
     //Return state object, retun null to update nothing;
     const {cartData} = props;
-    console.log(props.cartLoading);
     return {
       products: cartData? cartData.products: [],
       isLoading: props.isLoading,
@@ -64,7 +55,6 @@ class CartDetailsScreen extends React.Component<any, any> {
   }
 
   componentDidUpdate() {
-    // this.getCartList();
   }
 
   handleProductOnPress = (item, index) => {
@@ -108,30 +98,17 @@ class CartDetailsScreen extends React.Component<any, any> {
   onSubtract = (item) => {
     if (item.quantity > 1) {
       let quantity = item.quantity - 1;
-      this.props.dispatch(ProductActions.editCart({key: item.cart_id, quantity: quantity}));
+      this.props.dispatch(CartActions.editCart({key: item.cart_id, quantity: quantity}));
     }
   };
 
   onAdd = (item) => {
-    this.props.dispatch(ProductActions.editCart({key: item.cart_id, quantity: 1 + item.quantity}));
+    this.props.dispatch(CartActions.editCart({key: item.cart_id, quantity: 1 + item.quantity}));
   };
 
   onDelete = (item) => {
-    this.props.dispatch(ProductActions.removeFromCart({key: item.cart_id}));
+    this.props.dispatch(CartActions.removeFromCart({key: item.cart_id}));
   }
-
-  // getCartList = async () => {
-  //   let cartList = await AsyncStorage.getItem(STORAGE_CART_LIST);
-  //   if (!cartList) {
-  //     this.setState({
-  //       products: [],
-  //     })
-  //   } else {
-  //     this.setState({
-  //       products: JSON.parse(cartList),
-  //     })
-  //   }
-  // }
 
   renderPriceCard = () => {
     const {total, subTotal, tax, shipping} = this.state;
@@ -170,7 +147,6 @@ class CartDetailsScreen extends React.Component<any, any> {
     const navBar = this.renderNavBar();
     const priceCard = this.renderPriceCard();
     let content = null;
-    console.log('rendered')
 
     if (isLoading) {
       content = (
@@ -220,11 +196,10 @@ CartDetailsScreen.defaultProps = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(state.product.cartLoading)
   return {
-    cartData: state.product.cartData,
-    isLoading: state.product.cartLoading,
-    cartError: state.product.cartError,
+    cartData: state.cart.cartData,
+    isLoading: state.cart.cartLoading,
+    cartError: state.cart.cartError,
   };
 };
 

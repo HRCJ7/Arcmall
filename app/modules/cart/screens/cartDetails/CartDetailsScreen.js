@@ -14,11 +14,11 @@ import ArcmallButton from "../../../shared/components/arcmallButton/ArcmallButto
 import CartActions from "../../actions/CartActions";
 import Toast from "react-native-simple-toast";
 
-const products = [
-  { _id: 1, name: "Item 1", price: 50, quantity: 0,toggle: false, },
-  { _id: 2, name: "Item 2", price: 29, quantity: 0,toggle: false, },
-  { _id: 3, name: "Item 3", price: 200, quantity: 0,toggle: false, }
-];
+// const products = [
+//   { _id: 1, name: "Item 1", price: 50, quantity: 0,toggle: false, },
+//   { _id: 2, name: "Item 2", price: 29, quantity: 0,toggle: false, },
+//   { _id: 3, name: "Item 3", price: 200, quantity: 0,toggle: false, }
+// ];
 class CartDetailsScreen extends React.Component<any, any> {
   static defaultProps: any;
 
@@ -27,7 +27,7 @@ class CartDetailsScreen extends React.Component<any, any> {
     console.log(props);
     const params = props.navigation.state.params;
     this.state = {
-      products
+      products :[]
     };
   }
 
@@ -42,7 +42,9 @@ class CartDetailsScreen extends React.Component<any, any> {
     return true;
   }
 
-  componentDidUpdate() {}
+  componentDidUpdate() {
+    this.getCartList();
+  }
 
   handleProductOnPress = (item, index) => {
     const products = [...this.state.products];
@@ -93,6 +95,19 @@ class CartDetailsScreen extends React.Component<any, any> {
     products[index].quantity += 1;
     this.setState({ products });
   };
+
+  getCartList = async () => {
+    let cartList = await AsyncStorage.getItem(STORAGE_CART_LIST);
+    if (!cartList) {
+      this.setState({
+        products: [],
+      })
+    } else {
+      this.setState({
+        products: JSON.parse(cartList),
+      })
+    }
+  }
 
   render() {
     const { products } = this.state;

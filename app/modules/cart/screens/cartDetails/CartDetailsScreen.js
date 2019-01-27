@@ -21,6 +21,10 @@ const getValueFromCurrency = (currency) => {
 class CartDetailsScreen extends React.Component<any, any> {
   static defaultProps: any;
 
+  static navigationOptions: any = ({navigation}) => ({
+    title: Strings.YOUR_CART,
+  });
+
   constructor(props) {
     super(props);
     const params = props.navigation.state.params;
@@ -45,8 +49,8 @@ class CartDetailsScreen extends React.Component<any, any> {
     return {
       products: cartData? cartData.products: [],
       isLoading: props.isLoading,
-      subTotal: cartData && cartData.totals? cartData.totals[0].text: 0,
-      total: cartData && cartData.totals? cartData.totals[1].text: 0,
+      subTotal: cartData && cartData.totals? cartData.totals[0]: {},
+      total: cartData && cartData.totals? cartData.totals[1]: {},
     };
   }
 
@@ -116,8 +120,8 @@ class CartDetailsScreen extends React.Component<any, any> {
     content = (
       <View style={styles.itemInfoContainer}>
         <View style={styles.bottomRowAction}>
-          <Text style={styles.textBold}>Sub total:</Text>
-          <Text style={styles.textNormal}>{subTotal}</Text>
+          <Text style={styles.textBold}>{subTotal.title}</Text>
+          <Text style={styles.textNormal}>{subTotal.text}</Text>
         </View>
         <View style={styles.bottomRowAction}>
           <Text style={styles.textBold}>Shipping cost:</Text>
@@ -129,8 +133,8 @@ class CartDetailsScreen extends React.Component<any, any> {
         </View>
         <View style={styles.line} />
         <View style={styles.bottomTotalAction}>
-          <Text style={styles.textBold}>Grand Total:</Text>
-          <Text style={styles.textNormal}>{total}</Text>
+          <Text style={styles.textBold}>{total.title}</Text>
+          <Text style={styles.textNormal}>{total.text}</Text>
         </View>
         <ArcmallButton
           title={Strings.CHECKOUT}

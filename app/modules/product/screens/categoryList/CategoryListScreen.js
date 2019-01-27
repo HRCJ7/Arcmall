@@ -93,7 +93,7 @@ class CategoryListScreen extends React.Component<any, any> {
               all
               categories={this.props.categoryList}
               onPress={this.handleOnGridPress}
-            /> 
+            />
           </ScrollView>
         </View>
       );

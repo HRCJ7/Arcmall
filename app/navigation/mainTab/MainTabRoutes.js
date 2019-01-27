@@ -14,6 +14,7 @@ export const PROFILE_TAB = 'Profile';
 export const YOUR_CART = 'CartDetailsScreen';
 import ReviewsScreen from "../../modules/product/screens/reviews/ReviewsScreen";
 import SettingsScreen from "../../modules/user/screens/settingsScreen/SettingsScreen";
+import Strings from "../../modules/shared/localization/localization";
 
 export const MAIN_TAB_HOME = 'Home';
 export const MAIN_TAB_PROFILE = 'Profile';
@@ -22,22 +23,13 @@ export const mainTabRoutes = {
   [MAIN_TAB_HOME]: {
     screen: HomeScreen,
     path: `/${MAIN_TAB_HOME}`,
-    navigationOptions: {
-      tabBarLabel: 'Home',
-    },
   },
   [MAIN_TAB_PROFILE]: {
     screen: ProfileScreen,
     path: `/${MAIN_TAB_PROFILE}`,
-    navigationOptions: {
-      tabBarLabel: 'Profile',
-    },
   },
   [YOUR_CART]: {
     screen: CartDetailsScreen,
     path: `/${YOUR_CART}`,
-    navigationOptions: {
-      tabBarLabel: 'Your cart',
-    },
   },
 };

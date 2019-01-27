@@ -89,6 +89,12 @@ class ProductListScreen extends React.Component<any, any> {
     )
   }
 
+  renderEmptyComponent = () => {
+    return (
+      <Text style={styles.headingText}>{Strings.NO_ITEMS}</Text>
+    )
+  }
+
   render() {
     const {isLoading, productList, productListError, navigation: {state: {params: {loadingCategories}}}} = this.props;
     let content = null;
@@ -105,6 +111,7 @@ class ProductListScreen extends React.Component<any, any> {
         <View style={styles.container}>
           {navBar}
           <FlatList
+            ListEmptyComponent={this.renderEmptyComponent()}
             keyExtractor={(item, index) => `${item.description}${index}`}
             data={productList}
             renderItem={this.renderListItem}

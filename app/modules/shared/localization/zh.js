@@ -55,4 +55,8 @@ export default zhStrings = {
     SHIPPED: 'Shipped',
     COMPLETED: 'Completed',
     SELECT: 'Select',
+    NO_ITEMS: 'Sorry, there are no items.',
+    YOUR_CART: 'Your Cart',
+    CHECKOUT: 'Checkout',
+    ITEMS: 'Items',
 }

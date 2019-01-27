@@ -34,7 +34,6 @@ class CartListItem extends Component {
     let swipeBtns = [{
       text: 'Delete',
       backgroundColor: 'red',
-      underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
       onPress: () => { this.props.onDelete(item) }
     }];
     return (
@@ -68,37 +67,26 @@ class CartListItem extends Component {
               <View style={{flex: 1}}>
                 <View style={styles.itemCount}>
                   <TouchableOpacity
-                    style={styles.minusAction}
+                    style={styles.plusAction}
                     numberOfLines={1}
                     onPress={()=> {
-                      let item = {...this.state.item}
-                      // if (item.quantity > 1) {
-                      //   item.quantity = item.quantity - 1;
-                      // }
-                      // this.setState({
-                      //   item: item,
-                      // })
-                      this.props.onSubtract(item);
+                      this.props.onAdd(item);
                     }}
                   >
-                    <EvilIcon name="minus" size={25} />
+                    <EvilIcon name="plus" size={25} />
                   </TouchableOpacity>
                   <Text style={styles.count} numberOfLines={1}>
                     {item.quantity}
                   </Text>
                   <TouchableOpacity
-                    style={styles.plusAction}
+                    style={styles.minusAction}
                     numberOfLines={1}
                     onPress={()=> {
-                      // let item = {...this.state.item}
-                      // item.quantity = item.quantity + 1;
-                      // this.setState({
-                      //   item: item,
-                      // })
-                      this.props.onAdd(item);
+                      let item = {...this.state.item}
+                      this.props.onSubtract(item);
                     }}
                   >
-                    <EvilIcon name="plus" size={25} />
+                    <EvilIcon name="minus" size={25} />
                   </TouchableOpacity>
                 </View>
               </View>

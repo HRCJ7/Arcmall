@@ -12,5 +12,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
+  headingText: {
+    ...font,
+    fontSize: Theme.fontSizes.medium,
+    paddingTop: 200,
+    alignSelf: 'center',
+  },
 });
 export default styles;

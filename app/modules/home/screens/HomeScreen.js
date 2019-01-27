@@ -5,7 +5,6 @@ import {
   View,
   Image,
   ScrollView,
-  SafeAreaView,
   FlatList,
   AsyncStorage,
 } from 'react-native';
@@ -28,6 +27,9 @@ import { getUser } from '../../../store/AsyncStorageHelper';
 const arr = ["1", "1", "1", "1", "1", "1", "1", "1", "1"];
 class HomeScreen extends React.Component<any, any> {
   static defaultProps: any
+  static navigationOptions: any = ({navigation}) => ({
+    title: Strings.HOME,
+  });
 
   constructor(props) {
     super(props);

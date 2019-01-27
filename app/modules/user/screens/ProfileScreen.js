@@ -28,6 +28,7 @@ class ProfileScreen extends React.Component<any, any> {
   static defaultProps: any
 
   static navigationOptions: any = ({navigation}) => ({
+    title: Strings.MY_PROFILE,
     tabBarOnPress: async ({previousScene, scene, jumpToIndex}) => {
       let user = await getUser();
       if (user) {
@@ -96,7 +97,7 @@ class ProfileScreen extends React.Component<any, any> {
   renderNavBar = () => {
     return (
       <NavigationBar
-        title={Strings.YOUR_ACCOUNT}
+        title={Strings.MY_PROFILE}
         leftAction={null}
         rightAction={this.renderRightAction()}
       >

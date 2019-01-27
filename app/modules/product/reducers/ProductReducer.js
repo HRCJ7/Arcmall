@@ -10,6 +10,9 @@ import {
   GET_CATEGORY_LIST,
   GET_CATEGORY_LIST_SUCCESS,
   GET_CATEGORY_LIST_FAILURE,
+  GET_REVIEWS,
+  GET_REVIEWS_SUCCESS,
+  GET_REVIEWS_FAILURE,
 } from '../actions/Types';
 import {POST_LOGIN, SIGN_OUT} from '../../login/actions/Types';
 
@@ -25,6 +28,10 @@ const INITIAL_STATE = {
   categoryList: null,
   categoryListLoading: {},
   categoryListError: null,
+
+  reviews: null,
+  reviewsLoading: {},
+  reviewsError: null,
 };
 
 export const getProductById = (state = INITIAL_STATE, {payload} : any) => ({
@@ -71,6 +78,7 @@ const getProductListFailure = (state, {payload} : any) => ({
 
 const getCategoryList = (state = INITIAL_STATE, {payload} : any) => ({
   ...state,
+  categoryList: null,
   categoryListLoading: true,
 });
 
@@ -105,6 +113,26 @@ export const postLogin = (state = INITIAL_STATE, {payload} : any) => {
 //   };
 // };
 
+
+const getReviews = (state = INITIAL_STATE, {payload} : any) => ({
+  ...state,
+  reviewsLoading: true,
+});
+
+const getReviewsSuccess = (state = INITIAL_STATE, {payload} : any) => {  
+  return {
+    ...state,
+    reviewsLoading: false,
+    reviews: payload.data.reviews,
+  }
+};
+
+const getReviewsFailure = (state, {payload} : any) => ({
+  ...state,
+  reviewsLoading: false,
+  reviewsError: payload.error,
+});
+
 const ACTION_HANDLERS = {
   [GET_PRODUCT_BY_ID]: getProductById,
   [GET_PRODUCT_BY_ID_SUCCESS]: getProductByIdSuccess,
@@ -119,6 +147,10 @@ const ACTION_HANDLERS = {
   [GET_CATEGORY_LIST_FAILURE]: getCategoryListFailure,
 
   [POST_LOGIN]: postLogin,
+
+  [GET_REVIEWS]: getReviews,
+  [GET_REVIEWS_SUCCESS]: getReviewsSuccess,
+  [GET_REVIEWS_FAILURE]: getReviewsFailure,
 };
 
 export default createReducer(INITIAL_STATE, ACTION_HANDLERS);

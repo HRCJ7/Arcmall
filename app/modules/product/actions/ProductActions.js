@@ -8,7 +8,10 @@ import {
   GET_PRODUCT_LIST_SUCCESS,
   GET_CATEGORY_LIST,
   GET_CATEGORY_LIST_SUCCESS,
-  GET_CATEGORY_LIST_FAILURE
+  GET_CATEGORY_LIST_FAILURE,
+  GET_REVIEWS,
+  GET_REVIEWS_SUCCESS,
+  GET_REVIEWS_FAILURE
 } from "./Types";
 
 const getProductById = (product_id: number) => ({
@@ -74,6 +77,27 @@ const getCategoryListFailure = (error: any) => ({
   },
 });
 
+const getReviews = (data) => ({
+  type: GET_REVIEWS,
+  payload: {
+    ...data,
+  },
+});
+
+const getReviewsSuccess = (data: any) => ({
+  type: GET_REVIEWS_SUCCESS,
+  payload: {
+    data,
+  },
+});
+
+const getReviewsFailure = (error: any) => ({
+  type: GET_REVIEWS_FAILURE,
+  payload: {
+    error,
+  },
+});
+
 export default {
   getProductById,
   getProductByIdSuccess,
@@ -85,5 +109,9 @@ export default {
   
   getCategoryList,
   getCategoryListSuccess,
-  getCategoryListFailure
+  getCategoryListFailure,
+
+  getReviews,
+  getReviewsSuccess,
+  getReviewsFailure,
 }

@@ -14,6 +14,8 @@ import {
   SIGN_OUT
 } from '../actions/Types';
 import { NativeIconAPI } from 'react-native-vector-icons/dist/lib/create-icon-set';
+import { STORAGE_USER, COOKIE_PHPSSID, COOKIE_CURENCY, COOKIE_LANGUAGE } from '../../../Constants';
+import { clearCookies, clearCookiesAndUser } from '../../../store/AsyncStorageHelper';
 
 const INITIAL_STATE = {
   user: null,
@@ -33,9 +35,8 @@ export const login = (state = INITIAL_STATE, {payload} : any) => ({
 
 export const loginSuccess = async (state = INITIAL_STATE, {payload} : any) => {
   let data = {...payload.data}
-  console.log(data)
   delete data['password']; 
-  await AsyncStorage.setItem('user', JSON.stringify(data));
+  await AsyncStorage.setItem(STORAGE_USER, JSON.stringify(data));
   return {
     ...state,
     user: data,
@@ -56,7 +57,6 @@ export const registration = (state = INITIAL_STATE, {payload} : any) => ({
 });
 
 export const registrationSuccess = (state = INITIAL_STATE, {payload} : any) => {
-  console.log(payload)
   return {
     ...state,
     registrationData: payload.data,
@@ -71,20 +71,17 @@ export const registrationFailure = (state, {payload} : any) => ({
 });
 
 export const postLogin = (state = INITIAL_STATE, {payload} : any) => {
-  let user = {};
-  if (payload.user) {
-    user = JSON.parse(payload.user);
-  }
-  console.log(user)
   return {
     ...state,
-    user: user,
+    user: payload.user,
+    language: payload.language,
     registrationData: {}
   }
 };
 
 export const signOut = async (state = INITIAL_STATE, {payload} : any) => {
-  await AsyncStorage.multiRemove(['user']);
+  await clearCookies();
+  await clearCookiesAndUser();
   return {
     registrationData: {},
     user: {},

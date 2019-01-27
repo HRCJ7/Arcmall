@@ -10,8 +10,13 @@ import SignUpAsASellerScreen from '../modules/login/screens/SignUpAsASellerScree
 import MainTabNavigation from './mainTab/MainTabNavigation';
 import CategoryTabNavigator from './categoryTab/CategoryTabNavigation';
 import CategoryListScreen from '../modules/product/screens/categoryList/CategoryListScreen';
+<<<<<<< HEAD
 import CartDetailsScreen from '../modules/cart/screens/cartDetails/CartDetailsScreen';
 
+=======
+import ReviewsScreen from '../modules/product/screens/reviews/ReviewsScreen';
+import SettingsScreen from '../modules/user/screens/settingsScreen/SettingsScreen';
+>>>>>>> dev
 
 export const ROOT_NAV_LOGIN = 'Login';
 export const ROOT_NAV_SELECT_ROLE = 'SelectRole';
@@ -21,7 +26,16 @@ export const ROOT_NAV_ITEM_DETAILS = 'ItemDetails';
 export const ROOT_NAV_SIGN_UP_AS_A_BUYER = 'SignUpAsABuyerScreen';
 export const ROOT_NAV_SIGN_UP_AS_A_SELLER = 'SignUpAsASellerScreen';
 export const ROOT_NAV_ALL_CATEGORIES = 'AllCategories';
+<<<<<<< HEAD
 export const ROOT_NAV_YOUR_CART = 'CartDetailsScreen';
+=======
+export const ROOT_NAV_REVIEWS = 'Reviews';
+
+export const ROOT_NAV_SETTINGS = 'Settings';
+export const ROOT_NAV_SETTINGS_LANGUAGE = 'SettingsLanguage';
+export const ROOT_NAV_SETTINGS_SHIPPING = 'SettingsShipping';
+export const ROOT_NAV_SETTINGS_SHIPPING_ADD = 'SettingsShippingAdd';
+>>>>>>> dev
 
 export const rootRoutes = {
   [ROOT_NAV_MAIN_TAB]: {
@@ -60,8 +74,31 @@ export const rootRoutes = {
     screen: CategoryListScreen,
     path: `/${ROOT_NAV_ALL_CATEGORIES}`,
   },
+<<<<<<< HEAD
   [ROOT_NAV_YOUR_CART]: {
     screen: CartDetailsScreen,
     path: `/${ROOT_NAV_YOUR_CART}`,
   }
+=======
+  [ROOT_NAV_REVIEWS]: {
+    screen: ReviewsScreen,
+    path: `/${ROOT_NAV_REVIEWS}`,
+  },
+  [ROOT_NAV_SETTINGS]: {
+    screen: SettingsScreen,
+    path: `/${ROOT_NAV_SETTINGS}`,
+  },
+  [ROOT_NAV_SETTINGS_LANGUAGE]: {
+    screen: SettingsScreen,
+    path: `/${ROOT_NAV_SETTINGS_LANGUAGE}`,
+  },
+  [ROOT_NAV_SETTINGS_SHIPPING]: {
+    screen: SettingsScreen,
+    path: `/${ROOT_NAV_SETTINGS_SHIPPING}`,
+  },
+  [ROOT_NAV_SETTINGS_SHIPPING_ADD]: {
+    screen: SettingsScreen,
+    path: `/${ROOT_NAV_SETTINGS_SHIPPING_ADD}`,
+  },
+>>>>>>> dev
 };

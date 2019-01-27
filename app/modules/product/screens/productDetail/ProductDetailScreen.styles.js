@@ -67,6 +67,10 @@ const styles = StyleSheet.create({
   contactSellerView: {
     flexDirection: 'row',
   },
+  rightButton: {
+    alignSelf: 'flex-end',
+    flexDirection: 'row',
+  },
   descriptionText: {
     ...font,
     ...marginTop,

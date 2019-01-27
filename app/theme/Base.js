@@ -5,6 +5,8 @@ const Theme = {
     primary: '#3998B3',
     secondary: '#007EA3',
     gray: '#EBEBEB',
+    darkGray: '#989898',
+    thickGray: '#505050',
     grayBackground: '#F8F7F7',
     smallText: '#777777'
   },

@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import {
   CachedImage,
 } from 'react-native-cached-image';
+import RatingItem from '../ratingItem/RatingItem';
 
 const ICON_SIZE = 12;
 
@@ -33,14 +34,10 @@ export default class ProductListItem extends Component {
             <View style={styles.container}>
               <Text style={styles.blueText}>{'item.categotyName'}</Text>
             </View>
-            <View style={styles.container}>
-              <View style={{flexDirection: 'row', justifyContent:'flex-end'}}>
-                <Icon style={styles.ratingIcon} name="ios-star" size={ICON_SIZE}/>
-                <Icon style={styles.ratingIcon} name="ios-star" size={ICON_SIZE} />
-                <Icon style={styles.ratingIcon} name="ios-star" size={ICON_SIZE} />
-                <Icon style={styles.ratingIcon} name="ios-star-outline" size={ICON_SIZE} />
-                <Icon style={styles.ratingIcon} name="ios-star-outline" size={ICON_SIZE} />
-              </View>
+            <View style={styles.starContainer}>
+              <RatingItem 
+                rating={item.rating}
+              />
             </View>
           </View>
           <View style={styles.bottomRow}>

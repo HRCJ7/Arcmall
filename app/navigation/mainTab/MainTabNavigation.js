@@ -2,7 +2,7 @@
 import React from 'react';
 import {createBottomTabNavigator, createAppContainer} from 'react-navigation';
 import {connect} from 'react-redux';
-import {mainTabRoutes, HOME_TAB, PROFILE_TAB,YOUR_CART} from './MainTabRoutes';
+import {mainTabRoutes, MAIN_TAB_HOME, MAIN_TAB_PROFILE,YOUR_CART} from './MainTabRoutes';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import Theme, { font } from '../../theme/Base';
 
@@ -19,9 +19,9 @@ const config = {
     tabBarIcon: ({ focused, horizontal, tintColor }) => {
       const { routeName } = navigation.state;
       let iconName  = '';
-      if (routeName === HOME_TAB) {
+      if (routeName === MAIN_TAB_HOME) {
         iconName = 'ios-home'; 
-      } else if (routeName === PROFILE_TAB) {
+      } else if (routeName === MAIN_TAB_PROFILE) {
         iconName = 'ios-contact';
       }
       else if (routeName === YOUR_CART) {

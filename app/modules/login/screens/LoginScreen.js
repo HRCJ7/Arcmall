@@ -21,6 +21,8 @@ import EvilIcon from "react-native-vector-icons/EvilIcons";
 import Strings from "../../shared/localization/localization";
 import ArcmallButton from "../../shared/components/arcmallButton/ArcmallButton";
 import LoginActions from "../actions/LoginActions";
+import { COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY, STORAGE_USER } from "../../../Constants";
+import { clearCookies, getUser } from "../../../store/AsyncStorageHelper";
 
 class SignUpAsABuyerScreen extends React.Component<any, any> {
   static defaultProps: any;
@@ -28,8 +30,8 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
   constructor(props) {
     super(props);
     this.state = {
-      email: 'harindamail@gmail.com',
-      password: 'harindamail',
+      email: null,
+      password: null,
     };
   }
 
@@ -41,7 +43,7 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
   }
 
   async shouldComponentUpdate(nextProps, nextState) {
-    let user = await AsyncStorage.getItem('user');
+    let user = await getUser();
     if(user) {
       this.props.navigation.goBack(null);
     }
@@ -53,8 +55,9 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
     this.props.navigation.dispatch(navigateToMainTabScreen());
   };
 
-  handleLoginPress = () => {
+  handleLoginPress = async () => {
     let {email, password} = this.state;
+    await clearCookies();
     this.props.dispatch(LoginActions.login(email, password))
   }
 
@@ -103,14 +106,12 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
             <TextInput
               onChangeText={(email) => this.setState({email})}
               style={styles.textInput}
-              value='harindamail@gmail.com'
             />
             <Text style={[styles.label, {paddingTop: 40}]}>{Strings.PASSWORD}</Text>
             <TextInput
               onChangeText={(password) => this.setState({password})}
               secureTextEntry={true}
               style={styles.textInput}
-              value='harindamail'
             />
             <TouchableOpacity>
               <Text style={styles.forgotPasswordText}>{Strings.FORGOT_PASSWORD}</Text>

@@ -1,6 +1,12 @@
 // @flow
-import {NetInfo} from 'react-native';
+import {NetInfo, AsyncStorage} from 'react-native';
 import Config from 'react-native-config';
+import CookieManager from 'react-native-cookies';
+import setCookie from 'set-cookie-parser'
+import { COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY } from '../Constants';
+import { getCookies } from '../store/AsyncStorageHelper';
+
+let cookieString = null;
 
 const isConnected = async () => {
   const connectionInfo = await NetInfo.getConnectionInfo();
@@ -9,13 +15,46 @@ const isConnected = async () => {
 
 const BASE_URL: string = `${Config.API_URL}`;
 
-const defaultRequestHeaders: {[string]: string} = {
+export const defaultRequestHeaders: {[string]: string} = {
   'Accept': '*/*',
   'accept-encoding':'gzip, deflate',
   'Content-Type': 'multipart/form-data',
+  'credentials': 'same-origin',
 };
 
-const getForm = function(data) {
+const cookieToString = function(cookie, suffix) {
+  return `${cookie.name}=${cookie.value}${suffix}`;
+}  
+
+const setCookies = async function(response, keys, newSession) {
+  var combinedCookieHeader = response.headers.get('Set-Cookie');
+  var splitCookieHeaders = setCookie.splitCookiesString(combinedCookieHeader)
+  var cookies = setCookie.parse(splitCookieHeaders, {
+    map: true 
+  });
+  console.log(cookies)
+  const set = [];
+  for (let key of keys) {
+    set.push([key, cookieToString(cookies[key], '')])
+    console.log(key)
+  }
+  await AsyncStorage.multiSet(set);
+}
+
+export const getCookie = async function() {
+  cookieString = '';
+  await getCookies((err, stores) => {
+    stores.map((result, i, store) => {
+      let name = store[i][0];
+      let value = store[i][1];
+      cookieString = cookieString.concat(`${value}; `);
+    });
+  })
+  cookieString = cookieString === ''? null: cookieString;
+  return cookieString;
+}
+
+export const getForm = function(data) {
   let bodyData = new FormData();
   for (let key in data) {
     bodyData.append(key, data[key]);
@@ -42,6 +81,7 @@ const handleResponseStatus = async (response) => {
   if (response && response.status < 200 || response.status >= 300) {
     const error: any = new Error(response.statusText);
     error.response = await response.json();
+    error.status = response.status;
 
     throw error;
   }
@@ -57,52 +97,75 @@ export const buildAuthorizationHeader = (): {Authorization: string} => {
   }
 
   const {token} = session;
-
   return {
     Authorization: `Bearer ${token}`,
   };
 };
 
 export const GET = async (
-  endpoint: string, params: {[string]: any} | null, headers: {[string]: any} | null
+  endpoint: string, params: {[string]: any} | null, headers: {[string]: any} | null, updateCookieKeys: any = null
 ): Promise<any> => {
   // Wait for connection
   await isConnected();
 
   // Create the request URL
   const url: string = `${BASE_URL}/${endpoint}${createURLParams(params)}`;
+  let cookie = await getCookie();
   const options: {[string]: any} = {
     headers: {
       method: 'GET',
       ...defaultRequestHeaders,
       ...headers,
-      credentials: 'include',
+      cookie: cookie,
     },
   };
+  if (!cookie) {
+    delete options.headers.Cookie;
+  }
+  
   const response = await fetch(url, options);
+  console.log(response)
 
+  if(!cookie) {
+    await setCookies(response, [COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY], true);
+  } else if (updateCookieKeys) {
+    await setCookies(response, updateCookieKeys, false);
+  }
   // Handle the response before returning
   return handleResponseStatus(response);
 };
 
 export const POST = async (
-  endpoint: string, body: {[string]: any} | null, params: {[string]: any} | null, headers: {[string]: any} | null
+  endpoint: string, body: {[string]: any} | null, params: {[string]: any} | null, headers: {[string]: any} | null, updateCookieKeys: any = null
 ): Promise<any> => {
   // Wait for connection
   await isConnected();
 
   // Create the request URL
   const url: string = `${BASE_URL}/${endpoint}${createURLParams(params)}`;
+  let cookie = await getCookie();
   const options: {[string]: any} = {
     method: 'POST',
     headers: {
       ...defaultRequestHeaders,
       ...headers,
+      cookie: cookie,
     },
     body: getForm(body),
   };
 
+  if (!cookie) {
+    delete options.headers.Cookie;
+  }
+
   const response = await fetch(url, options);
+  console.log(response)
+
+  if(!cookie) {
+    await setCookies(response, [COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY], true);
+  } else if (updateCookieKeys) {
+    await setCookies(response, updateCookieKeys, false);
+  }
   // Handle the response before returning
   return handleResponseStatus(response);
 };

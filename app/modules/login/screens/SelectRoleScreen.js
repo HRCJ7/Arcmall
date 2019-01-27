@@ -79,10 +79,9 @@ class SelectRoleScreen extends React.Component<any, any> {
           <View style={styles.headerComponent}>
           </View>
           <View style={styles.textComponent}>
-            <Text style={styles.selectRoleText}>Select Your Role</Text>
+            <Text style={styles.selectRoleText}>{Strings.SELECT_YOUR_ROLE}</Text>
             <Text style={styles.wordingText}>
-              Signing up as a Buyer lets you purchase items and Signing up as a
-              Seller allows you to both purhase and set up your own store.
+              {Strings.SELECT_ROLE_DESC}
             </Text>
             <ArcmallButton
               inverse

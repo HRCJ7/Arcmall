@@ -22,6 +22,9 @@ import ArcmallButton from "../../shared/components/arcmallButton/ArcmallButton";
 import Theme from "../../../theme/Base";
 import LoginActions from "../actions/LoginActions";
 import Toast from 'react-native-simple-toast';
+import Strings from "../../shared/localization/localization";
+import { STORAGE_USER } from "../../../Constants";
+import { getUser } from "../../../store/AsyncStorageHelper";
 
 class SignUpAsASellerScreen extends React.Component<any, any> {
   static defaultProps: any;
@@ -48,7 +51,7 @@ class SignUpAsASellerScreen extends React.Component<any, any> {
   }
 
   async shouldComponentUpdate(nextProps, nextState) {
-    let user = await AsyncStorage.getItem('user');
+    let user = await getUser();
     if(user) {
       this.props.navigation.navigate(HOME_TAB);
     }
@@ -109,27 +112,27 @@ class SignUpAsASellerScreen extends React.Component<any, any> {
                 Great! Lets's get all set up to start selling items on Arcmall.We hope
                 to see a greate collection from you.
               </Text>
-              <Text style={[styles.label, {paddingTop: 10}]}>{'Company Name'}</Text>
+              <Text style={[styles.label, {paddingTop: 10}]}>{Strings.COMPANY_NAME}</Text>
               <TextInput
                 onChangeText={(shoppartner) => this.setState({shoppartner})}
                 style={styles.textInput}
               />
-              <Text style={[styles.label, {paddingTop: 10}]}>{'First Name'}</Text>
+              <Text style={[styles.label, {paddingTop: 10}]}>{Strings.FIRST_NAME}</Text>
               <TextInput
                 onChangeText={(firstname) => this.setState({firstname})}
                 style={styles.textInput}
               />
-              <Text style={[styles.label, {paddingTop: 10}]}>{'Last Name'}</Text>
+              <Text style={[styles.label, {paddingTop: 10}]}>{Strings.LAST_NAME}</Text>
               <TextInput
               onChangeText={(lastname) => this.setState({lastname})}
               style={styles.textInput}
               />
-              <Text style={[styles.label, {paddingTop: 10}]}>{'Email'}</Text>
+              <Text style={[styles.label, {paddingTop: 10}]}>{Strings.EMAIL}</Text>
               <TextInput
                 onChangeText={(email) => this.setState({email})}
                 style={styles.textInput}
               />
-              <Text style={[styles.label, {paddingTop: 10}]}>{'Password'}</Text>
+              <Text style={[styles.label, {paddingTop: 10}]}>{Strings.PASSWORD}</Text>
               <TextInput
                 onChangeText={(password) => this.setState({password, confirm: password})}
                 secureTextEntry={true}

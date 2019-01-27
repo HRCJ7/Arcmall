@@ -4,6 +4,7 @@ import Icon from "react-native-vector-icons/EvilIcons";
 import {
   styles
 } from "./SeeMoreTitleBar.styles";
+import Strings from "../../../shared/localization/localization";
 export default class SeeMoreTitleBar extends Component {
   constructor(props) {
     super(props);
@@ -18,7 +19,7 @@ export default class SeeMoreTitleBar extends Component {
           style={styles.seeMoreContainer}
           onPress={this.props.onPress}
         >
-          <Text style={styles.seeMoreText}>See more </Text>
+          <Text style={styles.seeMoreText}>{Strings.SEE_MORE}</Text>
           <Icon name="chevron-right" size={20} color="#000000" />
         </TouchableOpacity>
       </View>

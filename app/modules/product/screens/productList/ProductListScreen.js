@@ -4,9 +4,12 @@ import {
   Text,
   View,
   TouchableOpacity,
+  Alert,
+  AsyncStorage,
   FlatList,
 } from 'react-native';
 import PropTypes from 'prop-types';
+
 import {connect} from 'react-redux';
 import styles from './ProductListScreen.styles';
 import NavigationBar from '../../../shared/components/NavigationBar/NavigationBar';
@@ -28,10 +31,14 @@ class ProductListScreen extends React.Component<any, any> {
       search: '',
       category_id: params.category_id,
     }))
+
+    this.state = {
+      cartList: [],
+    };
   }
 
   componentDidMount() {
-  
+    
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -45,6 +52,7 @@ class ProductListScreen extends React.Component<any, any> {
 
   componentDidUpdate() {
     
+    this.getCartList();
   }
 
   handleProductOnPress = (itemId: number) => {
@@ -53,6 +61,32 @@ class ProductListScreen extends React.Component<any, any> {
 
   handleOnBackPress = () => {
     this.props.navigation.goBack(null);
+  }
+
+  addToCart = (item) => {
+    this.saveCartList(item);
+  };
+
+  saveCartList = async (item) => {
+
+    this.state.cartList.push(item)
+    this.setState({
+      cartList: this.state.cartList,
+    })
+    await AsyncStorage.setItem(STORAGE_CART_LIST, JSON.stringify(this.state.cartList));
+  }
+
+  getCartList = async () => {
+    let cartList = await AsyncStorage.getItem(STORAGE_CART_LIST);
+    if (!cartList) {
+      this.setState({
+        cartList: [],
+      })
+    } else {
+      this.setState({
+        cartList: JSON.parse(cartList),
+      })
+    }
   }
 
   renderLeftAction = () => {
@@ -78,6 +112,7 @@ class ProductListScreen extends React.Component<any, any> {
       <ProductListItem
         item={item}
         onPress={this.handleProductOnPress}
+        addToCart={this.addToCart}
       /> 
     )
   }

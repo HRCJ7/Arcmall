@@ -280,6 +280,7 @@ class SettingsScreen extends React.Component<any, any> {
         {this.renderNavBar()}
         <FlatList
           data={activeList}
+          keyExtractor={(item) => item.name}
           renderItem={this.renderFlatlistItem}
         />
       </View>

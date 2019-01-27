@@ -8,6 +8,7 @@ import {
   ROOT_NAV_SIGN_UP_AS_A_SELLER,
   ROOT_NAV_LOGIN,
   ROOT_NAV_ALL_CATEGORIES,
+  ROOT_NAV_YOUR_CART,
   ROOT_NAV_REVIEWS,
   ROOT_NAV_SETTINGS,
 } from './RootRoutes';
@@ -61,6 +62,12 @@ export const navigateToAllCategories = (navParams: any) => {
   .getActionForPathAndParams(`/${ROOT_NAV_ALL_CATEGORIES}`, navParams);
 };
 
+
+export const navigateToYourCart = (navParams: any) => {
+  return AppContainer
+  .router
+  .getActionForPathAndParams(`/${ROOT_NAV_YOUR_CART}`, navParams);
+};
 export const navigateToReviews = (navParams: any) => {
   return AppContainer
   .router

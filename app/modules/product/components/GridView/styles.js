@@ -9,13 +9,14 @@ import Theme, { font } from '../../../../theme/Base';
   
 export const styles = StyleSheet.create({
   container: {
-    height: 280,
+    height: 800,
     width: "100%"
   },
   image: {
+    flex: 1,
     width: "100%",
     height: "100%",
-    resizeMode: "stretch"
+    resizeMode: "cover"
   },
   imageContainer: {
     width: "100%",
@@ -32,17 +33,23 @@ export const styles = StyleSheet.create({
   text: {
     ...font,
     textAlign: "right",
-    color: 'black',
+    color: 'white',
     fontSize: Theme.fontSizes.medium,
   },
   countText: {
     ...font,
     textAlign: "right",
-    color: 'black',
+    color: 'white',
     paddingTop: 5,
     fontSize: Theme.fontSizes.small,
   },
   rowStyle: {
-    backgroundColor: "white", marginBottom: 5
+    backgroundColor: "white", marginBottom: 10
+  },
+  rowStyle2: {
+    backgroundColor: "white", marginBottom: 10
+  },
+  columnStyle: {
+    backgroundColor: "white",marginRight :10
   }
 });

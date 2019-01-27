@@ -23,9 +23,28 @@ const getUser = async (callback) => {
   return user;
 }
 
+const addToCart = async (cartData) => {
+  let cart = await AsyncStorage.getItem(STORAGE_CART_LIST);
+  if (cart) {
+    cart = JSON.parse(cart);
+  } else {
+    cart = [];
+  }
+  cart.push(cartData);
+  await AsyncStorage.setItem(STORAGE_CART_LIST, cart);
+  return cart;
+}
+
+const getCart = async (cartData) => {
+  let cart = await AsyncStorage.getItem(STORAGE_CART_LIST);
+  return cart;
+}
+
 export {
   clearCookies,
   getCookies,
   getUser,
   clearCookiesAndUser,
+  addToCart,
+  getCart,
 }

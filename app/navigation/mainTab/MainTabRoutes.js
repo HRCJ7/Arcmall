@@ -7,6 +7,11 @@ import LoginScreen from "../../modules/login/screens/LoginScreen";
 import SignUpAsABuyerScreen from "../../modules/login/screens/SignUpAsABuyerScreen";
 import SelectRoleScreen from "../../modules/login/screens/SelectRoleScreen";
 import SignUpAsASellerScreen from "../../modules/login/screens/SignUpAsASellerScreen";
+import CartDetailsScreen from '../../modules/cart/screens/cartDetails/CartDetailsScreen';
+
+export const HOME_TAB = 'Home';
+export const PROFILE_TAB = 'Profile';
+export const YOUR_CART = 'CartDetailsScreen';
 import ReviewsScreen from "../../modules/product/screens/reviews/ReviewsScreen";
 import SettingsScreen from "../../modules/user/screens/settingsScreen/SettingsScreen";
 
@@ -15,7 +20,7 @@ export const MAIN_TAB_PROFILE = 'Profile';
 
 export const mainTabRoutes = {
   [MAIN_TAB_HOME]: {
-    screen: ProductDetailScreen,
+    screen: HomeScreen,
     path: `/${MAIN_TAB_HOME}`,
     navigationOptions: {
       tabBarLabel: 'Home',
@@ -26,6 +31,13 @@ export const mainTabRoutes = {
     path: `/${MAIN_TAB_PROFILE}`,
     navigationOptions: {
       tabBarLabel: 'Profile',
+    },
+  },
+  [YOUR_CART]: {
+    screen: CartDetailsScreen,
+    path: `/${YOUR_CART}`,
+    navigationOptions: {
+      tabBarLabel: 'Your cart',
     },
   },
 };

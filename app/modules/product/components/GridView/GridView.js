@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { TouchableOpacity, View, StyleSheet, Text, Image } from "react-native";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import Theme, { font } from '../../../../theme/Base';
+import {CachedImage} from 'react-native-cached-image';
 import { splitCategoryName } from "../../../../services/ExternalServices";
 import {styles} from "./styles";
 
@@ -38,10 +39,15 @@ export default class GridView extends Component {
         onPress={() => {
           this.handleOnImagePressed(categories[category].categories)
         }}>
-         <Image
+          <Image
                 style={styles.image}
-                source={require("../../../../../assets/rowimage1.png")}
-              />
+                source={{uri: categories[category].image}}
+              />  
+       {/* <CachedImage 
+            style={styles.image}
+            resizeMode= 'cover'
+            source={{uri: categories[category].image}}
+          /> */}
           <View style={styles.imageText}>
             <Text style={styles.text}>{name}</Text>
             <Text style={styles.countText}>{`${count} items`}</Text>
@@ -65,17 +71,43 @@ export default class GridView extends Component {
           <Row size={1} style={styles.rowStyle}>
           {images[0]}
           </Row>
-          <Row size={2} style={{ backgroundColor: "white" }}>
+          <Row size={1} style={styles.rowStyle}>
+          {images[0]}
+          </Row>
+
+          <Row size={1} style={styles.rowStyle}>
+            <Col style={styles.columnStyle}>
+            {images[1]}
+            </Col>
+            <Col >
+              {images[2]}
+
+            </Col>
+          </Row>
+          <Row size={2} style={styles.rowStyle}>
+            <Col style={styles.columnStyle}>
+            {images[1]}
+            </Col>
             <Col style={styles.rowStyle}>
+              <Row style={styles.rowStyle2}>
+              {images[2]}
+              </Row>
+              <Row >
+              {images[3]}
+              </Row>
+            </Col>
+          </Row>
+
+          <Row size={1} style={styles.rowStyle}>
+          {images[0]}
+          </Row>
+          <Row size={1} style={styles.rowStyle}>
+            <Col style={styles.columnStyle}>
             {images[1]}
             </Col>
             <Col>
-              <Row style={styles.rowStyle}>
               {images[2]}
-              </Row>
-              <Row style={styles.rowStyle}>
-              {images[3]}
-              </Row>
+
             </Col>
           </Row>
         </Grid>

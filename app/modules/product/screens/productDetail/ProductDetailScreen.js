@@ -23,7 +23,6 @@ import CategoryTabNavigation from '../../../../navigation/categoryTab/CategoryTa
 import { navigateToReviews } from '../../../../navigation/RootNavActions';
 import {Picker, Header} from "native-base";
 import { Button } from 'react-native-elements';
-import { getForm } from '../../../../services/RestService';
 
 const NONE = 'none';
 const getOptionDataFromString = (value) => {
@@ -40,16 +39,18 @@ class ProductDetailScreen extends React.Component<any, any> {
 
   constructor(props) {
     super(props);
+    const {itemId} = this.props.navigation.state.params;
     this.state = {
       isLoading: true,
+      cartLoading: false,
       addCartForm: {
         option: [],
         quantity: 1,
-        product_id: 159,
+        product_id: itemId,
       },
     };
-    // let {itemId} = this.props.navigation.state.params;
-    this.props.dispatch(ProductActions.getProductById(159))
+    
+    this.props.dispatch(ProductActions.getProductById(itemId))
   }
 
   componentDidMount() {
@@ -59,7 +60,9 @@ class ProductDetailScreen extends React.Component<any, any> {
 
   static getDerivedStateFromProps(props, state) {
     //Return state object, retun null to update nothing;
-    return null;
+    return {
+      cartLoading: props.cartLoading,
+    };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -88,9 +91,7 @@ class ProductDetailScreen extends React.Component<any, any> {
     }
     delete cart.option;
 
-    console.log(cart);
-    // const arry = getForm(this.state.addCartForm);
-    // console.log(arry)
+    this.props.dispatch(ProductActions.addToCart(cart));
   }
 
   onSelectedItemsChange = selectedItems => {
@@ -323,10 +324,11 @@ class ProductDetailScreen extends React.Component<any, any> {
     return (
       <View style={{position: 'absolute', bottom: 10, left: 0, right: 0}}>
         <Button
-        raised
-        onPress={this.handleAddToCart}
-        rightIcon={{name: 'shopping-cart'}}
-        title='Add to cart' />
+          raised
+          loading={this.state.cartLoading}
+          onPress={this.handleAddToCart}
+          rightIcon={{name: 'shopping-cart'}}
+          title='Add to cart' />
       </View>
       
     )
@@ -389,6 +391,7 @@ const mapStateToProps = (state, ownProps) => {
     data: state.product.productData,
     isLoading: state.product.productLoading || !state.product.productData,
     error: state.product.productError,
+    cartLoading: state.product.cartLoading,
   };
 };
 

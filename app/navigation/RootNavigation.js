@@ -4,7 +4,7 @@ import {SafeAreaView} from 'react-native';
 import PropTypes from 'prop-types';
 import {createStackNavigator, createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {connect} from 'react-redux';
-import {rootRoutes, ROOT_NAV_MAIN_TAB} from './RootRoutes';
+import {rootRoutes, ROOT_NAV_MAIN_TAB,ROOT_NAV_SIGN_UP_AS_A_BUYER} from './RootRoutes';
 import ProductActions from '../modules/product/actions/ProductActions';
 import Theme from '../theme/Base';
 

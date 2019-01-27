@@ -93,6 +93,7 @@ export default () => {
     try {
       const response = yield call(ProductService.removeFromCart, payload);
       yield put(ProductActions.removeFromCartSuccess(response));
+      yield put(ProductActions.getCart());
     } catch (error) {
       yield put(ProductActions.removeFromCartSuccess(error.response));
     }
@@ -106,6 +107,7 @@ export default () => {
     try {
       const response = yield call(ProductService.editCart, payload);
       yield put(ProductActions.editCartSuccess(response));
+      yield put(ProductActions.getCart());
     } catch (error) {
       yield put(ProductActions.editCartFailure(error.response));
     }

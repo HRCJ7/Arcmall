@@ -9,10 +9,13 @@ export default enStrings = {
     PASSWORD: 'Password',
     FORGOT_PASSWORD: 'Forgot Password?',
     PRODUCT_DETAILS: 'Product Details',
+    ALL_CATEGORIES: 'All Categories',
     DESCRIPTION: 'Description',
     STORE_DETAILS: 'Store Details',
     CONTACT_SELLER: 'Contact Seller',
     RETURN_POLICY: 'Return Policy',
+    YOUR_CART: 'Your Cart',
+    CHECKOUT: 'Checkout', 
     RETURN_TEXT: 'Returns accepted if the product is not as described.',
     BUYER_PROTECTION: 'Buyer Protection',
     BUYER_TEXT: 'To ensure that every buyer is protected when purchasing from arcmall, we have the following refund options. \n\n' + 

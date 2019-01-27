@@ -17,6 +17,10 @@ export default class ProductListItem extends Component {
     const {item: {item}, onPress} = this.props;
     onPress(item.product_id);
   }
+  addToCart = () => {
+    const {item: {item}, addToCart} = this.props;
+    addToCart(item);
+  }
 
   render() {
     const {item, onPress} = this.props.item;
@@ -44,7 +48,7 @@ export default class ProductListItem extends Component {
             <TouchableOpacity style={styles.bottomRowAction} numberOfLines={1}>
               <EvilIcon name="heart" size={25}/>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.bottomRowAction} numberOfLines={1}>
+            <TouchableOpacity style={styles.bottomRowAction} numberOfLines={1} onPress={this.addToCart}>
               <EvilIcon name="cart" size={25}/>
             </TouchableOpacity>
             <Text style={styles.itemPrice} numberOfLines={1}>{item.price}</Text>

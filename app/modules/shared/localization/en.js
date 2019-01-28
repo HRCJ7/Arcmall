@@ -56,5 +56,11 @@ export default enStrings = {
     PROCESSING: 'Processing',
     SHIPPED: 'Shipped',
     COMPLETED: 'Completed',
+    CURRENT_PASSWORD: 'Current Password',
+    NEW_PASSWORD: 'New Password',
+    CONFIRM_PASSWORD: 'Confirm Password',
+    EDIT_ACCOUNT_DETAILS: 'Edit Account Details',
+   CHANGE_PASSWORD: 'Change Password',
+    YOUR_SHIPPING_ADDRESS: 'Your Shipping Address',
 
 }

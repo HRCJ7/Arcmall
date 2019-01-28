@@ -11,6 +11,8 @@ import {
   ROOT_NAV_YOUR_CART,
   ROOT_NAV_REVIEWS,
   ROOT_NAV_SETTINGS,
+  ROOT_NAV_CHANGE_PASSWORD,
+  ROOT_NAV_ACCOUNT_SETTINGS
 } from './RootRoutes';
 import {AppContainer} from './RootNavigation';
 
@@ -24,6 +26,17 @@ export const navigateToItemListScreen = (navParams: any) => {
   return AppContainer
   .router
   .getActionForPathAndParams(`/${ROOT_NAV_ITEM_LIST}`, navParams);
+};
+
+export const navigateToChangePasswordtScreen = (navParams: any) => {
+  return AppContainer
+  .router
+  .getActionForPathAndParams(`/${ROOT_NAV_CHANGE_PASSWORD}`, navParams);
+};
+export const navigateToAccountSettingScreen = (navParams: any) => {
+  return AppContainer
+  .router
+  .getActionForPathAndParams(`/${ROOT_NAV_ACCOUNT_SETTINGS}`, navParams);
 };
 
 export const navigateToItemDetails = (navParams: any) => {

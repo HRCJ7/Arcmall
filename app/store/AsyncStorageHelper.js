@@ -19,7 +19,6 @@ const getUser = async (callback) => {
     user = JSON.parse(user);
     user = user.customer_info;
   }
-  console.log(user)
   return user;
 }
 

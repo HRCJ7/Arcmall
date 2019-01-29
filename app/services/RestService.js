@@ -124,7 +124,6 @@ export const GET = async (
   }
   
   const response = await fetch(url, options);
-  console.log(response)
 
   if(!cookie) {
     await setCookies(response, [COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY], true);
@@ -159,7 +158,6 @@ export const POST = async (
   }
 
   const response = await fetch(url, options);
-  console.log(response)
 
   if(!cookie) {
     await setCookies(response, [COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY], true);

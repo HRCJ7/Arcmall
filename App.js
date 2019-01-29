@@ -25,21 +25,21 @@ export default class App extends Component<Props> {
   constructor(props) {
     super(props);
     this.state = {
-      language: null,
+      languageSet: false,
     }
     AsyncStorage.getItem(COOKIE_LANGUAGE).then((lang)=> {
       const language = lang === COOKIE_LANGUAGE_CHINESE? CODE_CHINESE: CODE_ENGLISH;
       Strings.setLanguage(language);
       this.setState({
-        language: lang,
+        languageSet: true,
       })
     });
   }
   render() {
     let content = null;
-    const {language} = this.state;
+    const {languageSet} = this.state;
 
-    if (language) {
+    if (languageSet) {
       content = (
         <Provider store={store}>
           <RootNavigation />

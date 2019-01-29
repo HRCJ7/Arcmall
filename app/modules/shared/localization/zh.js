@@ -59,4 +59,5 @@ export default zhStrings = {
     YOUR_CART: 'Your Cart',
     CHECKOUT: 'Checkout',
     ITEMS: 'Items',
+    LOGIN_TO_SEE: 'Please login to see content',
 }

@@ -111,17 +111,12 @@ class SettingsScreen extends React.Component<any, any> {
   setLanguage = async (language) => {
     const {activeScreen} = this.state;
     const {languageLoading} = this.props;
-    console.log(activeScreen)
-    // if (activeScreen === ACTIVE_SCREEN_LANGUAGE) {
-      console.log(language)
-      await AsyncStorage.setItem(COOKIE_LANGUAGE, `language=${language}`);
-      this.props.dispatch(UserActions.setLanguage(language))
-      Strings.setLanguage(language);
-      this.setState({
-        language: language,
-        // isLoading: languageLoading,
-      })
-    // }
+    await AsyncStorage.setItem(COOKIE_LANGUAGE, `language=${language}`);
+    this.props.dispatch(UserActions.setLanguage(language))
+    Strings.setLanguage(language);
+    this.setState({
+      language: language,
+    })
   }
 
   changeActiveScreen(screen) {

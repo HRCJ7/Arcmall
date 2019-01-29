@@ -13,6 +13,11 @@ import { navigateToItemDetails } from "../../../../navigation/RootNavActions";
 import ArcmallButton from "../../../shared/components/arcmallButton/ArcmallButton";
 import CartActions from "../../actions/CartActions";
 import Toast from "react-native-simple-toast";
+import { getForm, defaultRequestHeaders, getCookie } from "../../../../services/RestService";
+import Config from 'react-native-config';
+import {Picker, Header, Icon} from "native-base";
+
+const BASE_URL: string = `${Config.API_URL}`;
 
 const getValueFromCurrency = (currency) => {
   return Number(currency.replace(/[^0-9.-]+/g,''));
@@ -30,31 +35,42 @@ class CartDetailsScreen extends React.Component<any, any> {
     const params = props.navigation.state.params;
     this.state = {
       isLoading: true,
-      products: [],
-      subTotal: 0,
-      total: 0,
-      tax: 0,
-      shipping: 0
+      products: null,
+      totals: [],
+      isLoggedIn: props.user,
+      // subTotal: 0,
+      // total: 0,
+      // tax: 0,
+      // shipping: 0,
+      shippingMethods: null,
+      selectedShippingMethod: 'free.free',
     };
 
     this.props.dispatch(CartActions.getCart());
+    this.getShippingDetails();
 
   }
 
   componentDidMount() {}
 
   static getDerivedStateFromProps(props, state) {
-    //Return state object, retun null to update nothing;
+    // Return state object, retun null to update nothing;
     const {cartData} = props;
+
     return {
       products: cartData? cartData.products: [],
       isLoading: props.isLoading,
-      subTotal: cartData && cartData.totals? cartData.totals[0]: {},
-      total: cartData && cartData.totals? cartData.totals[1]: {},
+      totals: cartData && cartData.totals? cartData.totals: [],
+      // subTotal: cartData && cartData.totals? cartData.totals[0]: {},
+      // total: cartData && cartData.totals? cartData.totals[1]: {},
+      // shipping: cartData && cartData.totals? ca
     };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    if(this.props.cartData) {
+      return false;
+    }
     return true;
   }
 
@@ -76,6 +92,68 @@ class CartDetailsScreen extends React.Component<any, any> {
     // }
    
   };
+
+  getShippingDetails = async (value) => {
+    let cookie = await getCookie();
+    let response = await fetch(`${BASE_URL}/shipping/methods`, {
+      method: 'GET',
+      headers: {
+        ...defaultRequestHeaders,
+        cookie,
+      },
+    });
+
+    response = await response.json();
+    
+    const shipping_methods = response.shipping_methods;
+    let shippingMethods = [];
+
+    for (const shippingMethod of Object.keys(shipping_methods)) {
+      let shipMethd = shipping_methods[shippingMethod];
+      let title = shipMethd.title;
+      let quote = shipMethd.quote[shippingMethod];
+      let code = null;
+      let cost = null;
+      let price = null;
+      if (quote) {
+        code = shipMethd.quote[shippingMethod].code;
+        cost = shipMethd.quote[shippingMethod].cost;
+        price = shipMethd.quote[shippingMethod].text;
+      }
+      
+      console.log(title, code, cost, price);
+
+      if(title && code && price) {
+        shippingMethods.push({
+          title,
+          code,
+          cost,
+          price,
+        });
+      }
+    }
+    
+    this.setState({
+      shippingMethods: shippingMethods,
+    })
+  }
+
+  setShippingDetails = async (shipping_method) => {
+    let cookie = await getCookie();
+    let response = await fetch(`${BASE_URL}/shipping/method`, {
+      method: 'POST',
+      headers: {
+        ...defaultRequestHeaders,
+        cookie,
+        body: getForm({shipping_method})
+      },
+    });
+    response = await response.json();
+    console.log(response)
+    if (response.success) {
+      this.props.dispatch(CartActions.getCart());
+    }
+  }
 
   handleOnBackPress = () => {
     this.props.navigation.goBack(null);
@@ -114,31 +192,112 @@ class CartDetailsScreen extends React.Component<any, any> {
     this.props.dispatch(CartActions.removeFromCart({key: item.cart_id}));
   }
 
-  renderPriceCard = () => {
-    const {total, subTotal, tax, shipping} = this.state;
+  renderOptionsChildren = (shippingMethods) => {
+    let children = shippingMethods.map((optionVal, index) => {
+      return(
+        <Picker.Item 
+          label={`${optionVal.title} (+ ${optionVal.price})`} 
+          value={optionVal.code}
+        />
+      )
+    });
+    return children;
+  }
+
+  renderOptions = () => {
+    const {shippingMethods} = this.state;
     let content = null;
+    console.log(shippingMethods)
+
+
+    const onValueChange = (value: string) => {
+      
+      // const {shippingMethods, total:{text}} = this.state;
+      // const result = shippingMethods.filter(item => item.code === value)[0];
+      // const shipping = result.price;
+      // const totalPrice = getValueFromCurrency(text) + result.cost;
+      this.setState({
+        selectedShippingMethod: value,
+      });
+      this.setShippingDetails(value);
+    }
+
+    if (shippingMethods && shippingMethods.length > 0) {
+      let children = this.renderOptionsChildren(shippingMethods);
+      let selectedValue = this.state.selectedShippingMethod;
+
+      content = (
+        <View style={styles.optionContainer}>
+          <Text style={styles.bold}>{'Select shipping'}</Text>
+          <View style={{
+          alignItems: 'flex-end', 
+          flexDirection:'column', 
+          justifyContent: 'center', 
+          marginRight: -12}}>
+            <Picker
+              headerTitleStyle={{height: 0}}
+              mode="dropdown"
+              placeholder={`${Strings.SELECT}`}
+              placeholderStyle={styles.optionsHeadingText}
+              placeholderIconColor="#007aff"
+              iosIcon={<Icon name="arrow-down"/>}
+              textStyle={styles.normal}
+              // style={{marginTop: -14}}
+              selectedValue={selectedValue}
+              onValueChange={onValueChange}
+            >
+              {children}
+            </Picker>
+          </View>
+          
+        </View>
+      )
+    }
+      
+    return content;
+  }
+
+  renderPriceCard = () => {
+    let content = null;
+    const {totals} = this.state;
+
+    const getTotalView = () => {
+      const {totals} = this.state;
+      let views = [];
+      let index = 0;
+      for (const total of totals) {
+        console.log(total)
+        views.push(
+          <View style={{height: 30}}>
+            {(() => {
+              if (index === totals.length - 1) {
+                return (
+                  <View style={styles.line} />
+                )
+              }
+            })()}
+            <View
+            key={total.title}
+            style={styles.bottomRowAction}>
+              <Text style={styles.textBold}>{total.title}</Text>
+              <Text style={styles.textNormal}>{total.text}</Text>
+            </View>
+          </View>
+          
+        )
+        index ++;
+      }
+
+      return views;
+    }
+
     content = (
       <View style={styles.itemInfoContainer}>
-        <View style={styles.bottomRowAction}>
-          <Text style={styles.textBold}>{subTotal.title}</Text>
-          <Text style={styles.textNormal}>{subTotal.text}</Text>
-        </View>
-        <View style={styles.bottomRowAction}>
-          <Text style={styles.textBold}>Shipping cost:</Text>
-          <Text style={styles.textNormal}>{shipping}</Text>
-        </View>
-        <View style={styles.bottomRowAction}>
-          <Text style={styles.textBold}>Tax:</Text>
-          <Text style={styles.textNormal}>{tax}</Text>
-        </View>
-        <View style={styles.line} />
-        <View style={styles.bottomTotalAction}>
-          <Text style={styles.textBold}>{total.title}</Text>
-          <Text style={styles.textNormal}>{total.text}</Text>
-        </View>
+        {this.renderOptions()}
+        {getTotalView()}
         <ArcmallButton
           title={Strings.CHECKOUT}
-          style={{ marginTop: 20, width: "80%" }}
+          style={{ marginTop: 5, marginBottom: 10, width: "80%" }}
         />
       </View>
     )
@@ -147,7 +306,8 @@ class CartDetailsScreen extends React.Component<any, any> {
   }
 
   render() {
-    const {products, isLoading} = this.state;
+    const {products, isLoading, isLoggedIn} = this.state;
+    const {user} = this.props;
     const navBar = this.renderNavBar();
     const priceCard = this.renderPriceCard();
     let content = null;
@@ -159,6 +319,13 @@ class CartDetailsScreen extends React.Component<any, any> {
           <LoadingIndicator />
         </View>
       )
+    } else if(!user) {
+        content = (
+          <View style={styles.container}>
+            {navBar}
+            <Text style={styles.errorText}>{Strings.LOGIN_TO_SEE}</Text>
+          </View>
+        )
     } else {
       content = (
         <View style={styles.container}>
@@ -204,6 +371,7 @@ const mapStateToProps = (state, ownProps) => {
     cartData: state.cart.cartData,
     isLoading: state.cart.cartLoading,
     cartError: state.cart.cartError,
+    user: state.login.user,
   };
 };
 

@@ -28,6 +28,7 @@ const INITIAL_STATE = {
 const addToCart = (state = INITIAL_STATE, {payload} : any) => ({
   ...state,
   cartLoading: true,
+  cartData: null,
 });
 
 const addToCartSuccess = (state = INITIAL_STATE, {payload} : any) => {  
@@ -101,16 +102,19 @@ const getCartFailure = (state, {payload} : any) => ({
   cartError: payload.error,
 });
 
-// export const signOut = (state = INITIAL_STATE, payload: any) => {
-//   return {
-//     ...INITIAL_STATE,
-//   };
-// };
+
+export const signOut = (state = INITIAL_STATE, payload: any) => {
+  return {
+    ...INITIAL_STATE,
+  };
+};
 
 const ACTION_HANDLERS = {
   [ADD_TO_CART]: addToCart,
   [ADD_TO_CART_SUCCESS]: addToCartSuccess,
   [ADD_TO_CART_FAILURE]: addToCartFailure,
+
+  [SIGN_OUT]: signOut,
 
   [EDIT_CART]: editCart,
   [EDIT_CART_SUCCESS]: editCartSuccess,

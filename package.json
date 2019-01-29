@@ -24,7 +24,8 @@
     "ios:deploy:qa": "cd ios && bundle exec fastlane ios qa && cd ..",
     "ios:deploy:stag": "cd ios && bundle exec fastlane ios stag && cd ..",
     "ios:deploy:prod": "cd ios && bundle exec fastlane ios prod && cd ..",
-    "clean-vector": "rm -f ./node_modules/react-native/local-cli/core/__fixtures__/files/package.json"
+    "clean-vector": "rm -f ./node_modules/react-native/local-cli/core/__fixtures__/files/package.json",
+    "postinstall": "node ./android-react-gradle-fix.js"
   },
   "dependencies": {
     "native-base": "^2.10.0",

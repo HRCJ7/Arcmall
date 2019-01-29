@@ -23,6 +23,7 @@ import CategoryTabNavigation from '../../../../navigation/categoryTab/CategoryTa
 import { navigateToReviews } from '../../../../navigation/RootNavActions';
 import {Picker, Header} from "native-base";
 import { Button } from 'react-native-elements';
+import CartActions from '../../../cart/actions/CartActions';
 
 const NONE = 'none';
 const getOptionDataFromString = (value) => {
@@ -91,7 +92,7 @@ class ProductDetailScreen extends React.Component<any, any> {
     }
     delete cart.option;
 
-    this.props.dispatch(ProductActions.addToCart(cart));
+    this.props.dispatch(CartActions.addToCart(cart));
   }
 
   onSelectedItemsChange = selectedItems => {

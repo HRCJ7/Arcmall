@@ -32,12 +32,15 @@ import {getForm, defaultRequestHeaders, getCookie} from '../../../../services/Re
 import ArcmallButton from '../../../shared/components/arcmallButton/ArcmallButton';
 import { getUser } from '../../../../store/AsyncStorageHelper';
 import { MAIN_TAB_HOME } from '../../../../navigation/mainTab/MainTabRoutes';
+import { ROOT_NAV_CHANGE_PASSWORD } from '../../../../navigation/RootRoutes';
+import ChangePasswordScreen from '../changePassword/ChangePasswordScreen';
 
 const BASE_URL: string = `${Config.API_URL}`;
 
 const ACTIVE_SCREEN_SETTINGS = 'Settings';
 const ACTIVE_SCREEN_LANGUAGE = 'Language';
 const ACTIVE_SCREEN_SHIPPING = 'Shipping';
+const ACTIVE_SCREEN_CHANGE_PASSWORD = 'ChangePassword';
 const ACTIVE_SCREEN_SHIPPING_ADD = 'ShippingAdd';
 
 class SettingsScreen extends React.Component<any, any> {
@@ -140,6 +143,11 @@ class SettingsScreen extends React.Component<any, any> {
             }
           ]
         }
+      },
+      {
+        name: 'Change Password',
+        nextScreen: ACTIVE_SCREEN_CHANGE_PASSWORD,
+        subList:{},
       },
       {
         name: 'Shipping Details',
@@ -410,7 +418,7 @@ class SettingsScreen extends React.Component<any, any> {
         zone_id: Zones,
       });
 
-      var options = {
+      let options = {
         fields: {
           address_1: {
             label: 'Address line 1'
@@ -455,6 +463,15 @@ class SettingsScreen extends React.Component<any, any> {
     return content;
   }
 
+  renderChangePasswordContent = () => {
+    return (
+      <View style={styles.container}>
+        {this.renderNavBar()}
+        <ChangePasswordScreen />
+      </View>
+    )
+  }
+
   render() {
     let content = null;
     const {activeScreen, isLoading} = this.state;
@@ -479,6 +496,9 @@ class SettingsScreen extends React.Component<any, any> {
         case ACTIVE_SCREEN_SHIPPING_ADD: {
           content = this.renderShippingAddContent();
           break;
+        }
+        case ACTIVE_SCREEN_CHANGE_PASSWORD: {
+          content = this.renderChangePasswordContent()
         }
       }
     }

@@ -14,7 +14,6 @@ import configureStore from './app/store/ConfigureStore';
 import RootNavigation from './app/navigation/RootNavigation';
 import { COOKIE_LANGUAGE, COOKIE_LANGUAGE_CHINESE, CODE_ENGLISH, CODE_CHINESE } from './app/Constants';
 import Strings from './app/modules/shared/localization/localization';
-
 reactotronStoreAction = require('./config/reactotron/reactotron.config').default;
 const store = configureStore(reactotronStoreAction);
 

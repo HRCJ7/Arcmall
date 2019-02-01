@@ -15,13 +15,14 @@ export const YOUR_CART = 'CartDetailsScreen';
 import ReviewsScreen from "../../modules/product/screens/reviews/ReviewsScreen";
 import SettingsScreen from "../../modules/user/screens/settingsScreen/SettingsScreen";
 import Strings from "../../modules/shared/localization/localization";
+import AddProductScreen from "../../modules/product/screens/addProduct/AddProductScreen";
 
 export const MAIN_TAB_HOME = 'Home';
 export const MAIN_TAB_PROFILE = 'Profile';
 
 export const mainTabRoutes = {
   [MAIN_TAB_HOME]: {
-    screen: HomeScreen,
+    screen: AddProductScreen,
     path: `/${MAIN_TAB_HOME}`,
   },
   [MAIN_TAB_PROFILE]: {

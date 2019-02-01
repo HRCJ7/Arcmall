@@ -15,7 +15,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from "./LoginScreen.styles";
-import { navigateToMainTabScreen, navigateToSelectRoleScreen } from "../../../navigation/RootNavActions";
+import { navigateToMainTabScreen, navigateToSelectRoleScreen,navigateToAccountSettingScreen } from "../../../navigation/RootNavActions";
 import Icon from "react-native-vector-icons/FontAwesome";
 import EvilIcon from "react-native-vector-icons/EvilIcons";
 import Strings from "../../shared/localization/localization";
@@ -62,7 +62,7 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
   }
 
   handleSignUpPress = () => {
-    this.props.navigation.dispatch(navigateToSelectRoleScreen());
+    this.props.navigation.dispatch(navigateToAccountSettingScreen());
   }
 
   handleOnBackPress = () => {

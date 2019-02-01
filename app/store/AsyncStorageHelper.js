@@ -1,5 +1,5 @@
 import {AsyncStorage} from 'react-native';
-import { STORAGE_USER, COOKIE_PHPSSID, COOKIE_CURENCY, COOKIE_LANGUAGE } from '../Constants';
+import { STORAGE_USER, COOKIE_PHPSSID, COOKIE_CURENCY, COOKIE_LANGUAGE, STORAGE_CATEGORIES } from '../Constants';
 
 const clearCookies = async () => {
   await AsyncStorage.multiRemove([COOKIE_PHPSSID, COOKIE_CURENCY, COOKIE_LANGUAGE]);
@@ -39,6 +39,11 @@ const getCart = async (cartData) => {
   return cart;
 }
 
+const getCategories = async () => {
+  let categories = await AsyncStorage.getItem(STORAGE_CATEGORIES);
+  return JSON.parse(categories);
+}
+
 export {
   clearCookies,
   getCookies,
@@ -46,4 +51,5 @@ export {
   clearCookiesAndUser,
   addToCart,
   getCart,
+  getCategories,
 }

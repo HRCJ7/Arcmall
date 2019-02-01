@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 
 import EvilIcon from "react-native-vector-icons/EvilIcons";
 import Icon from "react-native-vector-icons/Ionicons";
-import styles from "./CartListItem.styles";
+import styles from "./OrderConfirmationListItem.styles";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { CachedImage } from "react-native-cached-image";
@@ -11,7 +11,7 @@ import Swipeout from 'react-native-swipeout';
 
 const ICON_SIZE = 12;
 
-class CartListItem extends Component {
+class OrderConfirmationListItem extends Component {
   constructor(props) {
     super(props);
     const {item} = props;
@@ -62,34 +62,14 @@ class CartListItem extends Component {
                   <Text style={styles.itemPrice} numberOfLines={1}>
                     {item.price}
                   </Text>
-                </View>
-              </View>
-              <View style={{flex: 1}}>
-                <View style={styles.itemCount}>
-                  <TouchableOpacity
-                    style={styles.plusAction}
-                    numberOfLines={1}
-                    onPress={()=> {
-                      this.props.onAdd(item);
-                    }}
-                  >
-                    <EvilIcon name="plus" size={25} />
-                  </TouchableOpacity>
+
                   <Text style={styles.count} numberOfLines={1}>
-                    {item.quantity}
+                    Quantity : {item.quantity}
                   </Text>
-                  <TouchableOpacity
-                    style={styles.minusAction}
-                    numberOfLines={1}
-                    onPress={()=> {
-                      let item = {...this.state.item}
-                      this.props.onSubtract(item);
-                    }}
-                  >
-                    <EvilIcon name="minus" size={25} />
-                  </TouchableOpacity>
                 </View>
+                
               </View>
+           
             </View>
             <View style={styles.itemInfoContainer}>
               <View style={styles.bottomRowAction}>
@@ -112,12 +92,12 @@ class CartListItem extends Component {
   }
 }
 
-CartListItem.propTypes = {};
+OrderConfirmationListItem.propTypes = {};
 
-CartListItem.defaultProps = {};
+OrderConfirmationListItem.defaultProps = {};
 
 const mapStateToProps = (state, ownProps) => {
   return {};
 };
 
-export default connect(mapStateToProps)(CartListItem);
+export default connect(mapStateToProps)(OrderConfirmationListItem);

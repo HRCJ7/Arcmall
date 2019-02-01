@@ -5,7 +5,6 @@ import {
   View,
   Image,
   ScrollView,
-  SafeAreaView,
   FlatList,
   AsyncStorage,
 } from 'react-native';
@@ -24,10 +23,14 @@ import {navigateToItemListScreen, navigateToAllCategories} from '../../../naviga
 import Strings from '../../shared/localization/localization';
 import {COOKIE_LANGUAGE_CHINESE, CODE_CHINESE, CODE_ENGLISH, COOKIE_LANGUAGE, STORAGE_USER, STORAGE_CATEGORIES} from '../../../Constants';
 import { getUser } from '../../../store/AsyncStorageHelper';
+import CartActions from '../../cart/actions/CartActions';
 
 const arr = ["1", "1", "1", "1", "1", "1", "1", "1", "1"];
 class HomeScreen extends React.Component<any, any> {
   static defaultProps: any
+  static navigationOptions: any = ({navigation}) => ({
+    title: Strings.HOME,
+  });
 
   constructor(props) {
     super(props);
@@ -50,12 +53,15 @@ class HomeScreen extends React.Component<any, any> {
 
   shouldComponentUpdate(nextProps, nextState) {
     let shouldUpdate = true;
-    const {categoryList: newCategories} = nextProps;
-    const {categoryList: oldCategories} = this.props;
+    const {categoryList: newCategories, user: newUser} = nextProps;
+    const {categoryList: oldCategories, user: oldUser} = this.props;
     
     if (!oldCategories && newCategories) {
       this.saveCategoryList(nextProps.categoryList)
       shouldUpdate = false;
+    }
+    if (oldUser != newUser) {
+      this.getCategoryList(nextProps);
     }
     
     return shouldUpdate;
@@ -85,12 +91,12 @@ class HomeScreen extends React.Component<any, any> {
     let language = await AsyncStorage.getItem(COOKIE_LANGUAGE);
     language = language === COOKIE_LANGUAGE_CHINESE? CODE_CHINESE: CODE_ENGLISH;
     Strings.setLanguage(language);
-    this.setState({
-      languageLoading: false,
-    })
 
     let user = await getUser();
     this.props.dispatch(LoginActions.postLogin({categories, user}));
+    this.setState({
+      languageLoading: false,
+    })
   }
 
   _renderItem = ({ item }) => {
@@ -182,6 +188,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     categoryList: state.product.categoryList,
     isLoading: state.product.categoryListLoading,
+    user: state.login.user,
   };
 };
 

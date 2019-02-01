@@ -84,7 +84,7 @@ export const signOut = async (state = INITIAL_STATE, {payload} : any) => {
   await clearCookiesAndUser();
   return {
     registrationData: {},
-    user: {},
+    user: null,
   };
 };
 

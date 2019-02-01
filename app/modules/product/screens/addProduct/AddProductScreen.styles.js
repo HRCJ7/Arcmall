@@ -1,3 +1,4 @@
+
 import {
   StyleSheet,
 } from 'react-native';
@@ -31,27 +32,19 @@ const styles = StyleSheet.create({
     flex: 1, 
     flexDirection:'row',
   },
-  categoryText: {
-    ...font,
-    flex: 1,
-    fontSize: Theme.fontSizes.small,
-    textAlign: 'left',
-    color: Theme.colors.secondary,
-  },
-  priceText: {
-    ...font,
-    flex: 1,
-    fontSize: Theme.fontSizes.xLarge,
-    textAlign: 'right',
-    fontWeight: Theme.fontWeight.medium,
-  },
   smallText: {
-    flex: 1,
     ...font,
-    ...marginTop,
-    fontSize: Theme.fontSizes.small,
+    fontSize: Theme.fontSizes.medium,
     textAlign: 'left',
-    color: Theme.colors.smallText,
+    color: Theme.colors.darkGray,
+  },
+  enumButton: {
+    flex: 1,
+    height: 35,
+    marginBottom: 30,
+    borderBottomWidth: 0.5,
+    borderBottomColor: Theme.colors.darkGray,
+    justifyContent: 'center',
   },
   contactSellerText: {
     ...font,
@@ -65,10 +58,6 @@ const styles = StyleSheet.create({
     flex: 1, 
   },
   contactSellerView: {
-    flexDirection: 'row',
-  },
-  rightButton: {
-    alignSelf: 'flex-end',
     flexDirection: 'row',
   },
   descriptionText: {
@@ -106,16 +95,15 @@ const styles = StyleSheet.create({
     color: Theme.colors.secondary,
     marginRight: 10,
   },
-  optionContainer: {
-    // flex: 1,
-    borderBottomColor: Theme.colors.darkGray,
+  textInput: {
+     ...font,
+    height: 30,
     borderBottomWidth: 0.5,
-  },
-  optionsHeadingText: {
-    ...font,
+    borderBottomColor: Theme.colors.darkGray,
+    marginBottom: 30,
     fontSize: Theme.fontSizes.medium,
+    textAlign: 'left',
     color: Theme.colors.darkGray,
-    marginLeft: -16,
-  },
+  }
 });
 export default styles;

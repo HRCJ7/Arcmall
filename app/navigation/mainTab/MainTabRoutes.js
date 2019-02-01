@@ -8,36 +8,30 @@ import SignUpAsABuyerScreen from "../../modules/login/screens/SignUpAsABuyerScre
 import SelectRoleScreen from "../../modules/login/screens/SelectRoleScreen";
 import SignUpAsASellerScreen from "../../modules/login/screens/SignUpAsASellerScreen";
 import CartDetailsScreen from '../../modules/cart/screens/cartDetails/CartDetailsScreen';
+import OrderConfirmationScreen from '../../modules/cart/screens/orderConfirmation/OrderConfirmationScreen';
 
 export const HOME_TAB = 'Home';
 export const PROFILE_TAB = 'Profile';
 export const YOUR_CART = 'CartDetailsScreen';
 import ReviewsScreen from "../../modules/product/screens/reviews/ReviewsScreen";
 import SettingsScreen from "../../modules/user/screens/settingsScreen/SettingsScreen";
+import Strings from "../../modules/shared/localization/localization";
+import AddProductScreen from "../../modules/product/screens/addProduct/AddProductScreen";
 
 export const MAIN_TAB_HOME = 'Home';
 export const MAIN_TAB_PROFILE = 'Profile';
 
 export const mainTabRoutes = {
   [MAIN_TAB_HOME]: {
-    screen: HomeScreen,
+    screen: OrderConfirmationScreen,
     path: `/${MAIN_TAB_HOME}`,
-    navigationOptions: {
-      tabBarLabel: 'Home',
-    },
   },
   [MAIN_TAB_PROFILE]: {
     screen: ProfileScreen,
     path: `/${MAIN_TAB_PROFILE}`,
-    navigationOptions: {
-      tabBarLabel: 'Profile',
-    },
   },
   [YOUR_CART]: {
     screen: CartDetailsScreen,
     path: `/${YOUR_CART}`,
-    navigationOptions: {
-      tabBarLabel: 'Your cart',
-    },
   },
 };

@@ -3,12 +3,12 @@ import React from "react";
 import { Text, View, TouchableOpacity, FlatList } from "react-native";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import styles from "./CartDetailsScreen.styles";
+import styles from "./OrderConfirmationScreen.styles";
 import NavigationBar from "../../../shared/components/NavigationBar/NavigationBar";
 import Strings from "../../../shared/localization/localization";
 import EvilIcons from "react-native-vector-icons/dist/EvilIcons";
 import LoadingIndicator from "../../../shared/components/loadingIndicator/LoadingIndicator";
-import CartListItem from "../../components/cartListItem/CartListItem";
+import OrderConfirmationListItem from "../../components/orderConfirmationListItem/OrderConfirmationListItem";
 import { navigateToItemDetails } from "../../../../navigation/RootNavActions";
 import ArcmallButton from "../../../shared/components/arcmallButton/ArcmallButton";
 import CartActions from "../../actions/CartActions";
@@ -23,7 +23,7 @@ const getValueFromCurrency = (currency) => {
   return Number(currency.replace(/[^0-9.-]+/g,''));
 }
 
-class CartDetailsScreen extends React.Component<any, any> {
+class OrderConfirmationScreen extends React.Component<any, any> {
   static defaultProps: any;
 
   static navigationOptions: any = ({navigation}) => ({
@@ -79,17 +79,6 @@ class CartDetailsScreen extends React.Component<any, any> {
 
   handleProductOnPress = (item, index) => {
     const products = [...this.state.products];
-
-    // if (products[index].toggle == false)
-    // {
-    //   products[index].toggle = true;
-    //   this.setState({ products });
-      
-    // }
-    // else {
-    //   products[index].toggle = false;
-    //   this.setState({ products });
-    // }
    
   };
 
@@ -168,7 +157,7 @@ class CartDetailsScreen extends React.Component<any, any> {
   };
 
   renderNavBar = () => {
-    return <NavigationBar title={Strings.YOUR_CART} />;
+    return <NavigationBar title={Strings.ORDER_CONFIRMATION} />;
   };
 
   // renderListItem = (item, index) => {
@@ -256,6 +245,24 @@ class CartDetailsScreen extends React.Component<any, any> {
       
     return content;
   }
+  renderAddress = () => {
+
+    return (
+      <View style={{width: "80%",alignSelf: "center"}}>
+        <Text>Line 1</Text>
+        <Text>Line 2</Text>
+        <Text>Line 3</Text>
+        <View
+          style={{
+    marginTop:5,        
+    borderBottomColor: 'black',
+    borderBottomWidth: 1,
+    width: "100%",
+    alignSelf: 'center',
+  }}
+/>
+    </View>);
+  }
 
   renderPriceCard = () => {
     let content = null;
@@ -296,7 +303,7 @@ class CartDetailsScreen extends React.Component<any, any> {
         {this.renderOptions()}
         {getTotalView()}
         <ArcmallButton
-          title={Strings.CHECKOUT}
+          title={Strings.PAY_WITH_PAYPAL}
           style={{ marginTop: 5, marginBottom: 10, width: "80%" }}
         />
       </View>
@@ -310,7 +317,9 @@ class CartDetailsScreen extends React.Component<any, any> {
     const {user} = this.props;
     const navBar = this.renderNavBar();
     const priceCard = this.renderPriceCard();
+    const address = this.renderAddress();
     let content = null;
+    const product = [{thumb:"",name:"item1",price:400,quantity:2,}]
 
     if (isLoading) {
       content = (
@@ -319,14 +328,16 @@ class CartDetailsScreen extends React.Component<any, any> {
           <LoadingIndicator />
         </View>
       )
-    } else if(!user) {
-        content = (
-          <View style={styles.container}>
-            {navBar}
-            <Text style={styles.errorText}>{Strings.LOGIN_TO_SEE}</Text>
-          </View>
-        )
-    } else {
+    }
+    // else if (!user) {
+    //     content = (
+    //       <View style={styles.container}>
+    //         {navBar}
+    //         <Text style={styles.errorText}>{Strings.LOGIN_TO_SEE}</Text>
+    //       </View>
+    //     )
+    // }
+    else {
       content = (
         <View style={styles.container}>
           {navBar}
@@ -334,9 +345,9 @@ class CartDetailsScreen extends React.Component<any, any> {
             style={styles.flatStyle}
             extraData={this.props}
             keyExtractor={item => item.product_id}
-            data={products}
+            data={product}
             renderItem={({ item, index }) => (
-              <CartListItem
+              <OrderConfirmationListItem
                 item={item}
                 onSubtract={this.onSubtract}
                 onAdd={this.onAdd}
@@ -345,6 +356,9 @@ class CartDetailsScreen extends React.Component<any, any> {
               />
             )}
           />
+           <Text style={styles.orderTotalText}>Your Address</Text>
+          {address}
+          <Text style={styles.orderTotalText}>Order Total</Text>
           {priceCard}
         </View>
       );
@@ -354,13 +368,13 @@ class CartDetailsScreen extends React.Component<any, any> {
   }
 }
 
-CartDetailsScreen.propTypes = {
+OrderConfirmationScreen.propTypes = {
   isLoading: PropTypes.bool,
   productList: PropTypes.any,
   productListError: PropTypes.any
 };
 
-CartDetailsScreen.defaultProps = {
+OrderConfirmationScreen.defaultProps = {
   isLoading: true,
   productList: null,
   productListError: null
@@ -375,4 +389,4 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps)(CartDetailsScreen);
+export default connect(mapStateToProps)(OrderConfirmationScreen);

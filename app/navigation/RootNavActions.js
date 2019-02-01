@@ -12,7 +12,8 @@ import {
   ROOT_NAV_REVIEWS,
   ROOT_NAV_SETTINGS,
   ROOT_NAV_CHANGE_PASSWORD,
-  ROOT_NAV_ACCOUNT_SETTINGS
+  ROOT_NAV_ACCOUNT_SETTINGS,
+  ROOT_NAV_ORDER_CONFIRMATION
 } from './RootRoutes';
 import {AppContainer} from './RootNavigation';
 
@@ -61,6 +62,12 @@ export const navigateToSignInBuyerScreen = (navParams: any) => {
   return AppContainer
   .router
   .getActionForPathAndParams(`/${ROOT_NAV_SIGN_UP_AS_A_BUYER}`, navParams);
+};
+
+export const navigateToOrderConfirmationScreen = (navParams: any) => {
+  return AppContainer
+  .router
+  .getActionForPathAndParams(`/${ROOT_NAV_ORDER_CONFIRMATION}`, navParams);
 };
 
 export const navigateToSignInSellerScreen = (navParams: any) => {

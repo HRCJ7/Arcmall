@@ -23,8 +23,7 @@ const config = {
         iconName = 'ios-home'; 
       } else if (routeName === MAIN_TAB_PROFILE) {
         iconName = 'ios-contact';
-      }
-      else if (routeName === YOUR_CART) {
+      } else if (routeName === YOUR_CART) {
         iconName = 'ios-cart';
       }
       return <Ionicon name={iconName} size={23} color={tintColor} />;

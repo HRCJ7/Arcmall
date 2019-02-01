@@ -83,6 +83,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     textAlign: 'center', 
     paddingTop: 200,
+  },
+  orderTotalText: {
+    ...font,
+    paddingTop: 10,
+    paddingBottom:5,
+    color: 'black', 
+    width: "80%",
+    textAlign: "left",
+    alignSelf: 'center',
+    fontWeight: Theme.fontWeight.bold,
+    fontSize: Theme.fontSizes.medium,
   }
 });
 export default styles;

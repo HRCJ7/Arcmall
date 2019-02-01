@@ -5,6 +5,7 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 import Theme, { font } from '../../../../theme/Base';
 import { splitCategoryName } from "../../../../services/ExternalServices";
 import {styles} from "./styles";
+import Strings from "../../../shared/localization/localization";
 
 export default class GridView extends Component {
   constructor(props) {
@@ -44,7 +45,7 @@ export default class GridView extends Component {
               />
           <View style={styles.imageText}>
             <Text style={styles.text}>{name}</Text>
-            <Text style={styles.countText}>{`${count} items`}</Text>
+            <Text style={styles.countText}>{`${count} ${Strings.ITEMS}`}</Text>
           </View>
         </TouchableOpacity>
       );

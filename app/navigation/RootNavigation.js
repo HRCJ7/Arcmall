@@ -18,7 +18,7 @@ export const AppContainer = createAppContainer(RootStackNavigation);
 const RootNavigation = (props: any) => {
   props.dispatch(ProductActions.getProductById(264))
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: Theme.colors.primary}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <AppContainer />
     </SafeAreaView>
   );

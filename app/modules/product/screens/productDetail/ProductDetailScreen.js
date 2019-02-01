@@ -21,27 +21,49 @@ import ProductListItem from '../../components/productListItem/ProductListItem';
 import ProductActions from '../../actions/ProductActions';
 import CategoryTabNavigation from '../../../../navigation/categoryTab/CategoryTabNavigation';
 import { navigateToReviews } from '../../../../navigation/RootNavActions';
+import {Picker, Header} from "native-base";
+import { Button } from 'react-native-elements';
+import CartActions from '../../../cart/actions/CartActions';
 
+const NONE = 'none';
+const getOptionDataFromString = (value) => {
+  const optionData = value.split('-');
+  const optionId = optionData[0];
+  const optionValueId = optionData[1]; 
+  return {optionId, optionValueId};
+}
+const mergeOptionsToString = (optionId, optionValueId) => {
+  return `${optionId}-${optionValueId}`
+}
 class ProductDetailScreen extends React.Component<any, any> {
   static defaultProps: any
 
   constructor(props) {
     super(props);
+    const {itemId} = this.props.navigation.state.params;
     this.state = {
       isLoading: true,
+      cartLoading: false,
+      addCartForm: {
+        option: [],
+        quantity: 1,
+        product_id: itemId,
+      },
     };
-    let {itemId} = this.props.navigation.state.params;
+    
     this.props.dispatch(ProductActions.getProductById(itemId))
   }
 
   componentDidMount() {
-    let {itemId} = this.props.navigation.state.params;
-    this.props.dispatch(ProductActions.getProductById(itemId))
+    // let {itemId} = this.props.navigation.state.params;
+    // this.props.dispatch(ProductActions.getProductById(itemId))
   }
 
   static getDerivedStateFromProps(props, state) {
     //Return state object, retun null to update nothing;
-    return null;
+    return {
+      cartLoading: props.cartLoading,
+    };
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -60,6 +82,22 @@ class ProductDetailScreen extends React.Component<any, any> {
     let {itemId} = this.props.navigation.state.params;
     this.props.navigation.dispatch(navigateToReviews({product_id: itemId}))
   }
+
+  handleAddToCart = () => {
+    let cart = {...this.state.addCartForm};
+    
+    for (const optionkey of Object.keys(cart.option)) {
+      let newKey = `option[${optionkey}]`;
+      cart[newKey] = cart.option[optionkey];
+    }
+    delete cart.option;
+
+    this.props.dispatch(CartActions.addToCart(cart));
+  }
+
+  onSelectedItemsChange = selectedItems => {
+    this.setState({ selectedItems });
+  };
 
   renderLeftAction = () => {
     return (
@@ -117,9 +155,9 @@ class ProductDetailScreen extends React.Component<any, any> {
   renderButton = (title, action) => {
     return(
       <TouchableOpacity
-      style={styles.blueButton}
-      onPress={action}>
-       <Text style={styles.blueButtonText}>{title}</Text>
+        style={styles.blueButton}
+        onPress={action}>
+        <Text style={styles.blueButtonText}>{title}</Text>
       </TouchableOpacity>
     );
   }
@@ -148,6 +186,95 @@ class ProductDetailScreen extends React.Component<any, any> {
         <View style={styles.rightButton}> 
           {this.renderButton(Strings.SHOW_ALL, this.handleOnReviewsPress)}
         </View>
+      </WhiteCard>
+    )
+  }
+
+  renderOptionsChildren = (productOption, optionId) => {
+    let children = {props: {}};
+    
+    const nonItem = (
+      <Picker.Item 
+        label={'None'} 
+        value={`${optionId}-${NONE}`} 
+      />
+    )
+
+    if (productOption) {
+      children = productOption.map((optionVal, index) => {
+        return(
+          <Picker.Item 
+            label={`${optionVal.name} (${optionVal.price_prefix} ${optionVal.price})`} 
+            value={mergeOptionsToString(optionId, optionVal.product_option_value_id)}
+          />
+        )
+      });
+    }
+
+    children.unshift(nonItem)
+    
+    return children;
+  }
+
+  renderOptions = () => {
+    const {data: {options}} = this.props;
+    let content = null;
+    let optionsArr = null;
+
+    const onValueChange = (value: string) => {
+      const {optionId, optionValueId} = getOptionDataFromString(value);
+
+      let options = {...this.state.addCartForm.option};
+      if (optionValueId === NONE) {
+        delete options[optionId];
+      } else {
+        options[optionId] = optionValueId;
+      }
+
+      this.setState({
+        addCartForm: {
+          ...this.state.addCartForm,
+          option: options,
+        },
+      });
+    }
+
+    if (options && options.length > 0) {
+      optionsArr = options.map((option, index) => {
+        let children = this.renderOptionsChildren(option.product_option_value, option.product_option_id);
+        let  selectedValue = null;
+        const {addCartForm: {option: stateOptions}} = this.state;
+        console.log(stateOptions)
+        if (stateOptions[option.product_option_id]) {
+          selectedValue = `${option.product_option_id}-${stateOptions[option.product_option_id]}`;
+        }
+
+        console.log(selectedValue)
+
+        content = (
+          <View style={styles.optionContainer}>
+            <Text style={styles.headingText}>{option.name}</Text>
+            <Picker
+              headerTitleStyle={{height: 0}}
+              mode="dropdown"
+              placeholder={`${Strings.SELECT}`}
+              placeholderStyle={styles.optionsHeadingText}
+              placeholderIconColor="#007aff"
+              textStyle={styles.optionsHeadingText}
+              style={{ width: undefined }}
+              selectedValue={selectedValue}
+              onValueChange={onValueChange}
+            >
+              {children}
+            </Picker>
+          </View>
+        )
+      });
+    }
+    
+    return (
+      <WhiteCard>
+        {content}
       </WhiteCard>
     )
   }
@@ -194,6 +321,20 @@ class ProductDetailScreen extends React.Component<any, any> {
     )
   }
 
+  renderCartButton = () => {
+    return (
+      <View style={{position: 'absolute', bottom: 10, left: 0, right: 0}}>
+        <Button
+          raised
+          loading={this.state.cartLoading}
+          onPress={this.handleAddToCart}
+          rightIcon={{name: 'shopping-cart'}}
+          title='Add to cart' />
+      </View>
+      
+    )
+  }
+
   render() {
     const {isLoading} = this.props;
     const navBar = this.renderNavBar();
@@ -209,21 +350,24 @@ class ProductDetailScreen extends React.Component<any, any> {
     } else {
       const imageSwiper = this.renderImageSwiper();
       const descriptionCard = this.renderDescriptionCard();
-      const reviewsCard = this.renderReviewsCard()
+      const reviewsCard = this.renderReviewsCard();
+      const optionsCard = this.renderOptions();
       const storeDetails = this.renderStoreDetailsCard();
       const refundPolicyCard = this.renderReturnPolicyCard();
+      const cartButtons = this.renderCartButton();
       
-
        content = (
         <View style={styles.container}>
           {navBar}
-          <ScrollView style={styles.container}>
+          <ScrollView contentContainerStyle={{paddingBottom: 50}} style={styles.container}>
             {imageSwiper}
             {descriptionCard}
             {reviewsCard}
+            {optionsCard}
             {storeDetails}
             {refundPolicyCard}
           </ScrollView>
+          {cartButtons}
         </View>
        )
     }
@@ -248,6 +392,7 @@ const mapStateToProps = (state, ownProps) => {
     data: state.product.productData,
     isLoading: state.product.productLoading || !state.product.productData,
     error: state.product.productError,
+    cartLoading: state.cart.cartLoading,
   };
 };
 

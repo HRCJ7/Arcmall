@@ -5,6 +5,7 @@ import CookieManager from 'react-native-cookies';
 import setCookie from 'set-cookie-parser'
 import { COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY } from '../Constants';
 import { getCookies } from '../store/AsyncStorageHelper';
+import objectToFormData from 'object-to-formdata';
 
 let cookieString = null;
 
@@ -55,11 +56,10 @@ export const getCookie = async function() {
 }
 
 export const getForm = function(data) {
-  let bodyData = new FormData();
-  for (let key in data) {
-    bodyData.append(key, data[key]);
+  let options = {
+    indices: true,
   }
-  return bodyData;
+  return objectToFormData(data, options);
 }
 
 const createURLParams = (params: {[string]: any} | null): string => {
@@ -124,7 +124,6 @@ export const GET = async (
   }
   
   const response = await fetch(url, options);
-  console.log(response)
 
   if(!cookie) {
     await setCookies(response, [COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY], true);
@@ -159,7 +158,6 @@ export const POST = async (
   }
 
   const response = await fetch(url, options);
-  console.log(response)
 
   if(!cookie) {
     await setCookies(response, [COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY], true);

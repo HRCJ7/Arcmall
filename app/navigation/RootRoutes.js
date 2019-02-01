@@ -11,6 +11,7 @@ import MainTabNavigation from './mainTab/MainTabNavigation';
 import CategoryTabNavigator from './categoryTab/CategoryTabNavigation';
 import CategoryListScreen from '../modules/product/screens/categoryList/CategoryListScreen';
 import CartDetailsScreen from '../modules/cart/screens/cartDetails/CartDetailsScreen';
+import OrderConfirmationScreen from '../modules/cart/screens/orderConfirmation/OrderConfirmationScreen';
 
 import ReviewsScreen from '../modules/product/screens/reviews/ReviewsScreen';
 import SettingsScreen from '../modules/user/screens/settingsScreen/SettingsScreen';
@@ -26,13 +27,14 @@ export const ROOT_NAV_SIGN_UP_AS_A_BUYER = 'SignUpAsABuyerScreen';
 export const ROOT_NAV_SIGN_UP_AS_A_SELLER = 'SignUpAsASellerScreen';
 export const ROOT_NAV_ALL_CATEGORIES = 'AllCategories';
 export const ROOT_NAV_YOUR_CART = 'CartDetailsScreen';
+export const ROOT_NAV_ORDER_CONFIRMATION = 'OrderConfirmationScreen';
 export const ROOT_NAV_REVIEWS = 'Reviews';
 
 export const ROOT_NAV_SETTINGS = 'Settings';
 export const ROOT_NAV_SETTINGS_LANGUAGE = 'SettingsLanguage';
 export const ROOT_NAV_SETTINGS_SHIPPING = 'SettingsShipping';
 export const ROOT_NAV_SETTINGS_SHIPPING_ADD = 'SettingsShippingAdd';
-export const ROOT_NAV_CHANGE_PASSWORD = 'ChangePasswordScreen';
+export const ROOT_NAV_CHANGE_PASSWORD = 'SettingsChangePassword';
 export const ROOT_NAV_ACCOUNT_SETTINGS = 'AccountSettingScreen';
 
 export const rootRoutes = {
@@ -97,11 +99,15 @@ export const rootRoutes = {
     path: `/${ROOT_NAV_SETTINGS_SHIPPING_ADD}`,
   },
   [ROOT_NAV_CHANGE_PASSWORD]: {
-    screen: ChangePasswordScreen,
+    screen: SettingsScreen,
     path: `/${ROOT_NAV_CHANGE_PASSWORD}`,
   },
   [ROOT_NAV_ACCOUNT_SETTINGS]: {
     screen: AccountSettingScreen,
     path: `/${ROOT_NAV_ACCOUNT_SETTINGS}`,
+  },
+  [ROOT_NAV_ORDER_CONFIRMATION]: {
+    screen: OrderConfirmationScreen,
+    path: `/${ROOT_NAV_ORDER_CONFIRMATION}`,
   }
 };

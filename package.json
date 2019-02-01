@@ -27,6 +27,8 @@
     "clean-vector": "rm -f ./node_modules/react-native/local-cli/core/__fixtures__/files/package.json"
   },
   "dependencies": {
+    "native-base": "^2.10.0",
+    "object-to-formdata": "^1.6.2",
     "react": "16.6.3",
     "react-native": "0.57.8",
     "react-native-cached-image": "^1.4.3",
@@ -35,11 +37,13 @@
     "react-native-easy-grid": "^0.2.0",
     "react-native-elements": "^0.19.1",
     "react-native-fetch-blob": "github:xanderberkein/react-native-fetch-blob#master",
+    "react-native-image-crop-picker": "^0.22.0",
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-localization": "^2.0.3",
     "react-native-material-kit": "^0.5.1",
     "react-native-simple-toast": "^0.0.8",
     "react-native-snap-carousel": "^3.7.5",
+    "react-native-swipeout": "^2.3.6",
     "react-native-swiper": "^1.5.14",
     "react-native-vector-icons": "^6.1.0",
     "react-navigation": "^3.0.9",

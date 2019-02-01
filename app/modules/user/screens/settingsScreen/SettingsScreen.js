@@ -32,12 +32,15 @@ import {getForm, defaultRequestHeaders, getCookie} from '../../../../services/Re
 import ArcmallButton from '../../../shared/components/arcmallButton/ArcmallButton';
 import { getUser } from '../../../../store/AsyncStorageHelper';
 import { MAIN_TAB_HOME } from '../../../../navigation/mainTab/MainTabRoutes';
+import { ROOT_NAV_CHANGE_PASSWORD } from '../../../../navigation/RootRoutes';
+import ChangePasswordScreen from '../changePassword/ChangePasswordScreen';
 
 const BASE_URL: string = `${Config.API_URL}`;
 
 const ACTIVE_SCREEN_SETTINGS = 'Settings';
 const ACTIVE_SCREEN_LANGUAGE = 'Language';
 const ACTIVE_SCREEN_SHIPPING = 'Shipping';
+const ACTIVE_SCREEN_CHANGE_PASSWORD = 'ChangePassword';
 const ACTIVE_SCREEN_SHIPPING_ADD = 'ShippingAdd';
 
 class SettingsScreen extends React.Component<any, any> {
@@ -111,17 +114,12 @@ class SettingsScreen extends React.Component<any, any> {
   setLanguage = async (language) => {
     const {activeScreen} = this.state;
     const {languageLoading} = this.props;
-    console.log(activeScreen)
-    // if (activeScreen === ACTIVE_SCREEN_LANGUAGE) {
-      console.log(language)
-      await AsyncStorage.setItem(COOKIE_LANGUAGE, `language=${language}`);
-      this.props.dispatch(UserActions.setLanguage(language))
-      Strings.setLanguage(language);
-      this.setState({
-        language: language,
-        // isLoading: languageLoading,
-      })
-    // }
+    await AsyncStorage.setItem(COOKIE_LANGUAGE, `language=${language}`);
+    this.props.dispatch(UserActions.setLanguage(language))
+    Strings.setLanguage(language);
+    this.setState({
+      language: language,
+    })
   }
 
   changeActiveScreen(screen) {
@@ -145,6 +143,11 @@ class SettingsScreen extends React.Component<any, any> {
             }
           ]
         }
+      },
+      {
+        name: 'Change Password',
+        nextScreen: ACTIVE_SCREEN_CHANGE_PASSWORD,
+        subList:{},
       },
       {
         name: 'Shipping Details',
@@ -280,6 +283,7 @@ class SettingsScreen extends React.Component<any, any> {
         {this.renderNavBar()}
         <FlatList
           data={activeList}
+          keyExtractor={(item) => item.name}
           renderItem={this.renderFlatlistItem}
         />
       </View>
@@ -414,7 +418,7 @@ class SettingsScreen extends React.Component<any, any> {
         zone_id: Zones,
       });
 
-      var options = {
+      let options = {
         fields: {
           address_1: {
             label: 'Address line 1'
@@ -459,6 +463,15 @@ class SettingsScreen extends React.Component<any, any> {
     return content;
   }
 
+  renderChangePasswordContent = () => {
+    return (
+      <View style={styles.container}>
+        {this.renderNavBar()}
+        <ChangePasswordScreen />
+      </View>
+    )
+  }
+
   render() {
     let content = null;
     const {activeScreen, isLoading} = this.state;
@@ -483,6 +496,9 @@ class SettingsScreen extends React.Component<any, any> {
         case ACTIVE_SCREEN_SHIPPING_ADD: {
           content = this.renderShippingAddContent();
           break;
+        }
+        case ACTIVE_SCREEN_CHANGE_PASSWORD: {
+          content = this.renderChangePasswordContent()
         }
       }
     }

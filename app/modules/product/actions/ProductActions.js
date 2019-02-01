@@ -11,7 +11,7 @@ import {
   GET_CATEGORY_LIST_FAILURE,
   GET_REVIEWS,
   GET_REVIEWS_SUCCESS,
-  GET_REVIEWS_FAILURE
+  GET_REVIEWS_FAILURE,
 } from "./Types";
 
 const getProductById = (product_id: number) => ({

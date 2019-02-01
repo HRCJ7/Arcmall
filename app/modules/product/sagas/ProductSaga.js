@@ -75,7 +75,9 @@ export default () => {
   return {
     watchGetProductById,
     watchGetProductList,
+
     watchGetCategoryList,
+
     watchGetReviews,
   };
 };

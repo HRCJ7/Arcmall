@@ -9,64 +9,74 @@ import type {
 } from 'redux-saga';
 
 import {
-  GET_LOGIN_VERIFICATION,
-  PLAYER_REGISTRATION,
-  GET_PRODUCT_BY_ID,
-  GET_PRODUCT_LIST,
-  GET_CATEGORY_LIST,
+  ADD_TO_CART,
+  REMOVE_CART,
+  EDIT_CART,
+  GET_CART,
 } from '../actions/Types';
 import CartService from '../services/CartService';
 import CartActions from '../actions/CartActions';
 
 export default () => {
-  function* getProductById({payload}) {
+  function* addToCart({payload}) {
     try {
-      const response = yield call(CartService.getProductById, payload.product_id);
-      console.log(response)
-      yield put(CartActions.getProductByIdSuccess(response));
+      const response = yield call(CartService.addToCart, payload);
+      yield put(CartActions.addToCartSuccess(response));
     } catch (error) {
-      console.log(error)
-      yield put(CartActions.getProductByIdFailure(error.response));
+      yield put(CartActions.addToCartFailure(error.response));
     }
   }
 
-  function* watchGetProductById(): Saga<void> {
-    yield takeLatest(GET_PRODUCT_BY_ID, getProductById);
+  function* watchaddToCart(): Saga<void> {
+    yield takeLatest(ADD_TO_CART, addToCart);
   }
 
-  function* getProductList({payload}) {
+  function* removeFromCart({payload}) {
     try {
-      const response = yield call(CartService.getProductList, payload);
-      console.log(response)
-      yield put(CartActions.getProductListSuccess(response));
+      const response = yield call(CartService.removeFromCart, payload);
+      yield put(CartActions.removeFromCartSuccess(response));
+      yield put(CartActions.getCart());
     } catch (error) {
-      console.log(error)
-      yield put(CartActions.getProductListFailure(error.response));
+      yield put(CartActions.removeFromCartSuccess(error.response));
     }
   }
 
-  function* watchGetProductList(): Saga<void> {
-    yield takeLatest(GET_PRODUCT_LIST, getProductList);
+  function* watchRemoveFromCart(): Saga<void> {
+    yield takeLatest(REMOVE_CART, removeFromCart);
   }
 
-  function* getCategoryList({payload}) {
+  function* editCart({payload}) {
     try {
-      const response = yield call(CartService.getCatrgoryList, payload);
-      console.log(response)
-      yield put(CartActions.getCategoryListSuccess(response));
+      const response = yield call(CartService.editCart, payload);
+      yield put(CartActions.editCartSuccess(response));
+      yield put(CartActions.getCart());
     } catch (error) {
-      console.log(error)
-      yield put(CartActions.getCategoryListFailure(error.response));
+      yield put(CartActions.editCartFailure(error.response));
     }
   }
 
-  function* watchGetCategoryList(): Saga<void> {
-    yield takeLatest(GET_CATEGORY_LIST, getCategoryList);
+  function* watchEditCart(): Saga<void> {
+    yield takeLatest(EDIT_CART, editCart);
+  }
+
+  function* getCart({payload}) {
+    console.log(payload)
+    try {
+      const response = yield call(CartService.getCart, payload);
+      yield put(CartActions.getCartSuccess(response));
+    } catch (error) {
+      yield put(CartActions.getCartFailure(error.response));
+    }
+  }
+
+  function* watchGetCart(): Saga<void> {
+    yield takeLatest(GET_CART, getCart);
   }
 
   return {
-    watchGetProductById,
-    watchGetProductList,
-    watchGetCategoryList,
+    watchaddToCart,
+    watchRemoveFromCart,
+    watchEditCart,
+    watchGetCart,
   };
 };

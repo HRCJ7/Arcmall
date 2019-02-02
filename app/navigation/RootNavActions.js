@@ -12,7 +12,8 @@ import {
   ROOT_NAV_REVIEWS,
   ROOT_NAV_SETTINGS,
   ROOT_NAV_CHANGE_PASSWORD,
-  ROOT_NAV_ACCOUNT_SETTINGS
+  ROOT_NAV_ACCOUNT_SETTINGS,
+  ROOT_NAV_OPTIONS
 } from './RootRoutes';
 import {AppContainer} from './RootNavigation';
 
@@ -81,6 +82,7 @@ export const navigateToYourCart = (navParams: any) => {
   .router
   .getActionForPathAndParams(`/${ROOT_NAV_YOUR_CART}`, navParams);
 };
+
 export const navigateToReviews = (navParams: any) => {
   return AppContainer
   .router
@@ -92,6 +94,18 @@ export const navigateToSettings = (navParams: any) => {
   if (navParams && navParams.activeScreen) {
     route = `/${ROOT_NAV_SETTINGS}${navParams.activeScreen}`;
   }
+  return AppContainer
+  .router
+  .getActionForPathAndParams(route, navParams);
+};
+
+export const navigateToOptions = (navParams: any) => {
+  console.log(navParams)
+  let route = null;
+  if (navParams && navParams.level) {
+    route = `/${ROOT_NAV_OPTIONS}${navParams.level}`;
+  }
+
   return AppContainer
   .router
   .getActionForPathAndParams(route, navParams);

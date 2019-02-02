@@ -16,6 +16,7 @@ import ReviewsScreen from '../modules/product/screens/reviews/ReviewsScreen';
 import SettingsScreen from '../modules/user/screens/settingsScreen/SettingsScreen';
 import ChangePasswordScreen from '../modules/user/screens/changePassword/ChangePasswordScreen';
 import AccountSettingScreen from '../modules/user/screens/accountSettings/AccountSettingScreen';
+import NavMenuScreen from '../modules/product/screens/navMenu/NavMenuScreen';
 
 export const ROOT_NAV_LOGIN = 'Login';
 export const ROOT_NAV_SELECT_ROLE = 'SelectRole';
@@ -27,6 +28,11 @@ export const ROOT_NAV_SIGN_UP_AS_A_SELLER = 'SignUpAsASellerScreen';
 export const ROOT_NAV_ALL_CATEGORIES = 'AllCategories';
 export const ROOT_NAV_YOUR_CART = 'CartDetailsScreen';
 export const ROOT_NAV_REVIEWS = 'Reviews';
+
+export const ROOT_NAV_OPTIONS = 'NavMen';
+export const ROOT_NAV_OPTIONS_1 = 'NavMen1';
+export const ROOT_NAV_OPTIONS_2 = 'NavMen2';
+export const ROOT_NAV_OPTIONS_3 = 'NavMen3';
 
 export const ROOT_NAV_SETTINGS = 'Settings';
 export const ROOT_NAV_SETTINGS_LANGUAGE = 'SettingsLanguage';
@@ -100,8 +106,16 @@ export const rootRoutes = {
     screen: SettingsScreen,
     path: `/${ROOT_NAV_CHANGE_PASSWORD}`,
   },
-  [ROOT_NAV_ACCOUNT_SETTINGS]: {
-    screen: AccountSettingScreen,
-    path: `/${ROOT_NAV_ACCOUNT_SETTINGS}`,
-  }
+  [ROOT_NAV_OPTIONS_1]: {
+    screen: NavMenuScreen,
+    path: `/${ROOT_NAV_OPTIONS_1}`,
+  },
+  [ROOT_NAV_OPTIONS_2]: {
+    screen: NavMenuScreen,
+    path: `/${ROOT_NAV_OPTIONS_2}`,
+  },
+  [ROOT_NAV_OPTIONS_3]: {
+    screen: NavMenuScreen,
+    path: `/${ROOT_NAV_OPTIONS_3}`,
+  },
 };

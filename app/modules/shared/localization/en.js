@@ -66,5 +66,10 @@ export default enStrings = {
     EDIT_ACCOUNT_DETAILS: 'Edit Account Details',
     CHANGE_PASSWORD: 'Change Password',
     YOUR_SHIPPING_ADDRESS: 'Your Shipping Address',
+    CATEGORIES: 'Categories',
+    ITEM_DETAILS: 'Item Details',
+    OPTIONS: 'Options',
+    IMAGES: 'Images',
+    ADD_IMAGES: 'Add Images',
 
 }

@@ -2,6 +2,8 @@ import Config from 'react-native-config';
 import {getForm, defaultRequestHeaders, getCookie} from '../../../../services/RestService';
 import {getCategories} from '../../../../store/AsyncStorageHelper';
 import { splitCategoryName } from '../../../../services/ExternalServices';
+
+
 const BASE_URL: string = `${Config.API_URL}`;
 
 export const getOptions = async () => {
@@ -62,4 +64,44 @@ export const filterCategory = async (categoryData, category_id) => {
   let categories = categoryData.filter(category => category.category_id === category_id)[0];
   let data = await getCategorydata(categories);
 	return data;
+}
+
+
+export const uploadImage = async (image, isSecondary?) => {
+  
+  let imageUploadUri = `${BASE_URL}/product/addmainimage`;
+  let secondImageUri = `${BASE_URL}/product/addproductimage`;
+
+  console.log(image)
+
+  if(isSecondary) {
+    imageUploadUri = secondImageUri;
+  }
+  
+  const data = new FormData();
+  data.append('image', {
+    uri: image.path,
+    type: image.mime,
+    name: image.filename,
+  });
+  data.append('Content-Type', image.mime);
+  data.append('product_id', 525);
+  data.append('fileKey', 'file');
+
+  let cookie = getCookie();
+  let response = await fetch(imageUploadUri, {
+    method: 'POST',
+    headers: {
+      ...defaultRequestHeaders,
+      cookie,
+    },
+    body: data,
+  });
+  
+
+  console.log(resp)
+
+  let resp = await response.json();
+  console.log(resp);
+  return resp;
 }

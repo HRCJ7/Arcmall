@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   textComponent: {
-    flex: 3,
+    flex: 4,
   },
   descriptionText: {
     ...font,
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
   checkBoxRow: {
     flex: 1,
-    marginTop: 10,
+    marginTop: 5,
     // alignItems: 'flex-start',
     // justifyContent: 'flex-start',
   },
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // height: 100,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   label: {
     ...font,
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   textInput: {
     ...font,
     color: Theme.colors.smallText,
-    height: 40,
+    height: 36,
     fontSize: Theme.fontSizes.small,
     fontWeight: Theme.fontWeight.light,
     borderBottomWidth: 0.5,

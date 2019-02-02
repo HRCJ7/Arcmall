@@ -3,8 +3,10 @@ package com.arcmall;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.psykar.cookiemanager.CookieManagerPackage;
+import com.toast.RCTToastPackage;
+import im.shimo.react.cookie.CookieManagerPackage;
+import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.babisoft.ReactNativeLocalization.ReactNativeLocalizationPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -31,8 +33,10 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new PickerPackage(),
             new CookieManagerPackage(),
+            new RCTToastPackage(),
+            new CookieManagerPackage(),
+            new PickerPackage(),
             new RNFetchBlobPackage(),
             new ReactNativeLocalizationPackage(),
             new VectorIconsPackage(),

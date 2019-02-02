@@ -16,7 +16,6 @@ import LoadingIndicator from '../../../shared/components/loadingIndicator/Loadin
 import ProductListItem from '../../components/productListItem/ProductListItem';
 import { navigateToItemDetails } from '../../../../navigation/RootNavActions';
 import ProductActions from '../../actions/ProductActions';
-import Toast from 'react-native-simple-toast';
 import ReviewListItem from '../../components/reviewListItem/ReviewListItem';
 
 class ReviewsScreen extends React.Component<any, any> {

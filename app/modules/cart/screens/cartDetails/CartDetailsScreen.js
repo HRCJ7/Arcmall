@@ -12,7 +12,6 @@ import CartListItem from "../../components/cartListItem/CartListItem";
 import { navigateToItemDetails } from "../../../../navigation/RootNavActions";
 import ArcmallButton from "../../../shared/components/arcmallButton/ArcmallButton";
 import CartActions from "../../actions/CartActions";
-import Toast from "react-native-simple-toast";
 import { getForm, defaultRequestHeaders, getCookie } from "../../../../services/RestService";
 import Config from 'react-native-config';
 import {Picker, Header, Icon} from "native-base";

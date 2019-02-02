@@ -19,10 +19,11 @@ import AddProductScreen from "../../modules/product/screens/addProduct/AddProduc
 
 export const MAIN_TAB_HOME = 'Home';
 export const MAIN_TAB_PROFILE = 'Profile';
+export const MAIN_TAB_MORE_SETTINGS = 'More Settings';
 
 export const mainTabRoutes = {
   [MAIN_TAB_HOME]: {
-    screen: AddProductScreen,
+    screen: HomeScreen,
     path: `/${MAIN_TAB_HOME}`,
   },
   [MAIN_TAB_PROFILE]: {
@@ -32,5 +33,9 @@ export const mainTabRoutes = {
   [YOUR_CART]: {
     screen: CartDetailsScreen,
     path: `/${YOUR_CART}`,
+  },
+  [MAIN_TAB_MORE_SETTINGS]: {
+    screen: SettingsScreen,
+    path: `/${MAIN_TAB_MORE_SETTINGS}`,
   },
 };

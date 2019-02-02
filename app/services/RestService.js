@@ -1,7 +1,6 @@
 // @flow
 import {NetInfo, AsyncStorage} from 'react-native';
 import Config from 'react-native-config';
-import CookieManager from 'react-native-cookies';
 import setCookie from 'set-cookie-parser'
 import { COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY } from '../Constants';
 import { getCookies } from '../store/AsyncStorageHelper';
@@ -18,9 +17,10 @@ const BASE_URL: string = `${Config.API_URL}`;
 
 export const defaultRequestHeaders: {[string]: string} = {
   'Accept': '*/*',
-  'accept-encoding':'gzip, deflate',
   'Content-Type': 'multipart/form-data',
-  'credentials': 'same-origin',
+  withCredentials: true
+  // 'credentials': 'same-origin'
+  // 'withCredentials': true,
 };
 
 const cookieToString = function(cookie, suffix) {
@@ -28,18 +28,21 @@ const cookieToString = function(cookie, suffix) {
 }  
 
 const setCookies = async function(response, keys, newSession) {
-  var combinedCookieHeader = response.headers.get('Set-Cookie');
-  var splitCookieHeaders = setCookie.splitCookiesString(combinedCookieHeader)
-  var cookies = setCookie.parse(splitCookieHeaders, {
-    map: true 
-  });
-  console.log(cookies)
-  const set = [];
-  for (let key of keys) {
-    set.push([key, cookieToString(cookies[key], '')])
-    console.log(key)
+  var combinedCookieHeader = response.headers.get('set-cookie');
+  if (combinedCookieHeader) {
+    var splitCookieHeaders = setCookie.splitCookiesString(combinedCookieHeader)
+    var cookies = setCookie.parse(splitCookieHeaders, {
+      map: true 
+    });
+    const set = [];
+    for (let key of keys) {
+      let cookieKey = cookies[key];
+      if (cookieKey) {
+        set.push([key, cookieToString(cookies[key], '')])
+      }
+    }
+    await AsyncStorage.multiSet(set);
   }
-  await AsyncStorage.multiSet(set);
 }
 
 export const getCookie = async function() {
@@ -80,11 +83,13 @@ const createURLParams = (params: {[string]: any} | null): string => {
 const handleResponseStatus = async (response) => {
   if (response && response.status < 200 || response.status >= 300) {
     const error: any = new Error(response.statusText);
-    error.response = await response.json();
+    error.response = response;
     error.status = response.status;
 
     throw error;
   }
+
+  console.log(response)
 
   return response.json();
 };
@@ -112,11 +117,12 @@ export const GET = async (
   const url: string = `${BASE_URL}/${endpoint}${createURLParams(params)}`;
   let cookie = await getCookie();
   const options: {[string]: any} = {
+    method: 'GET',
+    credentials: 'include',
     headers: {
-      method: 'GET',
       ...defaultRequestHeaders,
       ...headers,
-      cookie: cookie,
+      // cookie: cookie,
     },
   };
   if (!cookie) {
@@ -124,19 +130,13 @@ export const GET = async (
   }
   
   const response = await fetch(url, options);
-
-  if(!cookie) {
-    await setCookies(response, [COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY], true);
-  } else if (updateCookieKeys) {
-    await setCookies(response, updateCookieKeys, false);
-  }
-  // Handle the response before returning
   return handleResponseStatus(response);
 };
 
 export const POST = async (
   endpoint: string, body: {[string]: any} | null, params: {[string]: any} | null, headers: {[string]: any} | null, updateCookieKeys: any = null
 ): Promise<any> => {
+  // console.log(document.cookie)
   // Wait for connection
   await isConnected();
 
@@ -145,10 +145,11 @@ export const POST = async (
   let cookie = await getCookie();
   const options: {[string]: any} = {
     method: 'POST',
+    credentials: 'include',
     headers: {
       ...defaultRequestHeaders,
       ...headers,
-      cookie: cookie,
+      // cookie: cookie,
     },
     body: getForm(body),
   };
@@ -159,11 +160,6 @@ export const POST = async (
 
   const response = await fetch(url, options);
 
-  if(!cookie) {
-    await setCookies(response, [COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY], true);
-  } else if (updateCookieKeys) {
-    await setCookies(response, updateCookieKeys, false);
-  }
   // Handle the response before returning
   return handleResponseStatus(response);
 };

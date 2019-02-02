@@ -43,7 +43,7 @@ class HomeScreen extends React.Component<any, any> {
   }
 
   componentDidMount() {
-    
+    // Cookie.get('http://arcmall.com/').then((cookie) => console.log('cookie', cookie));
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -60,7 +60,17 @@ class HomeScreen extends React.Component<any, any> {
       this.saveCategoryList(nextProps.categoryList)
       shouldUpdate = false;
     }
-    if (oldUser != newUser) {
+
+    let oldId = 0;
+    let newId = 0;
+    if(oldUser) {
+      oldId = oldUser.customer_id;
+    }
+    if (newUser) {
+      newId = newUser.customer_id;
+    }
+
+    if (oldId != newId) {
       this.getCategoryList(nextProps);
     }
     

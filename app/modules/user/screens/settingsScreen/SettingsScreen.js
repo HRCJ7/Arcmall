@@ -22,7 +22,6 @@ import EvilIcons from 'react-native-vector-icons/dist/EvilIcons';
 import {navigateToSettings} from '../../../../navigation/RootNavActions';
 import Theme from '../../../../theme/Base';
 import {CheckBox} from 'react-native-elements'
-import CookieManager from 'react-native-cookies';
 import UserActions from '../../actions/UserActions';
 import { COOKIE_LANGUAGE, COOKIE_LANGUAGE_CHINESE, CODE_ENGLISH, CODE_CHINESE } from '../../../../Constants';
 import LoadingIndicator from '../../../shared/components/loadingIndicator/LoadingIndicator';
@@ -34,6 +33,8 @@ import { getUser } from '../../../../store/AsyncStorageHelper';
 import { MAIN_TAB_HOME } from '../../../../navigation/mainTab/MainTabRoutes';
 import { ROOT_NAV_CHANGE_PASSWORD } from '../../../../navigation/RootRoutes';
 import ChangePasswordScreen from '../changePassword/ChangePasswordScreen';
+import ProductActions from '../../../product/actions/ProductActions';
+import { setLanguage } from './settingApis';
 
 const BASE_URL: string = `${Config.API_URL}`;
 
@@ -116,6 +117,13 @@ class SettingsScreen extends React.Component<any, any> {
     const {languageLoading} = this.props;
     await AsyncStorage.setItem(COOKIE_LANGUAGE, `language=${language}`);
     this.props.dispatch(UserActions.setLanguage(language))
+    try {
+      await setLanguage(language)
+    } catch(err) {
+
+    }
+    
+    this.props.dispatch(ProductActions.getCategoryList())
     Strings.setLanguage(language);
     this.setState({
       language: language,
@@ -383,7 +391,7 @@ class SettingsScreen extends React.Component<any, any> {
       method: 'POST',
       headers: {
         ...defaultRequestHeaders,
-        cookie: cookies,
+        // cookie: cookies,
       },
       body: getForm(data)
     });

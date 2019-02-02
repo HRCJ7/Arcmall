@@ -15,7 +15,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from "./LoginScreen.styles";
-import { navigateToMainTabScreen, navigateToSelectRoleScreen,navigateToAccountSettingScreen } from "../../../navigation/RootNavActions";
+import { navigateToMainTabScreen, navigateToSelectRoleScreen, navigateToAccountSettingScreen } from "../../../navigation/RootNavActions";
 import Icon from "react-native-vector-icons/FontAwesome";
 import EvilIcon from "react-native-vector-icons/EvilIcons";
 import Strings from "../../shared/localization/localization";
@@ -23,6 +23,7 @@ import ArcmallButton from "../../shared/components/arcmallButton/ArcmallButton";
 import LoginActions from "../actions/LoginActions";
 import { COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY, STORAGE_USER } from "../../../Constants";
 import { clearCookies, getUser } from "../../../store/AsyncStorageHelper";
+import { showToast } from "../../../theme/Base";
 
 class SignUpAsABuyerScreen extends React.Component<any, any> {
   static defaultProps: any;
@@ -32,14 +33,22 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
     this.state = {
       email: null,
       password: null,
+      errorShown: false,
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    
+  }
 
   static getDerivedStateFromProps(props, state) {
     //Return state object, retun null to update nothing;
-    return null;
+    let modState = {...state};
+    if(!state.errorShown && props.error? props.error.error_warning: false) {
+      showToast(props.error.error_warning);
+      modState.errorShown = true;
+    }
+    return modState;
   }
 
   async shouldComponentUpdate(nextProps, nextState) {
@@ -59,10 +68,14 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
     let {email, password} = this.state;
     await clearCookies();
     this.props.dispatch(LoginActions.login(email, password))
+    this.setState({
+      errorShown: false,
+    })
   }
 
   handleSignUpPress = () => {
-    this.props.navigation.dispatch(navigateToAccountSettingScreen());
+    console.log(this.props.navigation.state.key)
+    this.props.navigation.dispatch(navigateToSelectRoleScreen());
   }
 
   handleOnBackPress = () => {
@@ -142,6 +155,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     ...state,
     user: state.login.user,
+    error: state.login.error,
   };
 };
 

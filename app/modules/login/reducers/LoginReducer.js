@@ -16,6 +16,7 @@ import {
 import { NativeIconAPI } from 'react-native-vector-icons/dist/lib/create-icon-set';
 import { STORAGE_USER, COOKIE_PHPSSID, COOKIE_CURENCY, COOKIE_LANGUAGE } from '../../../Constants';
 import { clearCookies, clearCookiesAndUser } from '../../../store/AsyncStorageHelper';
+import CookieManager from 'react-native-cookies';
 
 const INITIAL_STATE = {
   user: null,
@@ -52,6 +53,7 @@ export const loginFailure = (state, {payload} : any) => ({
 
 export const registration = (state = INITIAL_STATE, {payload} : any) => ({
   ...state,
+  registrationData: null,
   registrationLoading: true,
   registrationError: null,
 });
@@ -68,6 +70,7 @@ export const registrationFailure = (state, {payload} : any) => ({
   ...state,
   registrationError: payload.error,
   registrationLoading: false,
+  registrationData: null,
 });
 
 export const postLogin = (state = INITIAL_STATE, {payload} : any) => {
@@ -75,15 +78,16 @@ export const postLogin = (state = INITIAL_STATE, {payload} : any) => {
     ...state,
     user: payload.user,
     language: payload.language,
-    registrationData: {}
+    registrationData: null
   }
 };
 
 export const signOut = async (state = INITIAL_STATE, {payload} : any) => {
   await clearCookies();
   await clearCookiesAndUser();
+  await CookieManager.clearAll();
   return {
-    registrationData: {},
+    registrationData: null,
     user: null,
   };
 };

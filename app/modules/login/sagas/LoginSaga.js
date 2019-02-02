@@ -32,16 +32,20 @@ export default () => {
   function* register(action) {
     try {
       const response = yield call(LoginService.register, action.payload);
-      let resposeErr = null;
-      for (let key in response) {
+      let resposeErr = '';
+      for (let key of Object.keys(response)) {
         let error = key.split('_');
         if (error[0] === 'error') {
-          if(response[key] instanceof String && response[key] !== '') {
-            resposeErr = resposeErr? resposeErr: {};
-            resposeErr[error[1]] = response[key];
+          // error[1] == 'warning'         
+          const value = response[key];
+          if(typeof value === 'string' && value !== '') {
+            console.log(value)
+            resposeErr = `${resposeErr} \n ${value}`;
+            // resposeErr[error[1]] = value;
           }
         }
       }
+      console.log(resposeErr)
       if (resposeErr) {
         yield put(Actions.registrationFailure(resposeErr));
       } else {
@@ -51,7 +55,19 @@ export default () => {
           password: action.payload.password}));
       }
     } catch (error) {
-      yield put(Actions.registrationFailure(error.response));
+      console.log(error)
+      let resposeErr = null;
+      // for (let key of error.response.json()) {
+      //   let error = key.split('_');
+      //   if (error[0] === 'error') {
+      //     if(key instanceof String && key !== '') {
+      //       resposeErr = resposeErr? resposeErr: {};
+      //       resposeErr[error[1]] = key;
+      //     }
+      //   }
+      // }
+      // console.log(resposeErr)
+      yield put(Actions.registrationFailure(resposeErr));
     }
   }
 

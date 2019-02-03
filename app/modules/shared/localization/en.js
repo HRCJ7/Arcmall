@@ -44,7 +44,6 @@ export default enStrings = {
     COMPANY_NAME:'Company name',
     SEARCH: 'Search',
     SETTINGS: 'Settings',
-
     ADD: 'Add',
     SEE_MORE: 'See more',
     SELECT_YOUR_ROLE: 'Select your role',
@@ -68,5 +67,6 @@ export default enStrings = {
     CHANGE_PASSWORD: 'Change Password',
     YOUR_SHIPPING_ADDRESS: 'Your Shipping Address',
     ORDER_CONFIRMATION: 'Order Confirmation',
+    ORDER_HISTORY:'Order History'
 
 }

@@ -12,6 +12,7 @@ import CategoryTabNavigator from './categoryTab/CategoryTabNavigation';
 import CategoryListScreen from '../modules/product/screens/categoryList/CategoryListScreen';
 import CartDetailsScreen from '../modules/cart/screens/cartDetails/CartDetailsScreen';
 import OrderConfirmationScreen from '../modules/cart/screens/orderConfirmation/OrderConfirmationScreen';
+import OrderHistoryScreen from '../modules/cart/screens/orderHistory/OrderHistoryScreen';
 
 import ReviewsScreen from '../modules/product/screens/reviews/ReviewsScreen';
 import SettingsScreen from '../modules/user/screens/settingsScreen/SettingsScreen';
@@ -28,6 +29,7 @@ export const ROOT_NAV_SIGN_UP_AS_A_SELLER = 'SignUpAsASellerScreen';
 export const ROOT_NAV_ALL_CATEGORIES = 'AllCategories';
 export const ROOT_NAV_YOUR_CART = 'CartDetailsScreen';
 export const ROOT_NAV_ORDER_CONFIRMATION = 'OrderConfirmationScreen';
+export const ROOT_NAV_ORDER_HISTORY = 'OrderHistoryScreen';
 export const ROOT_NAV_REVIEWS = 'Reviews';
 
 export const ROOT_NAV_SETTINGS = 'Settings';
@@ -109,5 +111,9 @@ export const rootRoutes = {
   [ROOT_NAV_ORDER_CONFIRMATION]: {
     screen: OrderConfirmationScreen,
     path: `/${ROOT_NAV_ORDER_CONFIRMATION}`,
+  },
+  [ROOT_NAV_ORDER_HISTORY]: {
+    screen: OrderHistoryScreen,
+    path: `/${ROOT_NAV_ORDER_HISTORY}`,
   }
 };

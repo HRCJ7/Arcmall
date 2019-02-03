@@ -29,6 +29,7 @@ const addToCart = (state = INITIAL_STATE, {payload} : any) => ({
   ...state,
   cartLoading: true,
   cartData: null,
+  cartError: null,
 });
 
 const addToCartSuccess = (state = INITIAL_STATE, {payload} : any) => {  

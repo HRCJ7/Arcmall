@@ -18,7 +18,7 @@ const BASE_URL: string = `${Config.API_URL}`;
 export const defaultRequestHeaders: {[string]: string} = {
   'Accept': '*/*',
   'Content-Type': 'multipart/form-data',
-  withCredentials: true
+  withCredentials: true,
   // 'credentials': 'same-origin'
   // 'withCredentials': true,
 };
@@ -89,8 +89,6 @@ const handleResponseStatus = async (response) => {
 
     throw error;
   }
-
-  console.log(response)
 
   return response.json();
 };

@@ -34,16 +34,16 @@ import { MAIN_TAB_HOME } from '../../../../navigation/mainTab/MainTabRoutes';
 import { ROOT_NAV_CHANGE_PASSWORD } from '../../../../navigation/RootRoutes';
 import ChangePasswordScreen from '../changePassword/ChangePasswordScreen';
 import ProductActions from '../../../product/actions/ProductActions';
-import { setLanguage } from './settingApis';
+import { setLanguage, getZones, setPaymentAddress } from './settingApis';
 
 const BASE_URL: string = `${Config.API_URL}`;
 
 const ACTIVE_SCREEN_SETTINGS = 'Settings';
 const ACTIVE_SCREEN_LANGUAGE = 'Language';
-const ACTIVE_SCREEN_SHIPPING = 'Shipping';
+export const ACTIVE_SCREEN_SHIPPING = 'Shipping';
 const ACTIVE_SCREEN_ADD_ITEM = 'AddItem';
 const ACTIVE_SCREEN_CHANGE_PASSWORD = 'ChangePassword';
-const ACTIVE_SCREEN_SHIPPING_ADD = 'ShippingAdd';
+export const ACTIVE_SCREEN_SHIPPING_ADD = 'ShippingAdd';
 
 class SettingsScreen extends React.Component<any, any> {
   static defaultProps: any
@@ -53,11 +53,13 @@ class SettingsScreen extends React.Component<any, any> {
     const params = props.navigation.state.params;
     let fromProfile = false;
     let activeScreen = ACTIVE_SCREEN_SETTINGS;
+    let fromCart = false;
     let activeList = this.getSettingsList(false);
     if (params && Object.keys(params).length > 0) {
       activeScreen = params.activeScreen? params.activeScreen: ACTIVE_SCREEN_SETTINGS;
       activeList = this.getSettingsList(params.fromProfile);
       fromProfile = params.fromProfile;
+      fromCart = params.fromCart;
     }
 
     this.state = {
@@ -68,8 +70,9 @@ class SettingsScreen extends React.Component<any, any> {
       language: CODE_ENGLISH,
       countryZones: null,
       countries: null,
-      fromProfile: fromProfile,
+      fromProfile,
       addressFormValues: {},
+      fromCart,
     };
 
     if (activeScreen === ACTIVE_SCREEN_SHIPPING) {
@@ -206,14 +209,17 @@ class SettingsScreen extends React.Component<any, any> {
     }))
   }
 
-  handleOnAddShipingPressed = () => {
-    const {addressFormValues} = this.state;
-
-  }
-
   handleLogout = () => {
     this.props.dispatch(LoginActions.signOut());
     this.props.navigation.navigate(MAIN_TAB_HOME);
+  }
+
+  handleAddrssPress = async (address) => {
+    console.log(address)
+    if (this.state.fromCart) {
+      const response = await setPaymentAddress(address);
+      console.log(response)
+    }
   }
 
   renderLeftAction = () => {
@@ -337,14 +343,18 @@ class SettingsScreen extends React.Component<any, any> {
     }
 
     return (
-      <View style={styles.addressView}>
+      <TouchableOpacity
+       onPress={() => {
+        this.handleAddrssPress(item);
+       }}
+       style={styles.addressView}>
         <Text style={styles.addressName}>{`${item.firstname} ${item.lastname}`}</Text>
         <Text style={styles.address}>{`${item.address_1}`}</Text>
         {address2}
         <Text style={styles.address}>{`${item.city}`}</Text>
         <Text style={styles.address}>{`${item.country}`}</Text>
         <Text style={styles.address}>{`${item.postcode}`}</Text>
-      </View>
+      </TouchableOpacity>
       
     )
   }
@@ -379,16 +389,8 @@ class SettingsScreen extends React.Component<any, any> {
   onChange = async (value) => {
     let zones = this.state.countryZones;
     if (value.country_id != this.state.addressFormValues.country_id) {
-      let response = await fetch(`${BASE_URL}/address/getZones`, {
-        method: 'POST',
-        headers: {
-          ...defaultRequestHeaders,
-        },
-        body: getForm({country_id: value.country_id})
-      });
-
-      const {zones: oriZones} = await response.json();
-  
+      
+      const {zones: oriZones} = await getZones(value.country_id);
       if (oriZones) {
         zones = {};
         for (const zone of oriZones) {
@@ -404,16 +406,15 @@ class SettingsScreen extends React.Component<any, any> {
   }
 
   onAddressFormSubmit = async () => {
-    let cookies = await getCookie()
     let user = await getUser();
     let data =  {...this.state.addressFormValues};
     data.firstname = user.firstname;
     data.lastname = user.lastname;
     let response = await fetch(`${BASE_URL}/address/save`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         ...defaultRequestHeaders,
-        // cookie: cookies,
       },
       body: getForm(data)
     });

@@ -24,6 +24,7 @@ import { navigateToReviews } from '../../../../navigation/RootNavActions';
 import {Picker, Header} from "native-base";
 import { Button } from 'react-native-elements';
 import CartActions from '../../../cart/actions/CartActions';
+import { showToast } from '../../../../theme/Base';
 
 const NONE = 'none';
 const getOptionDataFromString = (value) => {
@@ -40,7 +41,8 @@ class ProductDetailScreen extends React.Component<any, any> {
 
   constructor(props) {
     super(props);
-    const {itemId} = this.props.navigation.state.params;
+    // const {itemId} = this.props.navigation.state.params;
+    let itemId = 264;
     this.state = {
       isLoading: true,
       cartLoading: false,
@@ -63,6 +65,7 @@ class ProductDetailScreen extends React.Component<any, any> {
     //Return state object, retun null to update nothing;
     return {
       cartLoading: props.cartLoading,
+      isLoading: props.isLoading,
     };
   }
 
@@ -71,7 +74,14 @@ class ProductDetailScreen extends React.Component<any, any> {
   }
 
   componentDidUpdate() {
-    
+    if(this.props.cartError) {
+      let cartErrorMessage = '';
+      // alert(JSON.stringify(this.props.cartError.option))
+      for (key of Object.keys(this.props.cartError.option)) {
+        cartErrorMessage = `${this.props.cartError.option[key]} \n`;
+      }
+      showToast(cartErrorMessage)
+    }
   }
 
   handleOnBackPress = () => {
@@ -388,11 +398,13 @@ ProductDetailScreen.defaultProps = {
 };
 
 const mapStateToProps = (state, ownProps) => {
+  console.log(state.product.productLoading)
   return {
     data: state.product.productData,
-    isLoading: state.product.productLoading || !state.product.productData,
+    isLoading: state.product.productLoading,
     error: state.product.productError,
     cartLoading: state.cart.cartLoading,
+    cartError: state.cart.cartError,
   };
 };
 

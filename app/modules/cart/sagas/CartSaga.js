@@ -21,7 +21,11 @@ export default () => {
   function* addToCart({payload}) {
     try {
       const response = yield call(CartService.addToCart, payload);
-      yield put(CartActions.addToCartSuccess(response));
+      if (response.error) {
+        yield put(CartActions.addToCartFailure(response.error));
+      } else {
+        yield put(CartActions.addToCartSuccess(response));
+      }
     } catch (error) {
       yield put(CartActions.addToCartFailure(error.response));
     }

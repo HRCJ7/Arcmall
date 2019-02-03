@@ -13,7 +13,8 @@ import {
   ROOT_NAV_SETTINGS,
   ROOT_NAV_CHANGE_PASSWORD,
   ROOT_NAV_ACCOUNT_SETTINGS,
-  ROOT_NAV_OPTIONS
+  ROOT_NAV_OPTIONS,
+  ROOT_NAV_ADD_ITEM
 } from './RootRoutes';
 import {AppContainer} from './RootNavigation';
 
@@ -100,7 +101,6 @@ export const navigateToSettings = (navParams: any) => {
 };
 
 export const navigateToOptions = (navParams: any) => {
-  console.log(navParams)
   let route = null;
   if (navParams && navParams.level) {
     route = `/${ROOT_NAV_OPTIONS}${navParams.level}`;
@@ -109,6 +109,12 @@ export const navigateToOptions = (navParams: any) => {
   return AppContainer
   .router
   .getActionForPathAndParams(route, navParams);
+};
+
+export const navigateToAddItem = (navParams: any) => {
+  return AppContainer
+  .router
+  .getActionForPathAndParams(`/${ROOT_NAV_ADD_ITEM}`, navParams);
 };
 
 

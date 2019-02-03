@@ -67,9 +67,9 @@ class CartDetailsScreen extends React.Component<any, any> {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if(this.props.cartData) {
-      return false;
-    }
+    // if(this.props.cartData) {
+    //   return false;
+    // }
     return true;
   }
 
@@ -318,14 +318,17 @@ class CartDetailsScreen extends React.Component<any, any> {
           <LoadingIndicator />
         </View>
       )
-    } else if(!user) {
-        content = (
-          <View style={styles.container}>
-            {navBar}
-            <Text style={styles.errorText}>{Strings.LOGIN_TO_SEE}</Text>
-          </View>
-        )
-    } else {
+    } 
+    // else if(!user) {
+    //     content = (
+    //       <View style={styles.container}>
+    //         {navBar}
+    //         <Text style={styles.errorText}>{Strings.LOGIN_TO_SEE}</Text>
+    //       </View>
+    //     )
+    // } 
+    
+    else {
       content = (
         <View style={styles.container}>
           {navBar}

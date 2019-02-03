@@ -20,7 +20,7 @@ import {navigateToItemListScreen, navigateToOptions } from '../../../../navigati
 import ProductActions from '../../actions/ProductActions';
 import GridView from '../../components/GridView/GridView';
 import EvilIcons from 'react-native-vector-icons/dist/EvilIcons';
-import {getOptions, getCategorydata, filterCategory, saveProduct, getCategoryFromId, addMainImage, uploadImages, uploadImage} from './Apis';
+import {getOptions, getCategorydata, filterCategory, getCategoryFromId, addMainImage, uploadImage, addItem} from './Apis';
 import {Item, Input} from 'native-base';
 import t from 'tcomb-form-native';
 import {getUser } from '../../../../store/AsyncStorageHelper';
@@ -28,7 +28,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import ArcmallButton from '../../../shared/components/arcmallButton/ArcmallButton';
 import { getForm } from '../../../../services/RestService';
 import { ListItem } from 'react-native-elements'
-import Theme from '../../../../theme/Base';
+import Theme, { showToast } from '../../../../theme/Base';
 import ImagePicker from 'react-native-image-crop-picker';
 import TagInput from '../../components/tagInput/TagInput';
 import { ROOT_NAV_OPTIONS } from '../../../../navigation/RootRoutes';
@@ -51,13 +51,8 @@ class AddProductScreen extends React.Component<any, any> {
       productOptions: null,
       allCategories: null,
 
-      //Formatted to enum (key, value)
-      categoriesMain: null,
-      categorieslv1: {},
-
       productId: null,
       images: [],
-
 
       isLoading: true,
       
@@ -75,28 +70,23 @@ class AddProductScreen extends React.Component<any, any> {
         // currency_code : null,
 
 
-        //Unformatted to POST
-        categorySelectedMain : null,
-        categorySelectedLv1 : null,
-
         //Formatted to POST
         name : null,
         description: null,
         quantity : null,
         price : null,
         weight : null,
-        model: null,
+        model: 'model',
         
         category: [],
         product_option: [],
 
         customer_id : null,
-        currency_code : null,
+        // currency_code : null,
 
-        model : null,
-        height : null,
-        length: null,
-        width: null,
+        // height : null,
+        // length: null,
+        // width: null,
       },
     }
     this.getData();
@@ -107,10 +97,6 @@ class AddProductScreen extends React.Component<any, any> {
   }
 
   static getDerivedStateFromProps(props, state) {
-    //Return state object, retun null to update nothing;
-    // return {
-    //   isLoading: !state.productOptions || !state.categoriesMain,
-    // };
     return state;
   }
 
@@ -122,41 +108,117 @@ class AddProductScreen extends React.Component<any, any> {
     
   }
 
-  handleSubmitForm = () => {
-    
-    uploadImage(this.state.images[0], true)
-    // ImagePicker.openPicker({
-    //   // multiple: true,
-    //   mediaType: 'photo',
-    //   cropping: true,
-    // }).then(image => {
-    //   console.log(image);
-    // });
-    // let formData = {...this.state.productFormData};
-    // if (formData.categorySelectedMain) {
-    //   formData.category[1] = {category_id: formData.categorySelectedMain};
-    // }
-    // if (formData.categorySelectedLv1) {
-    //   formData.category[2] = {category_id: formData.categorySelectedLv1}
-    // }
+  setLoadingState = (state) => {
+    this.setState({
+      isLoading: state,
+    })
+  }
 
-    // formData = getForm(formData);
-    // saveProduct(formData);
-		// console.log('TCL: AddProductScreen -> handleSubmitForm -> formData', formData)
-    
+  addItem = async () => {
 
+    this.setLoadingState(true);
+    
+    const {product_option: stateOption, category: stateCategory} = this.state.productFormData;
+
+    let requestBody = {...this.state.productFormData};
+
+    let category = null;
+    let product_option = null;
+    for (const catData of stateCategory) {
+      category = category? category: [];
+      category.push(catData.category_id);
+    }
+    requestBody.category = category;
+
+    let output = [];
+
+    requestBody.product_option.forEach(function(item) {
+      var existing = output.filter(function(v, i) {
+        return v.option_id == item.option_id;
+      });
+      if (existing.length > 0) {
+        let existeingOption = existing[0];
+				console.log('TCL: addItem -> existeingOption', existeingOption)
+        const concatValues = existeingOption.product_option_value.concat([
+          {
+            option_value_id: item.option_value_id,
+          }
+        ]);
+        existeingOption.product_option_value = concatValues;
+      } else {
+        output.push({
+          option_id: item.option_id,
+          type: item.type,
+          product_option_value: [
+            {
+              option_value_id: item.option_value_id,
+            }
+          ],
+        })
+      }
+    });
+
+    requestBody.product_option = output;
+
+    let form = getForm(requestBody);
+    console.log(form);
+    let response = null;
+    try {
+      response = await addItem(form);
+      
+      if (response.product_id) {
+        console.log('upload data success');
+        this.setState({
+          productId: response.product_id,
+        }, () => {
+          this.uploadImages(response.product_id);
+        })
+      } else {
+        this.setLoadingState(false);
+        showToast('Something went wrong. Please check your values');
+      }
+      
+    } catch (error) {
+      this.setLoadingState(false);
+      console.log(error)
+      showToast('Something went wrong.');
+    }
+  }
+
+  uploadImages = async (productId) => {
+    const {images} = this.state;
+
+    let uploadImageCount = 0;
+    let imageCount = images.length;
+
+    let response = null;
+
+    try {
+      for(const image of images) {
+        console.log('uploading image', uploadImageCount + 1);
+        response = await uploadImage(image, productId, uploadImageCount == 0);
+        uploadImageCount = uploadImageCount + 1;
+        response = null;
+      }
+    } catch (err) {
+      showToast('Something went wrong.');
+    }
+
+    console.log('uploading image completed');
+    
+    this.setLoadingState(false);
+    this.props.navigation.goBack();
   }
   
   getData = async () => {
     const options = await getOptions();
-    let formattedOptions = [];
+    let allOptions = [];
 
     for (const option of options) {
-      const {name, option_id, type, value, required, option_value} = option;
-      formattedOptions.push({
-        name,
-        option_id
-      })
+      const {type} = option;
+      if (type === 'select') {
+        allOptions.push(option)
+      }
     }
 
 
@@ -164,9 +226,8 @@ class AddProductScreen extends React.Component<any, any> {
     const {formatted, unformatted} = await getCategorydata();
     
     this.setState({
-      productOptions: options,
+      productOptions: allOptions,
       allCategories: unformatted,
-      categoriesMain: formatted,
       isLoading: false,
       productFormData: {
         ...this.state.productFormData,
@@ -194,7 +255,7 @@ class AddProductScreen extends React.Component<any, any> {
   renderNavBar = () => {
     return (
       <NavigationBar
-        title={Strings.ALL_CATEGORIES}
+        title={Strings.ADD_ITEM}
         leftAction={this.renderLeftAction()}
       >
       </NavigationBar>
@@ -202,40 +263,15 @@ class AddProductScreen extends React.Component<any, any> {
   }
 
 
-  onFormChange = async (value) => {    
-    const {allCategories, categoriesMain, categorieslv1, productFormData} = this.state;
-    const mainCategoryId = value.categorySelectedMain;
-    const catLvl1Id = value.categorySelectedLv1;
-
+  onFormChange = async (value) => {
+    console.log(value)  
+    const {productFormData} = this.state;
     let stateObj = {
       productFormData: {
         ...productFormData,
         ...value,
       }
     }
-
-    // let categoryArr = stateObj.productFormData.category;
-    // let mainCategoryData = null;
-		
-    // if (mainCategoryId) {
-    //   let {formatted, unformatted, categoryData} = await filterCategory(allCategories, mainCategoryId);
-    //   mainCategoryData = unformatted;
-    //   formatted = formatted? formatted: {};
-    //   stateObj.categorieslv1 = formatted;
-
-    //   let filteredData = categoryArr.filter((category) => category.category_id == mainCategoryId);
-    //   if (filteredData.length === 0) {
-    //     categoryArr.push(categoryData)
-    //   }
-    // }
-
-    // if (catLvl1Id) {
-    //   let {formatted, unformatted, categoryData} = await filterCategory(mainCategoryData, catLvl1Id);
-    //   let filteredData = categoryArr.filter((category) => category.category_id == catLvl1Id);
-    //   if (filteredData.length === 0) {
-    //     categoryArr.push(categoryData)
-    //   }
-    // }
 
     this.setState(stateObj);
   }
@@ -244,7 +280,11 @@ class AddProductScreen extends React.Component<any, any> {
     return (
       <View style={styles.container}>
         <Text style={styles.headingText}>{locals.label}</Text>
-        <TextInput style={styles.textInput} />
+        <TextInput
+          onChangeText={(value) => {
+            locals.onChange(value)
+          }}
+        style={styles.textInput} />
       </View>
     );
   }
@@ -258,7 +298,6 @@ class AddProductScreen extends React.Component<any, any> {
           data={options}
           keyExtractor={(item) => item.option_value_id}
           renderItem={({item}) => {
-            console.log(item)
             let isSelected = false;
             if(product_option.length > 0) {
               isSelected = product_option.filter((option) => option.option_value_id === item.option_value_id).length > 0;
@@ -308,75 +347,10 @@ class AddProductScreen extends React.Component<any, any> {
     )
   }
 
-  // enumTemplate = (locals) => {
-  //   const modalVarialble = `${locals.path[0]}ViewStatus`;
-	// 	console.log('TCL: enumTemplate -> locals.path[0]', locals.path[0])
-  //   onSelected = (value) => {
-  //     locals.onChange(value);
-  //     this.setState({
-  //       [modalVarialble]: false,
-  //       productFormData: {
-  //         ...this.state.productFormData,
-  //         categorySelectedLv1: null,
-  //       }
-  //     })
-  //   }
-
-  //   onpress = () => {
-  //     this.setState({
-  //       [modalVarialble]: true,
-  //     })
-  //   }
-
-  //   onClose = () => {
-  //     this.setState({
-  //       [modalVarialble]: false,
-  //     })
-  //   }
-
-  //   getTags = () => {
-  //     let content = null;
-  //     if (locals.path[0] === 'categorySelectedLv1') {
-  //       content = (
-  //         <View style={{flex: 1, paddingBottom: 20}}>
-  //           <TagInput
-  //             maxHeight={1000}
-  //             tagContainerStyle={{height: 40}}
-  //             value={this.state.productFormData.category}
-  //             onChange={(category) => {                
-  //               this.setState({
-  //                 productFormData: {
-  //                   ...this.state.productFormData,
-  //                   category: category,
-  //                 }
-  //               })
-  //             }}
-  //             labelExtractor={(category) => category.name}
-  //         />
-  //         </View>
-  //       )
-  //     }
-  //     return content;
-  //   }
-
-  //   const item = locals.options.filter(item => item.value === locals.value)[0];
-  
-  //   return (
-  //     <View style={styles.container}>
-  //       <Text style={styles.headingText}>{locals.label}</Text>
-  //       <TouchableOpacity onPress={onpress} style={styles.enumButton}>
-  //         <Text style={styles.smallText}>{item.text}</Text>
-  //         {this.getModalView(modalVarialble, locals.options, locals.value, onSelected, onClose)}
-  //       </TouchableOpacity>
-  //       {getTags()}
-  //     </View>
-  //   );
-  // }
-
   renderForm = (data) => {
     let content = null;
     let Form = t.form.Form;
-    const {categoriesMain, categorieslv1, productFormData, productOptions} = this.state;
+    const {productFormData, productOptions} = this.state;
     if (productOptions) {
       let options = {
         fields: {
@@ -389,7 +363,7 @@ class AddProductScreen extends React.Component<any, any> {
             template: this.textInputTemplate,
           },
           quantity: {
-            label: 'Awailable Quantity',
+            label: 'Available Quantity',
             template: this.textInputTemplate,
           },
           price: {
@@ -448,6 +422,7 @@ class AddProductScreen extends React.Component<any, any> {
   onCategoriesPress = () => {
     const {allCategories, productFormData: {category}} = this.state;
     this.props.navigation.dispatch(navigateToOptions({
+      goBackFrom: this.props.navigation.state.key,
       categories: allCategories,
       onSelect: this.onCategorySelect,
       level: 1,
@@ -500,7 +475,6 @@ class AddProductScreen extends React.Component<any, any> {
   renderOptions = () => {
     onSelected = (mainOption, subOption) => {
       var {productFormData, productFormData} = this.state;
-			console.log('TCL: onSelected -> productFormData', productFormData)
       
       let formData = {...productFormData};
       formData.product_option.push(
@@ -509,6 +483,7 @@ class AddProductScreen extends React.Component<any, any> {
           option_value_id: subOption.option_value_id,
           tagString: `${mainOption.name} > ${subOption.name}`,
           type: mainOption.type,
+          product_option_value: [],
         }
       )
       this.setState({
@@ -633,21 +608,24 @@ class AddProductScreen extends React.Component<any, any> {
         <Text style={styles.titleText}>{Strings.IMAGES}</Text>
         <View style={styles.optionView}>
           <Text style={styles.headingText}>{Strings.ADD_IMAGES}</Text>
-          <TouchableOpacity onPress={() => {
-            ImagePicker.openPicker({
-              mediaType: 'photo',
-              cropping: true,
-            }).then(image => {
-              let images = this.state.images;
-              images.push(image)
-              console.log(images)
-              this.setState({
-                ...this.state,
-                images,
-              })
-            });
-
-          }} style={{flex: 1, alignItems:'flex-end'}}>
+          <TouchableOpacity 
+            style={{flex: 1, alignItems:'flex-end'}}
+            onPress={() => {
+            if (this.state.images.length !== IMAGE_COUNT) {
+              ImagePicker.openPicker({
+                mediaType: 'photo',
+                cropping: true,
+              }).then(image => {
+                let images = this.state.images;
+                images.push(image)
+                console.log(images)
+                this.setState({
+                  ...this.state,
+                  images,
+                })
+              });
+            }
+          }}>
             <EvilIcons name='plus' size={30} />
           </TouchableOpacity>
         </View>
@@ -683,8 +661,8 @@ class AddProductScreen extends React.Component<any, any> {
             {this.renderOptionTags()}
             {this.renderImages()}
             <ArcmallButton 
-              title={'save'}
-              onPress={this.handleSubmitForm}
+              title={Strings.ADD_ITEM}
+              onPress={this.addItem}
             />
           </View>
         </KeyboardAwareScrollView>

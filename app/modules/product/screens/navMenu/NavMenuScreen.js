@@ -18,7 +18,7 @@ import ProductActions from '../../actions/ProductActions';
 import { ListItem } from 'react-native-elements'
 import Theme from '../../../../theme/Base';
 import { splitCategoryName } from '../../../../services/ExternalServices';
-import { ROOT_NAV_OPTIONS_1 } from '../../../../navigation/RootRoutes';
+import { ROOT_NAV_OPTIONS_1, ROOT_NAV_OPTIONS } from '../../../../navigation/RootRoutes';
 
 class NavMenuScreen extends React.Component<any, any> {
   static defaultProps: any
@@ -26,7 +26,9 @@ class NavMenuScreen extends React.Component<any, any> {
   constructor(props) {
     super(props);
     const params = props.navigation.state.params;
-    console.log(params.categories)
+    const goBackFrom = props.navigation.state.routeName === ROOT_NAV_OPTIONS_1? 
+      props.navigation.state.key:
+        params.goBackFrom;
     this.state = {
       categories: params.categories,
       onSelect: params.onSelect,
@@ -34,6 +36,7 @@ class NavMenuScreen extends React.Component<any, any> {
       name: params.name,
       pathString: params.pathString,
       selectedCategories: params.selectedCategories,
+      goBackFrom: goBackFrom,
       // level: params.level,
       // maxLevel: params.maxLevel,
     }
@@ -87,10 +90,9 @@ class NavMenuScreen extends React.Component<any, any> {
   }
 
   onListItemPress = (item) => {
-    const {onSelect, level, name: navName, pathString, selectedCategories} = this.state;
+    const {onSelect, level, name: navName, pathString, selectedCategories, goBackFrom} = this.state;
     const {categories} = item;
     let {name, count} = splitCategoryName(item.name);
-    console.log(name)
 
     let pathStringModified = '';
     if (!pathString) {
@@ -100,14 +102,16 @@ class NavMenuScreen extends React.Component<any, any> {
     }
     
     if (categories.length > 0) {
-      this.props.navigation.dispatch(navigateToOptions({categories: categories, 
+      this.props.navigation.dispatch(navigateToOptions({
+        goBackFrom,
+        categories: categories, 
         onSelect, level: 1 + level, 
         name,
         selectedCategories,
         pathString: pathStringModified}));
     } else {
       onSelect(item, pathStringModified);
-      this.props.navigation.goBack(ROOT_NAV_OPTIONS_1);
+      this.props.navigation.goBack(goBackFrom);
     }
   }
 
@@ -149,23 +153,14 @@ class NavMenuScreen extends React.Component<any, any> {
   }
 }
 
-NavMenuScreen.propTypes = {
-  reviewsLoading: PropTypes.bool,
-  reviews: PropTypes.any,
-  reviewsError: PropTypes.any, 
+NavMenuScreen.propTypes = { 
 };
 
 NavMenuScreen.defaultProps = {
-  reviewsLoading: true,
-  reviews: null,
-  reviewsError: null, 
 };
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    reviews: state.product.reviews,
-    reviewsLoading: state.product.reviewsLoading,
-    reviewsError: state.product.reviewsError,
   };
 };
 

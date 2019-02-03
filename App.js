@@ -14,6 +14,8 @@ import configureStore from './app/store/ConfigureStore';
 import RootNavigation from './app/navigation/RootNavigation';
 import { COOKIE_LANGUAGE, COOKIE_LANGUAGE_CHINESE, CODE_ENGLISH, CODE_CHINESE } from './app/Constants';
 import Strings from './app/modules/shared/localization/localization';
+import { getUser } from './app/store/AsyncStorageHelper';
+import LoginActions from './app/modules/login/actions/LoginActions';
 reactotronStoreAction = require('./config/reactotron/reactotron.config').default;
 const store = configureStore(reactotronStoreAction);
 
@@ -26,6 +28,7 @@ export default class App extends Component<Props> {
     this.state = {
       languageSet: false,
     }
+
     AsyncStorage.getItem(COOKIE_LANGUAGE).then((lang)=> {
       const language = lang === COOKIE_LANGUAGE_CHINESE? CODE_CHINESE: CODE_ENGLISH;
       Strings.setLanguage(language);
@@ -34,6 +37,7 @@ export default class App extends Component<Props> {
       })
     });
   }
+  
   render() {
     let content = null;
     const {languageSet} = this.state;

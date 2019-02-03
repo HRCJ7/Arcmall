@@ -74,6 +74,7 @@ export const registrationFailure = (state, {payload} : any) => ({
 });
 
 export const postLogin = (state = INITIAL_STATE, {payload} : any) => {
+  console.log(payload)
   return {
     ...state,
     user: payload.user,

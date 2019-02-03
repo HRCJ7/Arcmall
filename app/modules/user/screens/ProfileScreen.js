@@ -83,7 +83,7 @@ class ProfileScreen extends React.Component<any, any> {
   }
 
   handleSettingPress = () => {
-    this.props.navigation.dispatch(navigateToSettings());
+    this.props.navigation.dispatch(navigateToSettings({fromProfile: true}));
   }
 
   renderRightAction = () => {

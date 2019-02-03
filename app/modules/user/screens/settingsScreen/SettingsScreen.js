@@ -19,7 +19,7 @@ import LoginActions from '../../../login/actions/LoginActions';
 import NavigationBar from '../../../shared/components/NavigationBar/NavigationBar';
 import Strings from '../../../shared/localization/localization';
 import EvilIcons from 'react-native-vector-icons/dist/EvilIcons';
-import {navigateToSettings} from '../../../../navigation/RootNavActions';
+import {navigateToSettings, navigateToAddItem} from '../../../../navigation/RootNavActions';
 import Theme from '../../../../theme/Base';
 import {CheckBox} from 'react-native-elements'
 import UserActions from '../../actions/UserActions';
@@ -41,6 +41,7 @@ const BASE_URL: string = `${Config.API_URL}`;
 const ACTIVE_SCREEN_SETTINGS = 'Settings';
 const ACTIVE_SCREEN_LANGUAGE = 'Language';
 const ACTIVE_SCREEN_SHIPPING = 'Shipping';
+const ACTIVE_SCREEN_ADD_ITEM = 'AddItem';
 const ACTIVE_SCREEN_CHANGE_PASSWORD = 'ChangePassword';
 const ACTIVE_SCREEN_SHIPPING_ADD = 'ShippingAdd';
 
@@ -50,12 +51,13 @@ class SettingsScreen extends React.Component<any, any> {
   constructor(props) {
     super(props);
     const params = props.navigation.state.params;
-
+    let fromProfile = false;
     let activeScreen = ACTIVE_SCREEN_SETTINGS;
-    let activeList = this.getSettingsList();
+    let activeList = this.getSettingsList(false);
     if (params && Object.keys(params).length > 0) {
-      activeScreen = params.activeScreen;
-      activeList = params.activeList;
+      activeScreen = params.activeScreen? params.activeScreen: ACTIVE_SCREEN_SETTINGS;
+      activeList = this.getSettingsList(params.fromProfile);
+      fromProfile = params.fromProfile;
     }
 
     this.state = {
@@ -66,6 +68,7 @@ class SettingsScreen extends React.Component<any, any> {
       language: CODE_ENGLISH,
       countryZones: null,
       countries: null,
+      fromProfile: fromProfile,
       addressFormValues: {},
     };
 
@@ -136,22 +139,9 @@ class SettingsScreen extends React.Component<any, any> {
    })
   }
 
-  getSettingsList = () => {
-    const settingsList = [
-      {
-        name: 'Change Language',
-        nextScreen: ACTIVE_SCREEN_LANGUAGE,
-        subList: {
-          list: [
-            {
-              name: Strings.ENG_US,
-            },
-            {
-              name: Strings.CHINESE_SIMPLIFIED,
-            }
-          ]
-        }
-      },
+  getSettingsList = (fromProfile) => {
+    const isSeller = this.props.user.store_id;
+    let profileSettingList = [
       {
         name: 'Change Password',
         nextScreen: ACTIVE_SCREEN_CHANGE_PASSWORD,
@@ -172,7 +162,35 @@ class SettingsScreen extends React.Component<any, any> {
       },
     ];
 
-    return settingsList;
+    if (isSeller) {
+      profileSettingList.push(
+        {
+          name: 'Add Item',
+          action: () => {
+            this.props.navigation.dispatch(navigateToAddItem());
+          }
+        }
+      )
+    }
+
+    const moreSettingsList = [
+      {
+        name: 'Change Language',
+        nextScreen: ACTIVE_SCREEN_LANGUAGE,
+        subList: {
+          list: [
+            {
+              name: Strings.ENG_US,
+            },
+            {
+              name: Strings.CHINESE_SIMPLIFIED,
+            }
+          ]
+        },
+      }
+    ];
+
+    return fromProfile? profileSettingList: moreSettingsList;
   }
 
   handleOnBackPress = () => {
@@ -180,9 +198,11 @@ class SettingsScreen extends React.Component<any, any> {
   }
 
   handleOnAddAddressPress = () => {
+    const {fromProfile} = this.state;
     this.props.navigation.dispatch(navigateToSettings({
       activeScreen: ACTIVE_SCREEN_SHIPPING_ADD,
       activeList: null,
+      fromProfile: fromProfile,
     }))
   }
 
@@ -224,12 +244,14 @@ class SettingsScreen extends React.Component<any, any> {
   }
 
   renderFlatlistItem = ({item}) => {
+    const {fromProfile} = this.state;
     const {name, nextScreen, subList, action, hideArrow} = item;
     const onPress = () => {
       if (nextScreen) {
         this.props.navigation.dispatch(navigateToSettings({
           activeScreen: nextScreen,
           activeList: subList.list,
+          fromProfile,
         }))
       } else {
         action();
@@ -411,7 +433,6 @@ class SettingsScreen extends React.Component<any, any> {
     let content = null;
     let {countries} = this.state;
     var Form = t.form.Form;
-
     if (countries) {
       const stateZones = this.state.countryZones;
       let Zones = t.enums(stateZones? stateZones: {});
@@ -483,6 +504,7 @@ class SettingsScreen extends React.Component<any, any> {
   render() {
     let content = null;
     const {activeScreen, isLoading} = this.state;
+    console.log(activeScreen)
     if (isLoading) {
       content = (
         <LoadingIndicator />
@@ -534,6 +556,7 @@ const mapStateToProps = (state, ownProps) => {
     languageLoading: state.user.languageLoading,
     addresses: state.user.addressesData,
     countries: state.user.countries,
+    user: state.login.user,
   }
 };
 

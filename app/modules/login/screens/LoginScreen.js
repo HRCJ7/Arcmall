@@ -74,7 +74,6 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
   }
 
   handleSignUpPress = () => {
-    console.log(this.props.navigation.state.key)
     this.props.navigation.dispatch(navigateToSelectRoleScreen());
   }
 

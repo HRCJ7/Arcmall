@@ -17,6 +17,7 @@ import SettingsScreen from '../modules/user/screens/settingsScreen/SettingsScree
 import ChangePasswordScreen from '../modules/user/screens/changePassword/ChangePasswordScreen';
 import AccountSettingScreen from '../modules/user/screens/accountSettings/AccountSettingScreen';
 import NavMenuScreen from '../modules/product/screens/navMenu/NavMenuScreen';
+import AddProductScreen from '../modules/product/screens/addProduct/AddProductScreen';
 
 export const ROOT_NAV_LOGIN = 'Login';
 export const ROOT_NAV_SELECT_ROLE = 'SelectRole';
@@ -40,6 +41,7 @@ export const ROOT_NAV_SETTINGS_SHIPPING = 'SettingsShipping';
 export const ROOT_NAV_SETTINGS_SHIPPING_ADD = 'SettingsShippingAdd';
 export const ROOT_NAV_CHANGE_PASSWORD = 'SettingsChangePassword';
 export const ROOT_NAV_ACCOUNT_SETTINGS = 'AccountSettingScreen';
+export const ROOT_NAV_ADD_ITEM = 'Add Item';
 
 export const rootRoutes = {
   [ROOT_NAV_MAIN_TAB]: {
@@ -118,4 +120,8 @@ export const rootRoutes = {
     screen: NavMenuScreen,
     path: `/${ROOT_NAV_OPTIONS_3}`,
   },
+  [ROOT_NAV_ADD_ITEM]: {
+    screen: AddProductScreen,
+    path: `/${ROOT_NAV_ADD_ITEM}`,
+  }
 };

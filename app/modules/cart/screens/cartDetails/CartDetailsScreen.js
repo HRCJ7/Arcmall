@@ -346,7 +346,7 @@ class CartDetailsScreen extends React.Component<any, any> {
           <FlatList
             style={styles.flatStyle}
             extraData={this.props}
-            keyExtractor={item => item.product_id}
+            keyExtractor={(item) => item.product_id}
             data={products}
             renderItem={({ item, index }) => (
               <CartListItem

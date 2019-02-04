@@ -41,3 +41,15 @@ export const getZones = async (country_id) => {
   });
   return response.json();
 }
+
+export const logout = async (country_id) => {
+  let response = await fetch(`${BASE_URL}/user_logout`, {
+    credentials: 'include',
+    method: 'POST',
+    headers: {
+      ...defaultRequestHeaders,
+    },
+    body: getForm({data: {}})
+  });
+  return response.json();
+}

@@ -34,7 +34,7 @@ import { MAIN_TAB_HOME } from '../../../../navigation/mainTab/MainTabRoutes';
 import { ROOT_NAV_CHANGE_PASSWORD } from '../../../../navigation/RootRoutes';
 import ChangePasswordScreen from '../changePassword/ChangePasswordScreen';
 import ProductActions from '../../../product/actions/ProductActions';
-import { setLanguage, getZones, setPaymentAddress } from './settingApis';
+import { setLanguage, getZones, setPaymentAddress, logout } from './settingApis';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const BASE_URL: string = `${Config.API_URL}`;
@@ -48,6 +48,10 @@ export const ACTIVE_SCREEN_SHIPPING_ADD = 'ShippingAdd';
 
 class SettingsScreen extends React.Component<any, any> {
   static defaultProps: any
+
+  static navigationOptions: any = ({navigation}) => ({
+    title: Strings.SETTINGS,
+  });
 
   constructor(props) {
     super(props);
@@ -120,6 +124,9 @@ class SettingsScreen extends React.Component<any, any> {
   }
 
   setLanguage = async (language) => {
+    this.setState({
+      isLoading: true,
+    })
     const {activeScreen} = this.state;
     const {languageLoading} = this.props;
     await AsyncStorage.setItem(COOKIE_LANGUAGE, `language=${language}`);
@@ -134,6 +141,7 @@ class SettingsScreen extends React.Component<any, any> {
     Strings.setLanguage(language);
     this.setState({
       language: language,
+      isLoading: false,
     })
   }
 
@@ -145,7 +153,8 @@ class SettingsScreen extends React.Component<any, any> {
 
   getSettingsList = (fromProfile) => {
     const isSeller = this.props.user.store_id;
-    let profileSettingList = [
+    let list = null;
+    let profileSettingUserList = [
       {
         name: 'Change Password',
         nextScreen: ACTIVE_SCREEN_CHANGE_PASSWORD,
@@ -166,16 +175,32 @@ class SettingsScreen extends React.Component<any, any> {
       },
     ];
 
-    if (isSeller) {
-      profileSettingList.push(
-        {
-          name: 'Add Item',
-          action: () => {
-            this.props.navigation.dispatch(navigateToAddItem());
-          }
+    let profileSettingSellerList = [
+      {
+        name: 'Change Password',
+        nextScreen: ACTIVE_SCREEN_CHANGE_PASSWORD,
+        subList:{},
+      },
+      {
+        name: 'Shipping Details',
+        nextScreen: ACTIVE_SCREEN_SHIPPING,
+        subList: {
+          name: 'Add Shipping',
+          nextScreen: ACTIVE_SCREEN_SHIPPING_ADD,
         }
-      )
-    }
+      },
+      {
+        name: 'Add Item',
+        action: () => {
+          this.props.navigation.dispatch(navigateToAddItem());
+        }
+      },
+      {
+        name: 'Log out',
+        action: this.handleLogout,
+        hideArrow: true,
+      },
+    ];
 
     const moreSettingsList = [
       {
@@ -194,7 +219,15 @@ class SettingsScreen extends React.Component<any, any> {
       }
     ];
 
-    return fromProfile? profileSettingList: moreSettingsList;
+    if (!fromProfile) {
+      list = moreSettingsList;
+    } else if (isSeller) {
+      list = profileSettingSellerList;
+    } else {
+      list = profileSettingUserList;
+    }
+
+    return list;
   }
 
   handleOnBackPress = () => {
@@ -210,7 +243,8 @@ class SettingsScreen extends React.Component<any, any> {
     }))
   }
 
-  handleLogout = () => {
+  handleLogout = async () => {
+    await logout();
     this.props.dispatch(LoginActions.signOut());
     this.props.navigation.navigate(MAIN_TAB_HOME);
   }
@@ -224,11 +258,25 @@ class SettingsScreen extends React.Component<any, any> {
   }
 
   renderLeftAction = () => {
-    return (
-      <TouchableOpacity onPress={this.handleOnBackPress}>
-        <EvilIcons name='chevron-left' color='white' size={50}/>
-      </TouchableOpacity>
-    )
+    let content = null;
+    let {fromProfile, activeScreen} = this.state;
+
+    if (!fromProfile) {
+      if (activeScreen != ACTIVE_SCREEN_SETTINGS) {
+        content = (
+          <TouchableOpacity onPress={this.handleOnBackPress}>
+            <EvilIcons name='chevron-left' color='white' size={50}/>
+          </TouchableOpacity>
+        )
+      }
+    } else {
+      content = (
+        <TouchableOpacity onPress={this.handleOnBackPress}>
+          <EvilIcons name='chevron-left' color='white' size={50}/>
+        </TouchableOpacity>
+      )
+    }
+    return content;
   }
 
   renderRightAction = () => {
@@ -510,7 +558,10 @@ class SettingsScreen extends React.Component<any, any> {
     console.log(activeScreen)
     if (isLoading) {
       content = (
-        <LoadingIndicator />
+        <View style={styles.container}>
+          {this.renderNavBar()}
+          <LoadingIndicator />
+        </View>
       )
     } else {
       switch (activeScreen) {

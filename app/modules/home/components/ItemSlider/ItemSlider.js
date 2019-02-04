@@ -11,23 +11,26 @@ export default class ItemSlider extends Component {
     super(props);
     this.state = {
       data: props.items,
+      horizontal: props.horizontal,
     }
   }
 
   static getDerivedStateFromProps(props, state) {
     return {
       data: props.items,
+      horizontal: props.horizontal,
     };
   }
 
   renderListComponent = ({item}) => {
-    console.log(item)
+    const {horizontal} = this.state;
+    let style = !horizontal? {paddingBottom: 20}: {};
     return (
       <TouchableOpacity
         onPress={() => {
           this.props.onItemPress(item.product_id);
         }}
-        style={styles.list}
+        style={[styles.list, style]}
       >
         <Card item={item} />
       </TouchableOpacity>
@@ -42,16 +45,25 @@ export default class ItemSlider extends Component {
   }
 
   render() {
-    return (
-      <FlatList
-        horizontal
-        ListEmptyComponent={this.renderListEmptyComponent}
-        keyExtractor={(item)=> item.title}
-        showsHorizontalScrollIndicator={false}
-        data={this.state.data}
-        renderItem={this.renderListComponent}
-      />
-    );
+    const {horizontal, data, onEndReached} = this.state;
+    let content = null;
+
+    if(data && data.length > 0) {
+      let style = !horizontal? {paddingLeft: 5}: {flex: 1};
+      content = (
+        <FlatList
+          style={style}
+          horizontal={horizontal}
+          numColumns={horizontal? 1: 2}
+          ListEmptyComponent={this.renderListEmptyComponent}
+          keyExtractor={(item)=> item.product_id}
+          showsHorizontalScrollIndicator={false}
+          data={data}
+          renderItem={this.renderListComponent}
+        />
+      );
+    }
+    return content;
   }
 }
 

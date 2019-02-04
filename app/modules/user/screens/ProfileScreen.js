@@ -124,9 +124,9 @@ class ProfileScreen extends React.Component<any, any> {
           <ImageBackground 
             source={require('../../../../assets/profile.png')}
             style={styles.imageContainer}>
-            <View style={styles.image}>
+            {/* <View style={styles.image}>
               
-            </View>
+            </View> */}
             <Text style={styles.nameText}>{`${userInfo.firstname} ${userInfo.lastname}`}</Text>
             <Text style={styles.emailText}>{userInfo.email}</Text>
           </ImageBackground>

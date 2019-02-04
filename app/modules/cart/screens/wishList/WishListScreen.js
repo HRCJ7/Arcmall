@@ -15,6 +15,10 @@ import Strings from "../../../shared/localization/localization";
 const arr = ["1", "1", "1", "1", "1", "1", "1", "1", "1"];
 
 export default class WishListScreen extends Component {
+  static navigationOptions: any = ({navigation}) => ({
+    title: Strings.WISH_LIST,
+  });
+
   constructor(props) {
     super(props);
     this.state = { enableScrollViewScroll: true };
@@ -37,6 +41,7 @@ export default class WishListScreen extends Component {
           <FlatList
             numColumns={3}
             data={arr}
+            keyExtractor={(item) => Date(111)}
             renderItem={this.renderItem}
             columnWrapperStyle={styles.row}
           />

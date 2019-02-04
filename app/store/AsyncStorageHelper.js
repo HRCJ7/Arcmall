@@ -22,6 +22,10 @@ const getUser = async (callback) => {
   return user;
 }
 
+const setUser = async (user) => {
+  await AsyncStorage.setItem(STORAGE_USER, user);
+}
+
 const addToCart = async (cartData) => {
   let cart = await AsyncStorage.getItem(STORAGE_CART_LIST);
   if (cart) {
@@ -48,6 +52,7 @@ export {
   clearCookies,
   getCookies,
   getUser,
+  setUser,
   clearCookiesAndUser,
   addToCart,
   getCart,

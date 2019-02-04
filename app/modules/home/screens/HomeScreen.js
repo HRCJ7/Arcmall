@@ -25,9 +25,17 @@ import {COOKIE_LANGUAGE_CHINESE, CODE_CHINESE, CODE_ENGLISH, COOKIE_LANGUAGE, ST
 import { getUser } from '../../../store/AsyncStorageHelper';
 import CartActions from '../../cart/actions/CartActions';
 import ProductListScreen from '../../product/screens/productList/ProductListScreen';
-import { getFeaturedItems } from './HomeApis';
+import { getFeaturedItems, getLoginStatus, getLatestItems } from './HomeApis';
 
-const arr = ["1", "1", "1", "1", "1", "1", "1", "1", "1"];
+const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+  const paddingToBottom = 50;
+  return layoutMeasurement.height + contentOffset.y >=
+    contentSize.height - paddingToBottom;
+};
+
+const LATEST_ITEM_COUNT = 20;
+let itemStart = 0;
+let waitingTilResponse = false;
 class HomeScreen extends React.Component<any, any> {
   static defaultProps: any
   static navigationOptions: any = ({navigation}) => ({
@@ -39,11 +47,18 @@ class HomeScreen extends React.Component<any, any> {
     this.state = {
       categories: null,
       languageLoading: true,
-
+      featuredItems: null,
       featuredItemsLoading: true,
+
+      latestItems: [],
+      // latestItemsStart: 0,
     };
+    
+    this.getLoginStatus();
     this.getCategoryList(props);
+    this.handleScrollEndReached();
     this.getFeaturedItems();
+    
 
   }
 
@@ -86,10 +101,18 @@ class HomeScreen extends React.Component<any, any> {
     
   }
 
+  getLoginStatus = async () => {
+    const response = await getLoginStatus();
+    const user = await getUser();
+    if (response.message === 'false' && user) {
+      alert('Your session is expired, please log in again');
+      this.props.dispatch(LoginActions.signOut());
+    }
+  }
+
 
   getFeaturedItems = async () => {
     let items = await getFeaturedItems();
-    console.log(items)
     this.setState({
       featuredItems: items.products,
       featuredItemsLoading: false,
@@ -124,11 +147,6 @@ class HomeScreen extends React.Component<any, any> {
     })
   }
 
-  _renderItem = ({ item }) => {
-    return <Card 
-    title="{item.title}" />;
-  };
-
   handleOnGridPress = (categories) => {
     this.props.navigation.dispatch(navigateToItemListScreen({categories}))
   }
@@ -143,6 +161,24 @@ class HomeScreen extends React.Component<any, any> {
     }))
   }
 
+  handleScrollEndReached = async () => {
+    if (!waitingTilResponse) {
+      let start = itemStart;
+      console.log(start)
+      waitingTilResponse = true;
+      let response = await getLatestItems(start, LATEST_ITEM_COUNT);
+      itemStart = start + LATEST_ITEM_COUNT;
+      waitingTilResponse = false;
+      let {latestItems, latestItemsStart} = this.state;
+      if (response.products.length > 0) {
+        this.setState({
+          latestItems: latestItems.concat(response.products),
+        })
+      }
+    }
+    
+  }
+
   render() {
     const {isLoading} = this.props;
     const {categories, languageLoading} = this.state;
@@ -150,6 +186,12 @@ class HomeScreen extends React.Component<any, any> {
     if(!isLoading && categories) {
       content = (
         <ScrollView
+          onScroll={({nativeEvent}) => {
+            if (isCloseToBottom(nativeEvent)) {
+              this.handleScrollEndReached();
+            }
+          }}
+        scrollEventThrottle={400}
           style={styles.container}>
           <View style={styles.container}>
             <View style={styles.searchBarView}>
@@ -170,6 +212,7 @@ class HomeScreen extends React.Component<any, any> {
             />
             <View style={styles.sliderView}>
               <ItemSlider
+                horizontal
                 onItemPress={(itemId) => {
                   this.props.navigation.dispatch(navigateToItemDetails({itemId: itemId}))
                 }}
@@ -191,15 +234,19 @@ class HomeScreen extends React.Component<any, any> {
                 categories={categories}
                 onPress={this.handleOnGridPress}
               />
+              <SeeMoreTitleBar
+                hideSeeMore
+                name="Our Collection"
+                onPress={this.hanleOnSeeMoreCategoriesPressed}
+              />
+              <ItemSlider
+                horizontal={false}
+                onItemPress={(itemId) => {
+                  this.props.navigation.dispatch(navigateToItemDetails({itemId: itemId}))
+                }}
+                items={this.state.latestItems}
+              />
             </View>
-            
-            {/* <FlatList
-              style={{flex: 1}}
-              numColumns={3}
-              data={arr}
-              renderItem={this._renderItem}
-              columnWrapperStyle={styles.row}
-            /> */}
           </View>
         </ScrollView>
       )

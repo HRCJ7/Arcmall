@@ -8,6 +8,9 @@ export const styles = StyleSheet.create({
     paddingBottom: 15,
     flexDirection: "row",
   },
+  seeMoreTextView: {
+    flex: 1,
+  },
   titleText: {
     flex: 1,
     ...font,

@@ -25,11 +25,11 @@ const config = {
         iconName = 'ios-contact';
       } else if (routeName === MAIN_TAB_YOUR_CART) {
         iconName = 'ios-cart';
+      } else if (routeName === MAIN_TAB_WISH_LIST) {
+        iconName = 'ios-heart';
       } else if (routeName === MAIN_TAB_MORE_SETTINGS) {
         iconName = 'ios-construct';
-      } else if (routeName === MAIN_TAB_WISH_LIST) {
-        iconName = 'ios-construct';
-      }
+      } 
       return <Ionicon name={iconName} size={23} color={tintColor} />;
     },
   }),

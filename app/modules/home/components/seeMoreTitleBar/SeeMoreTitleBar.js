@@ -10,18 +10,28 @@ export default class SeeMoreTitleBar extends Component {
     super(props);
     this.state = {};
   }
+
+  renderSeeMore = () => {
+    let content = null;
+    if (!this.props.hideSeeMore) {
+      content = (
+        <TouchableOpacity
+            style={styles.seeMoreContainer}
+            onPress={this.props.onPress}
+          >
+          <Text style={styles.seeMoreText}>{Strings.SEE_MORE}</Text>
+          <Icon name="chevron-right" size={20} color="#000000" />
+        </TouchableOpacity>
+      )
+    }
+    return content;
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.titleText}>{this.props.name}</Text>
-
-        <TouchableOpacity
-          style={styles.seeMoreContainer}
-          onPress={this.props.onPress}
-        >
-          <Text style={styles.seeMoreText}>{Strings.SEE_MORE}</Text>
-          <Icon name="chevron-right" size={20} color="#000000" />
-        </TouchableOpacity>
+        {this.renderSeeMore()}
       </View>
     );
   }

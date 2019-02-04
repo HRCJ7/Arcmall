@@ -35,6 +35,7 @@ import { ROOT_NAV_CHANGE_PASSWORD } from '../../../../navigation/RootRoutes';
 import ChangePasswordScreen from '../changePassword/ChangePasswordScreen';
 import ProductActions from '../../../product/actions/ProductActions';
 import { setLanguage, getZones, setPaymentAddress } from './settingApis';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const BASE_URL: string = `${Config.API_URL}`;
 
@@ -472,7 +473,8 @@ class SettingsScreen extends React.Component<any, any> {
             onPress={Keyboard.dismiss} 
             accessible={false}
             style={styles.container}>
-            <ScrollView style={styles.formStyle}>
+            <KeyboardAwareScrollView 
+              style={styles.formStyle}>
               <Form
                 ref="form"
                 type={Address}
@@ -484,7 +486,7 @@ class SettingsScreen extends React.Component<any, any> {
                 title={'Save'}
                 onPress={this.onAddressFormSubmit}
               />
-            </ScrollView>
+            </KeyboardAwareScrollView>
           </TouchableWithoutFeedback>
         </View>
       )

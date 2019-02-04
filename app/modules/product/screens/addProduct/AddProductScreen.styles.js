@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
      ...font,
-    height: 30,
+    height: 40,
     borderBottomWidth: 0.5,
     borderBottomColor: Theme.colors.darkGray,
     marginBottom: 30,

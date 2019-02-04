@@ -4,7 +4,10 @@ import Theme, { font } from "../../../theme/Base";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 20,
+  },
+  headSpace: {
+    height: 100,
   },
   headerComponent: {
     flex: 1,

@@ -110,8 +110,13 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
       >
         {this.renderLeftAction()}
         <KeyboardAwareScrollView
+          enableOnAndroid
+          automaticallyAdjustContentInsets={false}
+          enableAutomaticScroll={true}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.headerComponent}>
+          style={styles.headerComponent}
+          >
+          <View style={styles.headSpace} />
           <View style={styles.headerComponent}>
             <View style={styles.headerComponent}></View>
             <View style={styles.textComponent}>

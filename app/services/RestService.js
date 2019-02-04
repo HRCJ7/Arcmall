@@ -61,7 +61,7 @@ export const getCookie = async function() {
 export const getForm = function(data) {
   let options = {
     indices: true,
-    nulls: false,
+    // nulls: false,
   }
   return objectToFormData(data, options);
 }

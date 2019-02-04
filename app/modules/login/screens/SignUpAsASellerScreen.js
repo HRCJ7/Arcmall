@@ -112,10 +112,13 @@ class SignUpAsASellerScreen extends React.Component<any, any> {
       >
         {this.renderLeftAction()}
         <KeyboardAwareScrollView
+          enableOnAndroid
+          automaticallyAdjustContentInsets={false}
+          enableAutomaticScroll={true}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.headerComponent}>
+          style={styles.headerComponent}>
+          <View style={styles.headSpace} />
           <View style={styles.headerComponent}>
-            <View style={styles.headerComponent}></View>
             <View style={styles.textComponent}>
               <Text style={styles.selectRoleText}>Sign up as a Seller</Text>
               <Text style={styles.wordingText}>
@@ -149,7 +152,6 @@ class SignUpAsASellerScreen extends React.Component<any, any> {
                 style={styles.textInput}
               />
             </View>
-            
             <View style={styles.footerComponent}>
               <View style={styles.checkBoxRow}>
                 <CheckBox

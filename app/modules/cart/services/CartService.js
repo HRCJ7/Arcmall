@@ -31,7 +31,7 @@ const CartService = {
     const endpoint: string = urlFactory.getCart();
     const urlParams = null;
     const headers = null;
-    return POST(endpoint, body, urlParams, headers);
+    return POST(endpoint, urlParams, headers);
   },
 }
 

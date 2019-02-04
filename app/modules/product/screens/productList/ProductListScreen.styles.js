@@ -18,5 +18,24 @@ const styles = StyleSheet.create({
     paddingTop: 200,
     alignSelf: 'center',
   },
+  searchBar: {
+    flex: 1,
+    backgroundColor: "white", 
+    borderWidth: 0.5, 
+    borderColor: 'gray', 
+    borderRadius: 10,
+  },
+  searchBarView: {
+    padding: 10,
+    flexDirection: 'row',
+  },
+  cancelButton: {
+    justifyContent: 'center',
+    paddingLeft: 20,
+    paddingRight: 10
+  },
+  cancelButtonText: {
+    color: Theme.colors.primary,
+  }
 });
 export default styles;

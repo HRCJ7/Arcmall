@@ -71,4 +71,5 @@ export default zhStrings = {
     OPTIONS: 'Options',
     IMAGES: 'Images',
     ADD_IMAGES: 'Add Images',
+    CANCEL: 'Cancel',
 }

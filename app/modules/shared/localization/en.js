@@ -71,5 +71,6 @@ export default enStrings = {
     OPTIONS: 'Options',
     IMAGES: 'Images',
     ADD_IMAGES: 'Add Images',
+    CANCEL: 'Cancel',
 
 }

@@ -14,7 +14,8 @@ import {
   ROOT_NAV_CHANGE_PASSWORD,
   ROOT_NAV_ACCOUNT_SETTINGS,
   ROOT_NAV_OPTIONS,
-  ROOT_NAV_ADD_ITEM
+  ROOT_NAV_ADD_ITEM,
+  ROOT_NAV_PRODUCT_LIST
 } from './RootRoutes';
 import {AppContainer} from './RootNavigation';
 
@@ -115,6 +116,12 @@ export const navigateToAddItem = (navParams: any) => {
   return AppContainer
   .router
   .getActionForPathAndParams(`/${ROOT_NAV_ADD_ITEM}`, navParams);
+};
+
+export const navigateToProductList = (navParams: any) => {
+  return AppContainer
+  .router
+  .getActionForPathAndParams(`/${ROOT_NAV_PRODUCT_LIST}`, navParams);
 };
 
 

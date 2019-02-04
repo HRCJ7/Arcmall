@@ -295,6 +295,11 @@ class CartDetailsScreen extends React.Component<any, any> {
       return views;
     }
 
+    const client = {
+			sandbox:    'AU0xwkp09ogOUgLWIglNEgjpuxUmAAuh1V.zQx3XPVon.5DddW5vbOhA',
+			production: 'AU0xwkp09ogOUgLWIglNEgjpuxUmAAuh1V.zQx3XPVon.5DddW5vbOhA',
+		}
+
     content = (
       <View style={styles.itemInfoContainer}>
         {this.renderOptions()}
@@ -304,6 +309,7 @@ class CartDetailsScreen extends React.Component<any, any> {
           onPress={this.handleCheckoutPress}
           style={{ marginTop: 5, marginBottom: 10, width: "80%" }}
         />
+        <PaypalExpressBtn client={client} currency={'USD'} total={1.00} />
       </View>
     )
 

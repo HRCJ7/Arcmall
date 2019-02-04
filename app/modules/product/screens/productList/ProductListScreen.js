@@ -19,25 +19,24 @@ import LoadingIndicator from '../../../shared/components/loadingIndicator/Loadin
 import ProductListItem from '../../components/productListItem/ProductListItem';
 import { navigateToItemDetails } from '../../../../navigation/RootNavActions';
 import ProductActions from '../../actions/ProductActions';
+import {SearchBar} from "react-native-elements";
 
 class ProductListScreen extends React.Component<any, any> {
   static defaultProps: any
 
   constructor(props) {
     super(props);
-    const params = props.navigation.state.params;
-    props.dispatch(ProductActions.getProductList({
-      search: '',
-      category_id: params.category_id,
-    }))
-
+    let params = props.navigation.state.params;
     this.state = {
       cartList: [],
+      fromHome: params.fromHome,
     };
   }
 
   componentDidMount() {
-    
+    if (!this.state.fromHome) {
+      this.loadItems(this.props.navigation.state.params);
+    }
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -50,6 +49,11 @@ class ProductListScreen extends React.Component<any, any> {
   }
 
   componentDidUpdate() {
+    
+  }
+
+  componentWillUnmount() {
+    this.loadItems({categoryId: 0})
   }
 
   handleProductOnPress = (itemId: number) => {
@@ -58,6 +62,22 @@ class ProductListScreen extends React.Component<any, any> {
 
   handleOnBackPress = () => {
     this.props.navigation.goBack(null);
+  }
+
+  loadItems = (params) => {
+    let nextParams = {};
+    nextParams.search = params.searchText? params.searchText: null;
+    if(params.category_id) {
+      nextParams.category_id = params.category_id;
+    }
+    this.props.dispatch(ProductActions.getProductList(nextParams));
+  }
+
+  loadSearchItems = (text) => {
+    let nextParams = {
+      search: text,
+    };
+    this.props.dispatch(ProductActions.getProductList(nextParams));
   }
 
   renderLeftAction = () => {
@@ -89,19 +109,72 @@ class ProductListScreen extends React.Component<any, any> {
   }
 
   renderEmptyComponent = () => {
-    return (
-      <Text style={styles.headingText}>{Strings.NO_ITEMS}</Text>
-    )
+    const {fromHome} = this.state;
+    let content = null;
+    if (!fromHome) {
+      content = (
+        <Text style={styles.headingText}>{Strings.NO_ITEMS}</Text>
+      )
+    }
+    return content;
+  }
+
+  renderSearchBar = () => {
+    let content = null;
+    const {fromHome} = this.state;
+    if(fromHome) {
+      content = (
+        <View style={styles.searchBarView}>
+          <SearchBar
+            onChangeText={(text) => {
+              this.loadSearchItems(text);
+            }}
+            autoCorrect={false}
+            autoCapitalize={false}
+            autoFocus={true}
+            containerStyle={styles.searchBar}
+            inputStyle={{ backgroundColor: "white" }}
+            lightTheme
+            placeholder={Strings.SEARCH}
+          />
+          <TouchableOpacity
+            onPress={() => {
+              this.props.navigation.goBack();
+            }}
+            style={styles.cancelButton}>
+            <Text style={styles.cancelButtonText}>{Strings.CANCEL}</Text>
+          </TouchableOpacity>
+        </View>
+      )
+    }
+    return content;
   }
 
   render() {
-    const {isLoading, productList, productListError, navigation: {state: {params: {loadingCategories}}}} = this.props;
+    const {
+      isLoading,
+      productList,
+      productListError,
+      navigation
+    } = this.props;
+
+    const {fromHome} = this.state;
+
     let content = null;
-    const navBar = loadingCategories? null: this.renderNavBar();
+    let navBar = null;
+    let searchBar = null;
+    if (!fromHome) {
+      loadingCategories = navigation.state.params.loadingCategories;
+      navBar = loadingCategories? null: this.renderNavBar();
+    } else {
+      searchBar = this.renderSearchBar();
+    }
+    
     if (isLoading) {
       content = (
         <View style={styles.container}>
           {navBar}
+          {searchBar}
           <LoadingIndicator />
         </View>
       )
@@ -109,6 +182,7 @@ class ProductListScreen extends React.Component<any, any> {
       content = (
         <View style={styles.container}>
           {navBar}
+          {searchBar}
           <FlatList
             ListEmptyComponent={this.renderEmptyComponent()}
             keyExtractor={(item, index) => `${item.description}${index}`}
@@ -133,30 +207,40 @@ ProductListScreen.propTypes = {
 };
 
 ProductListScreen.defaultProps = {
-  isLoading: true,
+  isLoading: false,
   productList: null,
   productListError: null, 
 };
 
 const mapStateToProps = (state, ownProps) => {
   let navigation = ownProps.navigation;
-  const fromCategories = navigation.state.params.category_id;
+  let productList = [];
 
-  //Change navigation object for tab bar.
-  if (fromCategories) {
-    navigation = ownProps.navigation.state.params.navigation;
-    navigation.state.params = {...navigation.state.params, ...ownProps.navigation.state.params};
-  }
+  
+  const fromHome = navigation.state.params.fromHome;
 
-  const categoryId = navigation.state.params.category_id;
-  const products = state.product.productList;
-
-  let productList;
-  if (categoryId && products[categoryId]) {
-    productList = state.product.productList[categoryId].products;
+  if(fromHome) {
+    if (state.product.productList.search) {
+      productList = state.product.productList.search.products;
+    }
   } else {
-    productList = state.product.productList.products;
+    console.log(navigation.state)
+    const categoryId = navigation.state.params.category_id;
+
+    //Change navigation object for tab bar.
+    if (categoryId) {
+      navigation = ownProps.navigation.state.params.navigation;
+      navigation.state.params = {...navigation.state.params, ...ownProps.navigation.state.params};
+    }
+    const products = state.product.productList;
+
+    if (categoryId && products[categoryId]) {
+      productList = state.product.productList[categoryId].products;
+    } else {
+      productList = state.product.productList.products;
+    }
   }
+  
   return {
     productList: productList,
     isLoading: state.product.productListLoading,

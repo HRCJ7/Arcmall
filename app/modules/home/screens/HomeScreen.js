@@ -19,11 +19,12 @@ import GridView from "../components/GridView/GridView";
 import ProductActions from '../../product/actions/ProductActions';
 import LoadingIndicator from '../../shared/components/loadingIndicator/LoadingIndicator';
 import LoginActions from '../../login/actions/LoginActions';
-import {navigateToItemListScreen, navigateToAllCategories} from '../../../navigation/RootNavActions';
+import {navigateToAllCategories, navigateToProductList, navigateToItemListScreen} from '../../../navigation/RootNavActions';
 import Strings from '../../shared/localization/localization';
 import {COOKIE_LANGUAGE_CHINESE, CODE_CHINESE, CODE_ENGLISH, COOKIE_LANGUAGE, STORAGE_USER, STORAGE_CATEGORIES} from '../../../Constants';
 import { getUser } from '../../../store/AsyncStorageHelper';
 import CartActions from '../../cart/actions/CartActions';
+import ProductListScreen from '../../product/screens/productList/ProductListScreen';
 
 const arr = ["1", "1", "1", "1", "1", "1", "1", "1", "1"];
 class HomeScreen extends React.Component<any, any> {
@@ -34,7 +35,6 @@ class HomeScreen extends React.Component<any, any> {
 
   constructor(props) {
     super(props);
-
     this.state = {
       categories: null,
       languageLoading: true,
@@ -122,6 +122,12 @@ class HomeScreen extends React.Component<any, any> {
     this.props.navigation.dispatch(navigateToAllCategories());
   }
 
+  handleOnSearchPress = () => {
+    this.props.navigation.dispatch(navigateToProductList({
+      fromHome: true,
+    }))
+  }
+
   render() {
     const {isLoading} = this.props;
     const {categories, languageLoading} = this.state;
@@ -133,6 +139,9 @@ class HomeScreen extends React.Component<any, any> {
           <View style={styles.container}>
             <View style={styles.searchBarView}>
               <SearchBar
+                onFocus={() => {
+                  this.handleOnSearchPress();
+                }}
                 containerStyle={styles.searchBar}
                 inputStyle={{ backgroundColor: "white" }}
                 lightTheme

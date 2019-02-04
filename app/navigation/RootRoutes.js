@@ -29,6 +29,7 @@ export const ROOT_NAV_SIGN_UP_AS_A_SELLER = 'SignUpAsASellerScreen';
 export const ROOT_NAV_ALL_CATEGORIES = 'AllCategories';
 export const ROOT_NAV_YOUR_CART = 'CartDetailsScreen';
 export const ROOT_NAV_REVIEWS = 'Reviews';
+export const ROOT_NAV_PRODUCT_LIST = 'ProductList';
 
 export const ROOT_NAV_OPTIONS = 'NavMen';
 export const ROOT_NAV_OPTIONS_1 = 'NavMen1';
@@ -123,5 +124,9 @@ export const rootRoutes = {
   [ROOT_NAV_ADD_ITEM]: {
     screen: AddProductScreen,
     path: `/${ROOT_NAV_ADD_ITEM}`,
+  },
+  [ROOT_NAV_PRODUCT_LIST]: {
+    screen: ProductListScreen,
+    path: `/${ROOT_NAV_PRODUCT_LIST}`,
   }
 };

@@ -67,6 +67,6 @@ export default enStrings = {
     CHANGE_PASSWORD: 'Change Password',
     YOUR_SHIPPING_ADDRESS: 'Your Shipping Address',
     ORDER_CONFIRMATION: 'Order Confirmation',
-    ORDER_HISTORY:'Order History'
+    ORDER_HISTORY: 'Order History'
 
 }

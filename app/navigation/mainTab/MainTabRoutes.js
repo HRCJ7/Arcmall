@@ -10,6 +10,7 @@ import SignUpAsASellerScreen from "../../modules/login/screens/SignUpAsASellerSc
 import CartDetailsScreen from '../../modules/cart/screens/cartDetails/CartDetailsScreen';
 import OrderConfirmationScreen from '../../modules/cart/screens/orderConfirmation/OrderConfirmationScreen';
 import OrderHistoryScreen from '../../modules/cart/screens/orderHistory/OrderHistoryScreen';
+import WishList from '../../modules/cart/screens/wishList/WishList';
 
 export const HOME_TAB = 'Home';
 export const PROFILE_TAB = 'Profile';
@@ -24,7 +25,7 @@ export const MAIN_TAB_PROFILE = 'Profile';
 
 export const mainTabRoutes = {
   [MAIN_TAB_HOME]: {
-    screen: OrderHistoryScreen,
+    screen: WishList,
     path: `/${MAIN_TAB_HOME}`,
   },
   [MAIN_TAB_PROFILE]: {

@@ -11,17 +11,21 @@ function wp(percentage) {
 export const styles = StyleSheet.create({
   container: {
     flex:1,
-    width: 160,
+    width: 140,
     alignItems: "center",
     justifyContent: "center",
+    borderWidth: 0.5,
+    borderColor: Theme.colors.gray,
+    borderRadius: 5,
   },
   image: {
     flex: 1,
-    height: 150,
+    height: 140,
     width: '100%',
   },
   textView: {
     flex: 1,
+    height: 70,
     width: '100%',
     padding: 10,
     alignItems: "center",
@@ -37,6 +41,7 @@ export const styles = StyleSheet.create({
   },
   text_amount: {
     color: "#2687ad",
+    paddingTop: 5,
     textAlign: "center"
   },
   list: {

@@ -19,12 +19,13 @@ import GridView from "../components/GridView/GridView";
 import ProductActions from '../../product/actions/ProductActions';
 import LoadingIndicator from '../../shared/components/loadingIndicator/LoadingIndicator';
 import LoginActions from '../../login/actions/LoginActions';
-import {navigateToAllCategories, navigateToProductList, navigateToItemListScreen} from '../../../navigation/RootNavActions';
+import {navigateToAllCategories, navigateToProductList, navigateToItemListScreen, navigateToItemDetails} from '../../../navigation/RootNavActions';
 import Strings from '../../shared/localization/localization';
 import {COOKIE_LANGUAGE_CHINESE, CODE_CHINESE, CODE_ENGLISH, COOKIE_LANGUAGE, STORAGE_USER, STORAGE_CATEGORIES} from '../../../Constants';
 import { getUser } from '../../../store/AsyncStorageHelper';
 import CartActions from '../../cart/actions/CartActions';
 import ProductListScreen from '../../product/screens/productList/ProductListScreen';
+import { getFeaturedItems } from './HomeApis';
 
 const arr = ["1", "1", "1", "1", "1", "1", "1", "1", "1"];
 class HomeScreen extends React.Component<any, any> {
@@ -38,8 +39,12 @@ class HomeScreen extends React.Component<any, any> {
     this.state = {
       categories: null,
       languageLoading: true,
+
+      featuredItemsLoading: true,
     };
     this.getCategoryList(props);
+    this.getFeaturedItems();
+
   }
 
   componentDidMount() {
@@ -79,6 +84,16 @@ class HomeScreen extends React.Component<any, any> {
 
   componentDidUpdate() {
     
+  }
+
+
+  getFeaturedItems = async () => {
+    let items = await getFeaturedItems();
+    console.log(items)
+    this.setState({
+      featuredItems: items.products,
+      featuredItemsLoading: false,
+    })
   }
 
   saveCategoryList = async (categories) => {
@@ -154,7 +169,12 @@ class HomeScreen extends React.Component<any, any> {
               source={require("../../../../assets/arcmall.png")}
             />
             <View style={styles.sliderView}>
-              <ItemSlider />
+              <ItemSlider
+                onItemPress={(itemId) => {
+                  this.props.navigation.dispatch(navigateToItemDetails({itemId: itemId}))
+                }}
+                items={this.state.featuredItems}
+              />
             </View>
             <View style={styles.seeMoreView}>
               <SeeMoreTitleBar name="Featured Shops" />

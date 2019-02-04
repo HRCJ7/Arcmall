@@ -1,13 +1,11 @@
 import Config from 'react-native-config';
-import {getForm, defaultRequestHeaders, getCookie} from '../../../../services/RestService';
-import {getCategories} from '../../../../store/AsyncStorageHelper';
-import { splitCategoryName } from '../../../../services/ExternalServices';
+import { defaultRequestHeaders } from '../../../services/RestService';
 
 
 const BASE_URL: string = `${Config.API_URL}`;
 
-export const getOptions = async () => {
-  let response = await fetch(`${BASE_URL}/product/getoptions`, {
+export const getFeaturedItems = async () => {
+  let response = await fetch(`${BASE_URL}/featured`, {
     method: 'GET',
     credentials: 'include',
     headers: {

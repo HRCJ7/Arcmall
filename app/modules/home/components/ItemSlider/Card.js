@@ -6,15 +6,16 @@ import {
   slideWidth,
   styles
 } from "./styles";
+import { CachedImage } from "react-native-cached-image";
 
-const Card = ({ title }) => (
+const Card = ({ item }) => (
   <View
      style={styles.container}
   >
-   <Image
+   <CachedImage
       style={styles.image}
-      resizeMode='stretch'
-      source={require("../../../../../assets/sliderimage1.png")}
+      resizeMode='contain'
+      source={{uri: item.thumb}}
     />
     <View
       style={styles.textView}
@@ -22,9 +23,9 @@ const Card = ({ title }) => (
       <Text
         style={styles.textDescription}
       >
-        Ladies Wedding dress latest trend model
+        {item.name}
       </Text>
-      <Text  style={styles.text_amount}>$500.00</Text>
+      <Text  style={styles.text_amount}>{item.price}</Text>
     </View>
   </View>
 );

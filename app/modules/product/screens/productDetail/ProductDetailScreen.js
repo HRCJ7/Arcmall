@@ -41,8 +41,8 @@ class ProductDetailScreen extends React.Component<any, any> {
 
   constructor(props) {
     super(props);
-    // const {itemId} = this.props.navigation.state.params;
-    let itemId = 264;
+    const {itemId} = this.props.navigation.state.params;
+    // let itemId = 264;
     this.state = {
       isLoading: true,
       cartLoading: false,
@@ -262,31 +262,29 @@ class ProductDetailScreen extends React.Component<any, any> {
         console.log(selectedValue)
 
         content = (
-          <View style={styles.optionContainer}>
-            <Text style={styles.headingText}>{option.name}</Text>
-            <Picker
-              headerTitleStyle={{height: 0}}
-              mode="dropdown"
-              placeholder={`${Strings.SELECT}`}
-              placeholderStyle={styles.optionsHeadingText}
-              placeholderIconColor="#007aff"
-              textStyle={styles.optionsHeadingText}
-              style={{ width: undefined }}
-              selectedValue={selectedValue}
-              onValueChange={onValueChange}
-            >
-              {children}
-            </Picker>
-          </View>
+          <WhiteCard>
+            <View style={styles.optionContainer}>
+              <Text style={styles.headingText}>{option.name}</Text>
+              <Picker
+                headerTitleStyle={{height: 0}}
+                mode="dropdown"
+                placeholder={`${Strings.SELECT}`}
+                placeholderStyle={styles.optionsHeadingText}
+                placeholderIconColor="#007aff"
+                textStyle={styles.optionsHeadingText}
+                style={{ width: undefined }}
+                selectedValue={selectedValue}
+                onValueChange={onValueChange}
+              >
+                {children}
+              </Picker>
+            </View>
+          </WhiteCard>
         )
       });
     }
     
-    return (
-      <WhiteCard>
-        {content}
-      </WhiteCard>
-    )
+    return content;
   }
 
   renderStoreDetailsCard = () => {

@@ -309,7 +309,6 @@ class CartDetailsScreen extends React.Component<any, any> {
           onPress={this.handleCheckoutPress}
           style={{ marginTop: 5, marginBottom: 10, width: "80%" }}
         />
-        <PaypalExpressBtn client={client} currency={'USD'} total={1.00} />
       </View>
     )
 

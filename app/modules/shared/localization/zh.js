@@ -44,7 +44,6 @@ export default zhStrings = {
     COMPANY_NAME:'公司名',
     SEARCH:"搜索项目",
     SETTINGS: '设置',
-
     ADD: 'Add',
     SEE_MORE: 'See more',
     SELECT_YOUR_ROLE: 'Select your role',
@@ -58,6 +57,7 @@ export default zhStrings = {
     NO_ITEMS: 'Sorry, there are no items.',
     YOUR_CART: 'Your Cart',
     CHECKOUT: 'Checkout',
+    PAY_WITH_PAYPAL: "Pay with Paypal",
     ITEMS: 'Items',
     LOGIN_TO_SEE: 'Please login to see content',
     CURRENT_PASSWORD: 'Current Password',
@@ -72,4 +72,6 @@ export default zhStrings = {
     IMAGES: 'Images',
     ADD_IMAGES: 'Add Images',
     CANCEL: 'Cancel',
+    ORDER_CONFIRMATION: 'Order Confirmation',
+    ORDER_HISTORY:'Order History'
 }

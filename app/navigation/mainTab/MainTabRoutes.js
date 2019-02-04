@@ -8,18 +8,23 @@ import SignUpAsABuyerScreen from "../../modules/login/screens/SignUpAsABuyerScre
 import SelectRoleScreen from "../../modules/login/screens/SelectRoleScreen";
 import SignUpAsASellerScreen from "../../modules/login/screens/SignUpAsASellerScreen";
 import CartDetailsScreen from '../../modules/cart/screens/cartDetails/CartDetailsScreen';
-
-export const HOME_TAB = 'Home';
-export const PROFILE_TAB = 'Profile';
-export const YOUR_CART = 'CartDetailsScreen';
+import OrderConfirmationScreen from '../../modules/cart/screens/orderConfirmation/OrderConfirmationScreen';
+import OrderHistoryScreen from '../../modules/cart/screens/orderHistory/OrderHistoryScreen';
 import ReviewsScreen from "../../modules/product/screens/reviews/ReviewsScreen";
 import SettingsScreen from "../../modules/user/screens/settingsScreen/SettingsScreen";
 import Strings from "../../modules/shared/localization/localization";
 import AddProductScreen from "../../modules/product/screens/addProduct/AddProductScreen";
+import WishListScreen from "../../modules/cart/screens/wishList/WishListScreen";
+
+
+export const HOME_TAB = 'Home';
+export const PROFILE_TAB = 'Profile';
 
 export const MAIN_TAB_HOME = 'Home';
 export const MAIN_TAB_PROFILE = 'Profile';
 export const MAIN_TAB_MORE_SETTINGS = 'More Settings';
+export const MAIN_TAB_YOUR_CART = 'CartDetailsScreen';
+export const MAIN_TAB_WISH_LIST = 'WishList';
 
 export const mainTabRoutes = {
   [MAIN_TAB_HOME]: {
@@ -30,9 +35,13 @@ export const mainTabRoutes = {
     screen: ProfileScreen,
     path: `/${MAIN_TAB_PROFILE}`,
   },
-  [YOUR_CART]: {
+  [MAIN_TAB_YOUR_CART]: {
     screen: CartDetailsScreen,
-    path: `/${YOUR_CART}`,
+    path: `/${MAIN_TAB_YOUR_CART}`,
+  },
+  [MAIN_TAB_WISH_LIST]: {
+    screen: WishListScreen,
+    path: `/${MAIN_TAB_WISH_LIST}`,
   },
   [MAIN_TAB_MORE_SETTINGS]: {
     screen: SettingsScreen,

@@ -2,7 +2,7 @@
 import React from 'react';
 import {createBottomTabNavigator, createAppContainer} from 'react-navigation';
 import {connect} from 'react-redux';
-import {mainTabRoutes, MAIN_TAB_HOME, MAIN_TAB_PROFILE,YOUR_CART, MAIN_TAB_MORE_SETTINGS} from './MainTabRoutes';
+import {mainTabRoutes, MAIN_TAB_HOME, MAIN_TAB_PROFILE,YOUR_CART, MAIN_TAB_MORE_SETTINGS, MAIN_TAB_YOUR_CART, MAIN_TAB_WISH_LIST} from './MainTabRoutes';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import Theme, { font } from '../../theme/Base';
 
@@ -23,9 +23,11 @@ const config = {
         iconName = 'ios-home'; 
       } else if (routeName === MAIN_TAB_PROFILE) {
         iconName = 'ios-contact';
-      } else if (routeName === YOUR_CART) {
+      } else if (routeName === MAIN_TAB_YOUR_CART) {
         iconName = 'ios-cart';
       } else if (routeName === MAIN_TAB_MORE_SETTINGS) {
+        iconName = 'ios-construct';
+      } else if (routeName === MAIN_TAB_WISH_LIST) {
         iconName = 'ios-construct';
       }
       return <Ionicon name={iconName} size={23} color={tintColor} />;

@@ -107,12 +107,12 @@ class AccountSettingScreen extends React.Component<any, any> {
         <View style={styles.container}>
           {navBar}  
             <View style={styles.textContainer}>
-              <TouchableOpacity style={styles.row} onPress={this.chnagePassword}>
+              <TouchableOpacity style={styles.row} >
             <Text style={[styles.label]}>{Strings.EDIT_ACCOUNT_DETAILS}</Text>
             <Icon style={styles.icon} name='chevron-right' color='black' size={50}/>
             </TouchableOpacity>
            
-            <TouchableOpacity style={styles.row}>
+            <TouchableOpacity style={styles.row} onPress={this.chnagePassword}>
             <Text style={[styles.label]}>{Strings.CHANGE_PASSWORD}</Text>
             <Icon style={styles.icon} name='chevron-right' color='black' size={50}/>
             </TouchableOpacity>

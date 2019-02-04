@@ -15,7 +15,9 @@ import {
   ROOT_NAV_ACCOUNT_SETTINGS,
   ROOT_NAV_OPTIONS,
   ROOT_NAV_ADD_ITEM,
-  ROOT_NAV_PRODUCT_LIST
+  ROOT_NAV_PRODUCT_LIST,
+  ROOT_NAV_ORDER_CONFIRMATION,
+  ROOT_NAV_ORDER_HISTORY,
 } from './RootRoutes';
 import {AppContainer} from './RootNavigation';
 
@@ -64,6 +66,17 @@ export const navigateToSignInBuyerScreen = (navParams: any) => {
   return AppContainer
   .router
   .getActionForPathAndParams(`/${ROOT_NAV_SIGN_UP_AS_A_BUYER}`, navParams);
+};
+
+export const navigateToOrderConfirmationScreen = (navParams: any) => {
+  return AppContainer
+  .router
+  .getActionForPathAndParams(`/${ROOT_NAV_ORDER_CONFIRMATION}`, navParams);
+};
+export const navigateToOrderHistoryScreen = (navParams: any) => {
+  return AppContainer
+  .router
+  .getActionForPathAndParams(`/${ROOT_NAV_ORDER_HISTORY}`, navParams);
 };
 
 export const navigateToSignInSellerScreen = (navParams: any) => {

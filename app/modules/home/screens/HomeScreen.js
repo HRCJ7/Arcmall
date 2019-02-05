@@ -58,8 +58,7 @@ class HomeScreen extends React.Component<any, any> {
     this.getCategoryList(props);
     this.handleScrollEndReached();
     this.getFeaturedItems();
-    
-
+    this.props.dispatch(CartActions.getWishList())
   }
 
   componentDidMount() {

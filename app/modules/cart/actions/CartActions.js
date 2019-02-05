@@ -12,6 +12,15 @@ import {
   GET_CART,
   GET_CART_SUCCESS,
   GET_CART_FAILURE,
+  GET_WISH_LIST,
+  GET_WISH_LIST_SUCCESS,
+  GET_WISH_LIST_FAILURE,
+  ADD_TO_WISH_LIST,
+  ADD_TO_WISH_LIST_SUCCESS,
+  REMOVE_FROM_WISH_LIST,
+  REMOVE_FROM_WISH_LIST_SUCCESS,
+  REMOVE_FROM_WISH_LIST_FAILURE,
+  ADD_TO_WISH_LIST_FAILURE,
 } from "./Types";
 
 const addToCart = (data) => ({
@@ -98,6 +107,70 @@ const getCartFailure = (error: any) => ({
   },
 });
 
+const getWishList = (data) => ({
+  type: GET_WISH_LIST,
+  payload: {
+    ...data,
+  },
+});
+
+const getWishListSuccess = (data: any) => ({
+  type: GET_WISH_LIST_SUCCESS,
+  payload: {
+    data,
+  },
+});
+
+const getWishListFailure = (error: any) => ({
+  type: GET_WISH_LIST_FAILURE,
+  payload: {
+    error,
+  },
+});
+
+const addToWishList = (data) => ({
+  type: ADD_TO_WISH_LIST,
+  payload: {
+    ...data,
+  },
+});
+
+const addToWishListSuccess = (data: any) => ({
+  type: ADD_TO_WISH_LIST_SUCCESS,
+  payload: {
+    data,
+  },
+});
+
+const addToWishListFailure = (error: any) => ({
+  type: ADD_TO_WISH_LIST_FAILURE,
+  payload: {
+    error,
+  },
+});
+
+const removeFromWishList = (data) => ({
+  type: REMOVE_FROM_WISH_LIST,
+  payload: {
+    ...data,
+  },
+});
+
+const removeFromWishListSuccess = (data: any) => ({
+  type: REMOVE_FROM_WISH_LIST_SUCCESS,
+  payload: {
+    data,
+  },
+});
+
+const removeFromWishListFailure = (error: any) => ({
+  type: REMOVE_FROM_WISH_LIST_FAILURE,
+  payload: {
+    error,
+  },
+});
+
+
 export default {
   addToCart,
   addToCartSuccess,
@@ -114,4 +187,16 @@ export default {
   getCart,
   getCartSuccess,
   getCartFailure,
+
+  getWishList,
+  getWishListSuccess,
+  getWishListFailure,
+
+  addToWishList,
+  addToWishListSuccess,
+  addToWishListFailure,
+
+  removeFromWishList,
+  removeFromWishListSuccess,
+  removeFromWishListFailure,
 }

@@ -380,9 +380,9 @@ class AddProductScreen extends React.Component<any, any> {
       let Product = t.struct({
         name: t.String, 
         description: t.String,
-        quantity: t.String,
-        price: t.String,
-        weight: t.String,
+        quantity: t.Number,
+        price: t.Number,
+        weight: t.Number,
       });
   
   

@@ -1,42 +1,41 @@
-import { StyleSheet } from "react-native";
-import Theme, { font } from "../../../../theme/Base";
+import {
+  StyleSheet,
+} from 'react-native';
+import Theme, {font} from '../../../../theme/Base';
 
+const marginTop = {
+  marginTop: 15,
+}
+ 
 const styles = StyleSheet.create({
-  image: {
-    width: "100%",
-    flex: 2,
-    height: "100%",
-    resizeMode: "stretch"
-  },
-  description: {
-    color: "black",
-    textAlign: "left",
-    marginBottom: 5,
-    marginTop: 5
-  },
-  price: {
-    flex:3,
-    color: "#2687ad",
-    textAlign: "left"
-  },
-  heart: {
-    flex:1,
-    color: "read",
-    
-  },
-  textView: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "white"
-  },
   container: {
     flex: 1,
-    height: 200,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "white"
+    backgroundColor: 'white',
+  },
+  headingText: {
+    ...font,
+    fontSize: Theme.fontSizes.medium,
+    paddingTop: 200,
+    alignSelf: 'center',
+  },
+  searchBar: {
+    flex: 1,
+    backgroundColor: "white", 
+    borderWidth: 0.5, 
+    borderColor: 'gray', 
+    borderRadius: 10,
+  },
+  searchBarView: {
+    padding: 10,
+    flexDirection: 'row',
+  },
+  cancelButton: {
+    justifyContent: 'center',
+    paddingLeft: 20,
+    paddingRight: 10
+  },
+  cancelButtonText: {
+    color: Theme.colors.primary,
   }
 });
-
 export default styles;

@@ -9,11 +9,15 @@ const styles = StyleSheet.create({
     height: 150,
     flexDirection: 'row',
     margin: 5,
+    alignItems: 'center',
     borderRadius: 10,
     overflow: 'hidden',
     borderWidth: 1,
     borderColor: '#ddd'
   },
+  swipeout: {
+    backgroundColor: 'white',
+  },  
   itemImage: {
     flex: 1,
     aspectRatio: 1,
@@ -30,7 +34,7 @@ const styles = StyleSheet.create({
   itemDescriptionText: {
     ...font,
     flex: 1,
-    fontSize: Theme.fontSizes.small,
+    fontSize: Theme.fontSizes.sMedium,
     color: Theme.colors.smallText,
   },
   itemDetails: {

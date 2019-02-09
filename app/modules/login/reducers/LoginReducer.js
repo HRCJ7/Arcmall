@@ -45,11 +45,14 @@ export const loginSuccess = (state = INITIAL_STATE, {payload} : any) => {
   }
 };
 
-export const loginFailure = (state, {payload} : any) => ({
-  ...state,
-  error: payload.error,
-  isLoading: false,
-});
+export const loginFailure = (state, {payload} : any) => {
+  console.log(payload.error)
+  return {
+    ...state,
+    error: payload.error,
+    isLoading: false,
+  }
+};
 
 export const registration = (state = INITIAL_STATE, {payload} : any) => ({
   ...state,

@@ -12,7 +12,6 @@ import CategoryTabNavigator from './categoryTab/CategoryTabNavigation';
 import CategoryListScreen from '../modules/product/screens/categoryList/CategoryListScreen';
 import CartDetailsScreen from '../modules/cart/screens/cartDetails/CartDetailsScreen';
 import OrderConfirmationScreen from '../modules/cart/screens/orderConfirmation/OrderConfirmationScreen';
-import OrderHistoryScreen from '../modules/cart/screens/orderHistory/OrderHistoryScreen';
 
 import ReviewsScreen from '../modules/product/screens/reviews/ReviewsScreen';
 import SettingsScreen from '../modules/user/screens/settingsScreen/SettingsScreen';
@@ -20,6 +19,8 @@ import ChangePasswordScreen from '../modules/user/screens/changePassword/ChangeP
 import AccountSettingScreen from '../modules/user/screens/accountSettings/AccountSettingScreen';
 import NavMenuScreen from '../modules/product/screens/navMenu/NavMenuScreen';
 import AddProductScreen from '../modules/product/screens/addProduct/AddProductScreen';
+import OrderHistoryScreen from '../modules/user/screens/orderHistory/OrderHistoryScreen';
+
 
 export const ROOT_NAV_LOGIN = 'Login';
 export const ROOT_NAV_SELECT_ROLE = 'SelectRole';

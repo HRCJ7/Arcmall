@@ -19,7 +19,7 @@ import LoginActions from '../../../login/actions/LoginActions';
 import NavigationBar from '../../../shared/components/NavigationBar/NavigationBar';
 import Strings from '../../../shared/localization/localization';
 import EvilIcons from 'react-native-vector-icons/dist/EvilIcons';
-import {navigateToSettings, navigateToAddItem} from '../../../../navigation/RootNavActions';
+import {navigateToSettings, navigateToAddItem, navigateToProductList} from '../../../../navigation/RootNavActions';
 import Theme from '../../../../theme/Base';
 import {CheckBox} from 'react-native-elements'
 import UserActions from '../../actions/UserActions';
@@ -193,6 +193,12 @@ class SettingsScreen extends React.Component<any, any> {
         name: 'Add Item',
         action: () => {
           this.props.navigation.dispatch(navigateToAddItem());
+        }
+      },
+      {
+        name: 'My Items',
+        action: () => {
+          this.props.navigation.dispatch(navigateToProductList({formHome: false, sellerProducts: true}))
         }
       },
       {

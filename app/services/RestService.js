@@ -84,7 +84,7 @@ const createURLParams = (params: {[string]: any} | null): string => {
 const handleResponseStatus = async (response) => {
   if (response && response.status < 200 || response.status >= 300) {
     const error: any = new Error(response.statusText);
-    error.response = response;
+    error.response = await response.json();
     error.status = response.status;
 
     throw error;

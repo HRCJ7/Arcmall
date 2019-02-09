@@ -47,7 +47,7 @@ class CartDetailsScreen extends React.Component<any, any> {
       selectedShippingMethod: 'free.free',
     };
 
-    this.props.dispatch(CartActions.getCart());
+    // this.props.dispatch(CartActions.getCart());
 
   }
 

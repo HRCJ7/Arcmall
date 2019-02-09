@@ -20,7 +20,11 @@ import ProductListItem from '../../components/productListItem/ProductListItem';
 import { navigateToItemDetails } from '../../../../navigation/RootNavActions';
 import ProductActions from '../../actions/ProductActions';
 import {SearchBar} from "react-native-elements";
+import { getProductsByOrder, getSellerProducts } from './ProductApis';
 
+let endLoading = false;
+let nextStart = 0;
+const ITEMS_LIMIT = 10;
 class ProductListScreen extends React.Component<any, any> {
   static defaultProps: any
 
@@ -28,20 +32,43 @@ class ProductListScreen extends React.Component<any, any> {
     super(props);
     let params = props.navigation.state.params;
     this.state = {
-      cartList: [],
       fromHome: params.fromHome,
+      orderId: params.orderId,
+      productList: [],
+      isLoading: true,
+      itemPressDisabled: params.orderId,
+      productListError: null,
+      isSellerProducts: params.sellerProducts, // Boolean
+      hasLazyLoading: params.sellerProducts, // Boolean
+      loadFromState: params.sellerProducts || params.orderId,
     };
   }
 
   componentDidMount() {
-    if (!this.state.fromHome) {
-      this.loadItems(this.props.navigation.state.params);
+    const {fromHome, orderId, isSellerProducts} = this.state;
+    if (!fromHome) {
+      if (orderId) {
+        this.loadOrderItems(orderId);
+      } else if (isSellerProducts) {
+        this.loadSellerProducts(nextStart);
+      }
+      else {
+        this.loadItems(this.props.navigation.state.params);
+      }
     }
   }
 
   static getDerivedStateFromProps(props, state) {
     //Return state object, retun null to update nothing;
-    return state;
+    if (state.loadFromState) {
+      return state;
+    } else {
+      return {
+        productList: props.productList,
+        isLoading: props.productListLoading,
+        productListError: props.productListError,
+      };
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -56,8 +83,19 @@ class ProductListScreen extends React.Component<any, any> {
     this.loadItems({categoryId: 0})
   }
 
+  onListEndReached = () => {
+    console.log('end')
+    const {hasLazyLoading, orderId, isSellerProducts} = this.state;
+    if (hasLazyLoading && !endLoading) {
+      this.loadSellerProducts(nextStart);
+    }
+  }
+
   handleProductOnPress = (itemId: number) => {
-    this.props.navigation.dispatch(navigateToItemDetails({itemId}));
+    const {itemPressDisabled} = this.state;
+    if(!itemPressDisabled) {
+      this.props.navigation.dispatch(navigateToItemDetails({itemId}));
+    }
   }
 
   handleOnBackPress = () => {
@@ -72,6 +110,44 @@ class ProductListScreen extends React.Component<any, any> {
     }
     this.props.dispatch(ProductActions.getProductList(nextParams));
   }
+
+  loadOrderItems = async (orderId) => {
+    this.setState({
+      isLoading: true,
+    })
+    const response = await getProductsByOrder(orderId);
+    this.setState({
+      productList: response.products,
+      isLoading: false,
+    })
+  }
+
+  loadSellerProducts = async (start) => {
+    if (start === 0) {
+      this.setState({
+        isLoading: true,
+      });
+    }
+    
+    const {productList} = this.state;
+    const {user} = this.props;
+
+    loadingItems = true;
+    const response = await getSellerProducts(user.customer_id, nextStart, ITEMS_LIMIT);
+    nextStart = nextStart + ITEMS_LIMIT;
+    loadingItems = false;
+    if (response.products) {
+      let modifiedProductList = productList.concat(response.products);
+      this.setState({
+        productList: modifiedProductList,
+        isLoading: false,
+      });
+    } else {
+      endLoading = true;
+    }
+    
+  }
+
 
   loadSearchItems = (text) => {
     let nextParams = {
@@ -152,13 +228,15 @@ class ProductListScreen extends React.Component<any, any> {
 
   render() {
     const {
-      isLoading,
-      productList,
-      productListError,
       navigation
     } = this.props;
 
-    const {fromHome} = this.state;
+    const {
+      fromHome,
+      isLoading,
+      productList,
+      productListError,
+    } = this.state;
 
     let content = null;
     let navBar = null;
@@ -184,6 +262,9 @@ class ProductListScreen extends React.Component<any, any> {
           {navBar}
           {searchBar}
           <FlatList
+            onEndReached={this.onListEndReached}
+            onEndReachedThreshold={0.5}
+            extraData={this.state}
             ListEmptyComponent={this.renderEmptyComponent()}
             keyExtractor={(item, index) => `${item.description}${index}`}
             data={productList}
@@ -246,6 +327,7 @@ const mapStateToProps = (state, ownProps) => {
     isLoading: state.product.productListLoading,
     productListError: state.product.productListError,
     navigation: navigation,
+    user: state.login.user,
   };
 };
 

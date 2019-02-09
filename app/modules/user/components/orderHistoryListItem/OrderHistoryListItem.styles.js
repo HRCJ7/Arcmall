@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     flex: 1,
-    height: 150,
+    height: 100,
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#ddd'
@@ -83,13 +83,13 @@ const styles = StyleSheet.create({
     fontSize: Theme.fontSizes.large,
     textAlign: 'left',
     fontWeight: Theme.fontWeight.semibold,
+    textAlign: 'right',
   },
   count: {
     ...font,
     fontSize: Theme.fontSizes.small,
     textAlign: 'center',
     color: 'black',
-    padding: 10,
     fontWeight: Theme.fontWeight.light,
   },
   itemCount: {

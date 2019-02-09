@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { CachedImage } from "react-native-cached-image";
 import Swipeout from 'react-native-swipeout';
+import Strings from "../../../shared/localization/localization";
 
 const ICON_SIZE = 12;
 
@@ -38,29 +39,33 @@ class OrderHistoryListItem extends Component {
     }];
     return (
       <View style={styles.container}>
-        <Swipeout
+        {/* <Swipeout
           right={swipeBtns}
           style={styles.swipeout}
-          >
+          > */}
           <TouchableOpacity 
             style={styles.itemContainer} 
-            onPress={this.props.handleProductOnPress}>
+            onPress={() => {
+              this.props.onItemPress(item.order_id);
+            }}>
             <View style={styles.itemImageContainer}>
               
               <View style={styles.itemContent}>
-                <View style={styles.itemDescription}>
+                {/* <View style={styles.itemDescription}>
                   <Text style={styles.itemDescriptionText}>{item.name}</Text>
+                </View> */}
+                <View style={styles.itemDetails}>
+                  <Text style={styles.count}>{`${Strings.PLACED_ON}: ${item.date_added}`}</Text>
                 </View>
                 <View style={styles.itemDetails}>
-                  <Text style={styles.blueText}>category</Text>
+                  <Text style={styles.count}>{`${Strings.ITEMS}: ${item.products}`}</Text>
                 </View>
                 <View style={styles.bottomRow}>
+                  <Text style={styles.count} numberOfLines={1}>
+                    {`${Strings.STATUS} : ${item.status}`}
+                  </Text>
                   <Text style={styles.itemPrice} numberOfLines={1}>
                     {item.total}
-                  </Text>
-
-                  <Text style={styles.count} numberOfLines={1}>
-                    Status : {item.status}
                   </Text>
                 </View>
                 
@@ -69,7 +74,7 @@ class OrderHistoryListItem extends Component {
             </View>
       
           </TouchableOpacity>
-        </Swipeout> 
+        {/* </Swipeout>  */}
       </View>
     );
   }

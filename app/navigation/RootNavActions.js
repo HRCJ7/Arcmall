@@ -73,6 +73,7 @@ export const navigateToOrderConfirmationScreen = (navParams: any) => {
   .router
   .getActionForPathAndParams(`/${ROOT_NAV_ORDER_CONFIRMATION}`, navParams);
 };
+
 export const navigateToOrderHistoryScreen = (navParams: any) => {
   return AppContainer
   .router

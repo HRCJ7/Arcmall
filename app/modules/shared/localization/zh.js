@@ -44,6 +44,7 @@ export default zhStrings = {
     COMPANY_NAME:'公司名',
     SEARCH:"搜索项目",
     SETTINGS: '设置',
+
     ADD: 'Add',
     SEE_MORE: 'See more',
     SELECT_YOUR_ROLE: 'Select your role',
@@ -73,5 +74,7 @@ export default zhStrings = {
     ADD_IMAGES: 'Add Images',
     CANCEL: 'Cancel',
     ORDER_CONFIRMATION: 'Order Confirmation',
-    ORDER_HISTORY:'Order History'
+    ORDER_HISTORY:'Order History',
+    PLACED_ON: 'Placed on',
+    STATUS: 'Status'
 }

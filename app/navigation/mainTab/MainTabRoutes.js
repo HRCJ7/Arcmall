@@ -3,6 +3,7 @@ import HomeScreen from "../../modules/home/screens/HomeScreen";
 import ProfileScreen from "../../modules/user/screens/ProfileScreen";
 import ProductDetailScreen from "../../modules/product/screens/productDetail/ProductDetailScreen";
 import ProductListScreen from "../../modules/product/screens/productList/ProductListScreen";
+
 import LoginScreen from "../../modules/login/screens/LoginScreen";
 import SignUpAsABuyerScreen from "../../modules/login/screens/SignUpAsABuyerScreen";
 import SelectRoleScreen from "../../modules/login/screens/SelectRoleScreen";
@@ -21,12 +22,14 @@ import SettingsScreen from "../../modules/user/screens/settingsScreen/SettingsSc
 import Strings from "../../modules/shared/localization/localization";
 import AddProductScreen from "../../modules/product/screens/addProduct/AddProductScreen";
 
+ import ShopDetailScreen from "../../modules/product/screens/shopDetails/ShopDetailScreen.js";
+
 export const MAIN_TAB_HOME = 'Home';
 export const MAIN_TAB_PROFILE = 'Profile';
 
 export const mainTabRoutes = {
   [MAIN_TAB_HOME]: {
-    screen: EditProfileScreen,
+    screen: HomeScreen,
     path: `/${MAIN_TAB_HOME}`,
   },
   [MAIN_TAB_PROFILE]: {

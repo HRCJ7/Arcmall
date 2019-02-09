@@ -1,13 +1,17 @@
 import {
   StyleSheet,
 } from 'react-native';
-import Theme, { font } from '../../../theme/Base';
+import Theme, { font } from '../../../../theme/Base';
  
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  flatStyle: {
+    flex: 1,
+    width: '100%',
   },
   imageContainer: {
     flex: 1,
@@ -17,7 +21,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   itemInfo: {
-    flex: 1.5,
+    flex: 0.2,
+    flexDirection:'row',
     backgroundColor: 'white',
     width: '100%',
   },
@@ -53,11 +58,27 @@ const styles = StyleSheet.create({
   listItemWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
+   
     justifyContent: 'center',
   },
   settingText: {
     ...font,
     flex: 1,
+    textAlign: 'center',
+    padding: 20,
+    fontSize: Theme.fontSizes.medium,
+  },
+  shopName: {
+    position: "absolute",
+    bottom: 0,
+    opacity: 0.8,
+    ...font,
+    flex: 1,
+    width: "100%",
+    height: 60,
+    backgroundColor: "black",
+    color: "white",
+    
     textAlign: 'left',
     padding: 20,
     fontSize: Theme.fontSizes.medium,

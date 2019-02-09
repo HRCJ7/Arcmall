@@ -70,5 +70,8 @@ export default enStrings = {
     ORDER_HISTORY: 'Order History',
     MOBILE_NUMBER: 'Mobile Number',
     EDIT_PROFILE: 'Edit Profile',
+    STORE_PRODUCTS: 'Store Products',
+    SHOP: 'Shop',
+   
 
 }

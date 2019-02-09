@@ -3,6 +3,7 @@ import LoginScreen from '../modules/login/screens/LoginScreen';
 import MainTabNavigator from './mainTab/MainTabNavigation';
 import ProductListScreen from '../modules/product/screens/productList/ProductListScreen';
 import ProductDetailScreen from '../modules/product/screens/productDetail/ProductDetailScreen';
+import ShopDetailScreen from '../modules/product/screens/shopDetails/ShopDetailScreen';
 
 import SelectRoleScreen from '../modules/login/screens/SelectRoleScreen';
 import SignUpAsABuyerScreen from '../modules/login/screens/SignUpAsABuyerScreen';
@@ -40,6 +41,7 @@ export const ROOT_NAV_SETTINGS_SHIPPING_ADD = 'SettingsShippingAdd';
 export const ROOT_NAV_CHANGE_PASSWORD = 'SettingsChangePassword';
 export const ROOT_NAV_ACCOUNT_SETTINGS = 'AccountSettingScreen';
 export const ROOT_NAV_EDIT_PROFILE = 'EditProfileScreen';
+export const ROOT_NAV_SHOP_DETAILS = 'ShopDetailScreen';
 
 export const rootRoutes = {
   [ROOT_NAV_MAIN_TAB]: {
@@ -121,5 +123,9 @@ export const rootRoutes = {
   [ROOT_NAV_EDIT_PROFILE]: {
     screen: EditProfileScreen,
     path: `/${ROOT_NAV_EDIT_PROFILE}`,
+  },
+  [ROOT_NAV_SHOP_DETAILS]: {
+    screen: ShopDetailScreen,
+    path: `/${ROOT_NAV_SHOP_DETAILS}`,
   }
 };

@@ -11,6 +11,7 @@ import CartDetailsScreen from '../../modules/cart/screens/cartDetails/CartDetail
 import OrderConfirmationScreen from '../../modules/cart/screens/orderConfirmation/OrderConfirmationScreen';
 import OrderHistoryScreen from '../../modules/cart/screens/orderHistory/OrderHistoryScreen';
 import WishList from '../../modules/cart/screens/wishList/WishList';
+import EditProfileScreen from '../../modules/user/screens/editProfile/EditProfileScreen'
 
 export const HOME_TAB = 'Home';
 export const PROFILE_TAB = 'Profile';
@@ -25,7 +26,7 @@ export const MAIN_TAB_PROFILE = 'Profile';
 
 export const mainTabRoutes = {
   [MAIN_TAB_HOME]: {
-    screen: WishList,
+    screen: EditProfileScreen,
     path: `/${MAIN_TAB_HOME}`,
   },
   [MAIN_TAB_PROFILE]: {

@@ -62,6 +62,7 @@
 		7B4EA89D0BEA43DE9217EFBD /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7755E36A82EC4E67B5694A93 /* EvilIcons.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		842E549337534CBD826F2D25 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 57D58A234638428D9BC4D011 /* Roboto.ttf */; };
+		84406327220E816B006B1D82 /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8440631F220E8143006B1D82 /* libRNCamera.a */; };
 		8485E27F21E9B0DE00086EEB /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8485E27021E9B0DE00086EEB /* Octicons.ttf */; };
 		8485E28021E9B0DE00086EEB /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8485E27121E9B0DE00086EEB /* Feather.ttf */; };
 		8485E28121E9B0DE00086EEB /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8485E27221E9B0DE00086EEB /* Entypo.ttf */; };
@@ -367,6 +368,13 @@
 			remoteGlobalIDString = 1BD725DA1CF77A8B005DBD79;
 			remoteInfo = RNCookieManagerIOS;
 		};
+		8440631E220E8143006B1D82 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 844062EF220E8143006B1D82 /* RNCamera.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
+			remoteInfo = RNCamera;
+		};
 		ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
@@ -514,6 +522,7 @@
 		8192B82BB80C4CB0AD8C11B8 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/native-base/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8424C8E37C6C4D41BA700965 /* libLRDRCTSimpleToast.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libLRDRCTSimpleToast.a; sourceTree = "<group>"; };
+		844062EF220E8143006B1D82 /* RNCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		8456FDEB5B8443DF92247CCE /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		8485E26621E9B02900086EEB /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		8485E27021E9B0DE00086EEB /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Octicons.ttf; sourceTree = "<group>"; };
@@ -580,6 +589,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84406327220E816B006B1D82 /* libRNCamera.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -826,6 +836,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				844062EF220E8143006B1D82 /* RNCamera.xcodeproj */,
 				8485E26621E9B02900086EEB /* RNVectorIcons.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
@@ -893,6 +904,14 @@
 			isa = PBXGroup;
 			children = (
 				840A699B21FD815800591A24 /* libRNCookieManagerIOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		844062F0220E8143006B1D82 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8440631F220E8143006B1D82 /* libRNCamera.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1202,6 +1221,10 @@
 					ProjectRef = DCC1F517112842CC96CCA39D /* ReactNativeLocalization.xcodeproj */;
 				},
 				{
+					ProductGroup = 844062F0220E8143006B1D82 /* Products */;
+					ProjectRef = 844062EF220E8143006B1D82 /* RNCamera.xcodeproj */;
+				},
+				{
 					ProductGroup = 840A699721FD815800591A24 /* Products */;
 					ProjectRef = CDDF332FF78C44F5B1D9E166 /* RNCookieManagerIOS.xcodeproj */;
 				},
@@ -1490,6 +1513,13 @@
 			fileType = archive.ar;
 			path = libRNCookieManagerIOS.a;
 			remoteRef = 840A699A21FD815800591A24 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		8440631F220E8143006B1D82 /* libRNCamera.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNCamera.a;
+			remoteRef = 8440631E220E8143006B1D82 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */ = {
@@ -1863,6 +1893,8 @@
 					"$(SRCROOT)/../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast",
 					"$(SRCROOT)/../node_modules/react-native-cookies/ios/RNCookieManagerIOS",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)/../../react-native/React/**",
+					"$(SRCROOT)/../../../React/**",
 				);
 				INFOPLIST_FILE = Arcmall/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1893,6 +1925,8 @@
 					"$(SRCROOT)/../node_modules/react-native-simple-toast/ios/LRDRCTSimpleToast",
 					"$(SRCROOT)/../node_modules/react-native-cookies/ios/RNCookieManagerIOS",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
+					"$(SRCROOT)/../../react-native/React/**",
+					"$(SRCROOT)/../../../React/**",
 				);
 				INFOPLIST_FILE = Arcmall/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

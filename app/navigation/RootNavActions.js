@@ -14,7 +14,8 @@ import {
   ROOT_NAV_CHANGE_PASSWORD,
   ROOT_NAV_ACCOUNT_SETTINGS,
   ROOT_NAV_ORDER_CONFIRMATION,
-  ROOT_NAV_ORDER_HISTORY
+  ROOT_NAV_ORDER_HISTORY,
+  ROOT_NAV_EDIT_PROFILE
 } from './RootRoutes';
 import {AppContainer} from './RootNavigation';
 
@@ -39,6 +40,12 @@ export const navigateToAccountSettingScreen = (navParams: any) => {
   return AppContainer
   .router
   .getActionForPathAndParams(`/${ROOT_NAV_ACCOUNT_SETTINGS}`, navParams);
+};
+
+export const navigateToEditProfileScreen = (navParams: any) => {
+  return AppContainer
+  .router
+  .getActionForPathAndParams(`/${ROOT_NAV_EDIT_PROFILE}`, navParams);
 };
 
 export const navigateToItemDetails = (navParams: any) => {

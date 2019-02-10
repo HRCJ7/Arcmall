@@ -155,24 +155,24 @@ class SettingsScreen extends React.Component<any, any> {
   }
 
   getSettingsList = (fromProfile) => {
-    const isSeller = this.props.user? this.props.user.store_id: false;
+    const isSeller = this.props.user? this.props.user.isPartner: false;
     let list = null;
     let profileSettingUserList = [
       {
-        name: 'Change Password',
+        name: Strings.CHANGE_PASSWORD,
         nextScreen: ACTIVE_SCREEN_CHANGE_PASSWORD,
         subList:{},
       },
       {
-        name: 'Shipping Details',
+        name: Strings.SHIPPING_DETAILS,
         nextScreen: ACTIVE_SCREEN_SHIPPING,
         subList: {
-          name: 'Add Shipping',
+          name: Strings.ADD_SHIPPING,
           nextScreen: ACTIVE_SCREEN_SHIPPING_ADD,
         }
       },
       {
-        name: 'Log out',
+        name: Strings.LOG_OUT,
         action: this.handleLogout,
         hideArrow: true,
       },
@@ -180,32 +180,32 @@ class SettingsScreen extends React.Component<any, any> {
 
     let profileSettingSellerList = [
       {
-        name: 'Change Password',
+        name: Strings.CHANGE_PASSWORD,
         nextScreen: ACTIVE_SCREEN_CHANGE_PASSWORD,
         subList:{},
       },
       {
-        name: 'Shipping Details',
+        name: Strings.SHIPPING_DETAILS,
         nextScreen: ACTIVE_SCREEN_SHIPPING,
         subList: {
-          name: 'Add Shipping',
+          name: Strings.ADD_SHIPPING,
           nextScreen: ACTIVE_SCREEN_SHIPPING_ADD,
         }
       },
       {
-        name: 'Add Item',
+        name: Strings.ADD_ITEM,
         action: () => {
           this.props.navigation.dispatch(navigateToAddItem());
         }
       },
       {
-        name: 'My Items',
+        name: Strings.MY_ITEMS,
         action: () => {
           this.props.navigation.dispatch(navigateToProductList({formHome: false, sellerProducts: true}))
         }
       },
       {
-        name: 'Log out',
+        name: Strings.LOG_OUT,
         action: this.handleLogout,
         hideArrow: true,
       },
@@ -213,7 +213,7 @@ class SettingsScreen extends React.Component<any, any> {
 
     const moreSettingsList = [
       {
-        name: 'Change Language',
+        name: Strings.CHANGE_LANGUAGE,
         nextScreen: ACTIVE_SCREEN_LANGUAGE,
         subList: {
           list: [

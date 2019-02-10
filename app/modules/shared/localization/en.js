@@ -89,5 +89,10 @@ export default enStrings = {
     ADD_PRODUCT_WEIGHT: 'Item Weight (KG)',
     ENTER_ALL_FIELDS: 'Please enter all fields.',
     ENTER_CATEGORY: 'Plase select a category. \n',
-    ENTER_IMAGE: 'Plase select an image. \n'
+    ENTER_IMAGE: 'Plase select an image. \n',
+    CHANGE_PASSWORD: 'Change Password',
+    SHIPPING_DETAILS: 'Shipping Details',
+    ADD_SHIPPING: 'Add Shipping',
+    MY_ITEMS: 'My Items',
+    CHANGE_LANGUAGE: 'Change Language',
 }

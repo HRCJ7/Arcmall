@@ -79,9 +79,15 @@ export default enStrings = {
     EDIT_PROFILE: 'Edit Profile',
     STORE_PRODUCTS: 'Store Products',
     SHOP: 'Shop',
-   
-
     PLACED_ON: 'Placed on',
     STATUS: 'Status',
     QUANTITY: 'Quantity',
+    ADD_PRODUCT_NAME: 'Product Name',
+    ADD_PRODUCT_DESC: 'Product Description (Be detailed)',
+    ADD_PRODUCT_QUANTITY: 'Available Quantity',
+    ADD_PRODUCT_PRICE: 'Item Price (USD)',
+    ADD_PRODUCT_WEIGHT: 'Item Weight (KG)',
+    ENTER_ALL_FIELDS: 'Please enter all fields.',
+    ENTER_CATEGORY: 'Plase select a category. \n',
+    ENTER_IMAGE: 'Plase select an image. \n';,
 }

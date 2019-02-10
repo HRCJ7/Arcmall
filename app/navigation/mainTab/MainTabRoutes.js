@@ -12,7 +12,7 @@ import CartDetailsScreen from '../../modules/cart/screens/cartDetails/CartDetail
 import OrderConfirmationScreen from '../../modules/cart/screens/orderConfirmation/OrderConfirmationScreen';
 // import OrderHistoryScreen from '../../modules/cart/screens/orderHistory/OrderHistoryScreen';
 
-import EditProfileScreen from '../../modules/user/screens/editProfile/EditProfileScreen'
+// import EditProfileScreen from '../../modules/user/screens/editProfile/EditProfileScreen'
 
 import ReviewsScreen from "../../modules/product/screens/reviews/ReviewsScreen";
 import SettingsScreen from "../../modules/user/screens/settingsScreen/SettingsScreen";
@@ -54,7 +54,7 @@ export const mainTabRoutes = {
     path: `/${MAIN_TAB_WISH_LIST}`,
   },
   [MAIN_TAB_MORE_SETTINGS]: {
-    screen: ChangePasswordScreen,
+    screen: SettingsScreen,
     path: `/${MAIN_TAB_MORE_SETTINGS}`,
   },
 };

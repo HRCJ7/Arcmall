@@ -110,78 +110,104 @@ class AddProductScreen extends React.Component<any, any> {
 
   setLoadingState = (state) => {
     this.setState({
+      productFormData: this.state.productFormData,
       isLoading: state,
     })
   }
 
   addItem = async () => {
-
-    this.setLoadingState(true);
+    const {errors} = this.refs.form.validate();
+    const {productFormData: {category}, images} = this.state;
+    const allFieldsFilled = errors.length === 0;
+    const categorySelected = category.length > 0;
+    const imagesSelected = images.length > 0;
     
-    const {product_option: stateOption, category: stateCategory} = this.state.productFormData;
+    if (allFieldsFilled && categorySelected && imagesSelected) {
+      this.setLoadingState(true);
+    
+      const {product_option: stateOption, category: stateCategory} = this.state.productFormData;
 
-    let requestBody = {...this.state.productFormData};
+      let requestBody = {...this.state.productFormData};
 
-    let category = null;
-    let product_option = null;
-    for (const catData of stateCategory) {
-      category = category? category: [];
-      category.push(catData.category_id);
-    }
-    requestBody.category = category;
+      let category = null;
+      let product_option = null;
+      for (const catData of stateCategory) {
+        category = category? category: [];
+        category.push(catData.category_id);
+      }
+      requestBody.category = category;
 
-    let output = [];
+      let output = [];
 
-    requestBody.product_option.forEach(function(item) {
-      var existing = output.filter(function(v, i) {
-        return v.option_id == item.option_id;
-      });
-      if (existing.length > 0) {
-        let existeingOption = existing[0];
-				console.log('TCL: addItem -> existeingOption', existeingOption)
-        const concatValues = existeingOption.product_option_value.concat([
-          {
-            option_value_id: item.option_value_id,
-          }
-        ]);
-        existeingOption.product_option_value = concatValues;
-      } else {
-        output.push({
-          option_id: item.option_id,
-          type: item.type,
-          product_option_value: [
+      requestBody.product_option.forEach(function(item) {
+        var existing = output.filter(function(v, i) {
+          return v.option_id == item.option_id;
+        });
+        if (existing.length > 0) {
+          let existeingOption = existing[0];
+          console.log('TCL: addItem -> existeingOption', existeingOption)
+          const concatValues = existeingOption.product_option_value.concat([
             {
               option_value_id: item.option_value_id,
             }
-          ],
-        })
-      }
-    });
+          ]);
+          existeingOption.product_option_value = concatValues;
+        } else {
+          output.push({
+            option_id: item.option_id,
+            type: item.type,
+            product_option_value: [
+              {
+                option_value_id: item.option_value_id,
+              }
+            ],
+          })
+        }
+      });
 
-    requestBody.product_option = output;
-
-    let form = getForm(requestBody);
-    console.log(form);
-    let response = null;
-    try {
-      response = await addItem(form);
-      
-      if (response.product_id) {
-        console.log('upload data success');
-        this.setState({
-          productId: response.product_id,
-        }, () => {
-          this.uploadImages(response.product_id);
-        })
+      if (output.length > 0) {
+        requestBody.product_option = output;
       } else {
-        this.setLoadingState(false);
-        showToast('Something went wrong. Please check your values');
+        delete requestBody.product_option;
       }
-      
-    } catch (error) {
-      this.setLoadingState(false);
-      console.log(error)
-      showToast('Something went wrong.');
+    
+      let form = getForm(requestBody);
+      console.log(form);
+      console.log(form);
+      let response = null;
+      try {
+        response = await addItem(form);
+        
+        if (response.product_id) {
+          console.log('upload data success');
+          this.setState({
+            productId: response.product_id,
+          }, () => {
+            this.uploadImages(response.product_id);
+          })
+        } else {
+          this.setLoadingState(false);
+          showToast('Something went wrong. Please check your values');
+        }
+        
+      } catch (error) {
+        this.setLoadingState(false);
+        console.log(error)
+        showToast('Something went wrong.');
+      }
+    } else {
+      let string = '';
+      if (!allFieldsFilled) {
+        string = string + Strings.ENTER_ALL_FIELDS;
+      }
+      if (!categorySelected) {
+        string = string + Strings.ENTER_CATEGORY;
+      }
+      if (!imagesSelected) {
+        string = string + Strings.ENTER_IMAGE;
+      }
+
+      alert(string);
     }
   }
 
@@ -197,11 +223,12 @@ class AddProductScreen extends React.Component<any, any> {
       for(const image of images) {
         console.log('uploading image', uploadImageCount + 1);
         response = await uploadImage(image, productId, uploadImageCount == 0);
+        console.log(response)
         uploadImageCount = uploadImageCount + 1;
         response = null;
       }
     } catch (err) {
-      showToast('Something went wrong.');
+      showToast('Something went wrong With images.');
     }
 
     console.log('uploading image completed');
@@ -264,7 +291,6 @@ class AddProductScreen extends React.Component<any, any> {
 
 
   onFormChange = async (value) => {
-    console.log(value)  
     const {productFormData} = this.state;
     let stateObj = {
       productFormData: {
@@ -355,23 +381,23 @@ class AddProductScreen extends React.Component<any, any> {
       let options = {
         fields: {
           name: {
-            label: 'Product Name',
+            label: Strings.ADD_PRODUCT_NAME,
             template: this.textInputTemplate,
           },
           description: {
-            label: 'Product Description (Be detailed)',
+            label: Strings.ADD_PRODUCT_DESC,
             template: this.textInputTemplate,
           },
           quantity: {
-            label: 'Available Quantity',
+            label: Strings.ADD_PRODUCT_QUANTITY,
             template: this.textInputTemplate,
           },
           price: {
-            label: 'Item Price (USD)',
+            label: Strings.ADD_PRODUCT_PRICE,
             template: this.textInputTemplate,
           },
           weight: {
-            label: 'Item Weight (KG)',
+            label: Strings.ADD_PRODUCT_WEIGHT,
             template: this.textInputTemplate,
           }
         }

@@ -27,7 +27,6 @@ export const addItem = async (data) => {
     },
     body: data
   });
-
   console.log(response);
   let resp = await response.json();
  

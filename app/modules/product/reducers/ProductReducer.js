@@ -22,7 +22,7 @@ const INITIAL_STATE = {
   productError: null,
 
   productList: {},
-  productListLoading: true,
+  productListLoading: false,
   productListError: null,
 
   categoryList: null,
@@ -61,8 +61,9 @@ const getProductListSuccess = (state = INITIAL_STATE, {payload} : any) => {
   let categoryId = payload.data.category_id;
   if (categoryId) {
     productList[payload.data.category_id] = payload.data;
-  }
-  
+  } else {
+    productList.search = payload.data;
+  }  
   return {
     ...state,
     productListLoading: false,

@@ -19,13 +19,23 @@ import GridView from "../components/GridView/GridView";
 import ProductActions from '../../product/actions/ProductActions';
 import LoadingIndicator from '../../shared/components/loadingIndicator/LoadingIndicator';
 import LoginActions from '../../login/actions/LoginActions';
-import {navigateToItemListScreen, navigateToAllCategories} from '../../../navigation/RootNavActions';
+import {navigateToAllCategories, navigateToProductList, navigateToItemListScreen, navigateToItemDetails} from '../../../navigation/RootNavActions';
 import Strings from '../../shared/localization/localization';
 import {COOKIE_LANGUAGE_CHINESE, CODE_CHINESE, CODE_ENGLISH, COOKIE_LANGUAGE, STORAGE_USER, STORAGE_CATEGORIES} from '../../../Constants';
 import { getUser } from '../../../store/AsyncStorageHelper';
 import CartActions from '../../cart/actions/CartActions';
+import ProductListScreen from '../../product/screens/productList/ProductListScreen';
+import { getFeaturedItems, getLoginStatus, getLatestItems } from './HomeApis';
 
-const arr = ["1", "1", "1", "1", "1", "1", "1", "1", "1"];
+const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+  const paddingToBottom = 50;
+  return layoutMeasurement.height + contentOffset.y >=
+    contentSize.height - paddingToBottom;
+};
+
+const LATEST_ITEM_COUNT = 20;
+let itemStart = 0;
+let waitingTilResponse = false;
 class HomeScreen extends React.Component<any, any> {
   static defaultProps: any
   static navigationOptions: any = ({navigation}) => ({
@@ -34,16 +44,26 @@ class HomeScreen extends React.Component<any, any> {
 
   constructor(props) {
     super(props);
-
     this.state = {
       categories: null,
       languageLoading: true,
+      featuredItems: null,
+      featuredItemsLoading: true,
+
+      latestItems: [],
+      // latestItemsStart: 0,
     };
+    
+    this.getLoginStatus();
     this.getCategoryList(props);
+    this.handleScrollEndReached();
+    this.getFeaturedItems();
+    this.props.dispatch(CartActions.getWishList())
+    this.props.dispatch(CartActions.getCart());
   }
 
   componentDidMount() {
-    
+    // Cookie.get('http://arcmall.com/').then((cookie) => console.log('cookie', cookie));
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -60,7 +80,17 @@ class HomeScreen extends React.Component<any, any> {
       this.saveCategoryList(nextProps.categoryList)
       shouldUpdate = false;
     }
-    if (oldUser != newUser) {
+
+    let oldId = 0;
+    let newId = 0;
+    if(oldUser) {
+      oldId = oldUser.customer_id;
+    }
+    if (newUser) {
+      newId = newUser.customer_id;
+    }
+
+    if (oldId != newId) {
       this.getCategoryList(nextProps);
     }
     
@@ -69,6 +99,24 @@ class HomeScreen extends React.Component<any, any> {
 
   componentDidUpdate() {
     
+  }
+
+  getLoginStatus = async () => {
+    const response = await getLoginStatus();
+    const user = await getUser();
+    if (response.message === 'false' && user) {
+      alert('Your session is expired, please log in again');
+      this.props.dispatch(LoginActions.signOut());
+    }
+  }
+
+
+  getFeaturedItems = async () => {
+    let items = await getFeaturedItems();
+    this.setState({
+      featuredItems: items.products,
+      featuredItemsLoading: false,
+    })
   }
 
   saveCategoryList = async (categories) => {
@@ -99,17 +147,36 @@ class HomeScreen extends React.Component<any, any> {
     })
   }
 
-  _renderItem = ({ item }) => {
-    return <Card 
-    title="{item.title}" />;
-  };
-
   handleOnGridPress = (categories) => {
     this.props.navigation.dispatch(navigateToItemListScreen({categories}))
   }
 
   hanleOnSeeMoreCategoriesPressed = () => {
     this.props.navigation.dispatch(navigateToAllCategories());
+  }
+
+  handleOnSearchPress = () => {
+    this.props.navigation.dispatch(navigateToProductList({
+      fromHome: true,
+    }))
+  }
+
+  handleScrollEndReached = async () => {
+    if (!waitingTilResponse) {
+      let start = itemStart;
+      console.log(start)
+      waitingTilResponse = true;
+      let response = await getLatestItems(start, LATEST_ITEM_COUNT);
+      itemStart = start + LATEST_ITEM_COUNT;
+      waitingTilResponse = false;
+      let {latestItems, latestItemsStart} = this.state;
+      if (response.products.length > 0) {
+        this.setState({
+          latestItems: latestItems.concat(response.products),
+        })
+      }
+    }
+    
   }
 
   render() {
@@ -119,10 +186,19 @@ class HomeScreen extends React.Component<any, any> {
     if(!isLoading && categories) {
       content = (
         <ScrollView
+          onScroll={({nativeEvent}) => {
+            if (isCloseToBottom(nativeEvent)) {
+              this.handleScrollEndReached();
+            }
+          }}
+        scrollEventThrottle={400}
           style={styles.container}>
           <View style={styles.container}>
             <View style={styles.searchBarView}>
               <SearchBar
+                onFocus={() => {
+                  this.handleOnSearchPress();
+                }}
                 containerStyle={styles.searchBar}
                 inputStyle={{ backgroundColor: "white" }}
                 lightTheme
@@ -135,7 +211,13 @@ class HomeScreen extends React.Component<any, any> {
               source={require("../../../../assets/arcmall.png")}
             />
             <View style={styles.sliderView}>
-              <ItemSlider />
+              <ItemSlider
+                horizontal
+                onItemPress={(itemId) => {
+                  this.props.navigation.dispatch(navigateToItemDetails({itemId: itemId}))
+                }}
+                items={this.state.featuredItems}
+              />
             </View>
             <View style={styles.seeMoreView}>
               <SeeMoreTitleBar name="Featured Shops" />
@@ -152,15 +234,19 @@ class HomeScreen extends React.Component<any, any> {
                 categories={categories}
                 onPress={this.handleOnGridPress}
               />
+              <SeeMoreTitleBar
+                hideSeeMore
+                name="Our Collection"
+                onPress={this.hanleOnSeeMoreCategoriesPressed}
+              />
+              <ItemSlider
+                horizontal={false}
+                onItemPress={(itemId) => {
+                  this.props.navigation.dispatch(navigateToItemDetails({itemId: itemId}))
+                }}
+                items={this.state.latestItems}
+              />
             </View>
-            
-            {/* <FlatList
-              style={{flex: 1}}
-              numColumns={3}
-              data={arr}
-              renderItem={this._renderItem}
-              columnWrapperStyle={styles.row}
-            /> */}
           </View>
         </ScrollView>
       )

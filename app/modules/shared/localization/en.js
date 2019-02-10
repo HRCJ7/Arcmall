@@ -37,13 +37,14 @@ export default enStrings = {
     ADD_ITEM:'Add item',
     MY_PRODUCTS:'My products',
     CURRENCY: 'Currency',
-    MY_PROFILE:'My Profile',
+    MY_PROFILE:'Profile',
     LANGUAGE: 'Language',
     ENG_US: 'English (US)',
     CHINESE_SIMPLIFIED: '简体中文',
     COMPANY_NAME:'Company name',
     SEARCH: 'Search',
     SETTINGS: 'Settings',
+
     ADD: 'Add',
     SEE_MORE: 'See more',
     SELECT_YOUR_ROLE: 'Select your role',
@@ -55,7 +56,7 @@ export default enStrings = {
     COMPLETED: 'Completed',
     SELECT: 'Select',
     NO_ITEMS: 'Sorry, there are no items.',
-    YOUR_CART: 'Your Cart',
+    YOUR_CART: 'Cart',
     CHECKOUT: 'Checkout',
     PAY_WITH_PAYPAL: "Pay with Paypal",
     ITEMS: 'Items',
@@ -66,6 +67,12 @@ export default enStrings = {
     EDIT_ACCOUNT_DETAILS: 'Edit Account Details',
     CHANGE_PASSWORD: 'Change Password',
     YOUR_SHIPPING_ADDRESS: 'Your Shipping Address',
+    CATEGORIES: 'Categories',
+    ITEM_DETAILS: 'Item Details',
+    OPTIONS: 'Options',
+    IMAGES: 'Images',
+    ADD_IMAGES: 'Add Images',
+    CANCEL: 'Cancel',
     ORDER_CONFIRMATION: 'Order Confirmation',
     ORDER_HISTORY: 'Order History',
     MOBILE_NUMBER: 'Mobile Number',
@@ -74,4 +81,6 @@ export default enStrings = {
     SHOP: 'Shop',
    
 
+    PLACED_ON: 'Placed on',
+    STATUS: 'Status'
 }

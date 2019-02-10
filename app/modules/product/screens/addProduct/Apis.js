@@ -2,34 +2,35 @@ import Config from 'react-native-config';
 import {getForm, defaultRequestHeaders, getCookie} from '../../../../services/RestService';
 import {getCategories} from '../../../../store/AsyncStorageHelper';
 import { splitCategoryName } from '../../../../services/ExternalServices';
+
+
 const BASE_URL: string = `${Config.API_URL}`;
 
 export const getOptions = async () => {
-  let cookie = getCookie();
   let response = await fetch(`${BASE_URL}/product/getoptions`, {
     method: 'GET',
+    credentials: 'include',
     headers: {
       ...defaultRequestHeaders,
-      cookie,
     },
     // body: getForm({country_id: value.country_id})
   });
   return response.json();
 }
 
-export const saveProduct = async (data) => {
-  let cookie = getCookie();
+export const addItem = async (data) => {
   let response = await fetch(`${BASE_URL}/product/addproduct`, {
     method: 'POST',
+    credentials: 'include',
     headers: {
       ...defaultRequestHeaders,
-      cookie,
     },
     body: data
   });
 
+  console.log(response);
   let resp = await response.json();
-  console.log(resp);
+ 
   return resp;
 }
 
@@ -62,4 +63,44 @@ export const filterCategory = async (categoryData, category_id) => {
   let categories = categoryData.filter(category => category.category_id === category_id)[0];
   let data = await getCategorydata(categories);
 	return data;
+}
+
+
+export const uploadImage = async (image, product_id, isMain?) => {
+  
+  let imageUploadUri = `${BASE_URL}/product/addproductimage`;
+  let mainImageUrl = `${BASE_URL}/product/addmainimage`;
+
+  console.log(image)
+
+  if(isMain) {
+    imageUploadUri = mainImageUrl;
+  }
+  
+  const data = new FormData();
+  data.append('image', {
+    uri: image.path,
+    type: image.mime,
+    name: image.filename,
+  });
+  data.append('Content-Type', image.mime);
+  data.append('product_id', product_id);
+  data.append('fileKey', 'file');
+
+  let cookie = getCookie();
+  let response = await fetch(imageUploadUri, {
+    method: 'POST',
+    headers: {
+      ...defaultRequestHeaders,
+      cookie,
+    },
+    body: data,
+  });
+  
+
+  console.log(resp)
+
+  let resp = await response.json();
+  console.log(resp);
+  return resp;
 }

@@ -15,7 +15,8 @@ import {
 } from '../actions/Types';
 import { NativeIconAPI } from 'react-native-vector-icons/dist/lib/create-icon-set';
 import { STORAGE_USER, COOKIE_PHPSSID, COOKIE_CURENCY, COOKIE_LANGUAGE } from '../../../Constants';
-import { clearCookies, clearCookiesAndUser } from '../../../store/AsyncStorageHelper';
+import { clearCookies, clearCookiesAndUser, setUser } from '../../../store/AsyncStorageHelper';
+import CookieManager from 'react-native-cookies';
 
 const INITIAL_STATE = {
   user: null,
@@ -33,10 +34,10 @@ export const login = (state = INITIAL_STATE, {payload} : any) => ({
   error: null,
 });
 
-export const loginSuccess = async (state = INITIAL_STATE, {payload} : any) => {
+export const loginSuccess = (state = INITIAL_STATE, {payload} : any) => {
   let data = {...payload.data}
   delete data['password']; 
-  await AsyncStorage.setItem(STORAGE_USER, JSON.stringify(data));
+  setUser(JSON.stringify(data));
   return {
     ...state,
     user: data,
@@ -44,14 +45,18 @@ export const loginSuccess = async (state = INITIAL_STATE, {payload} : any) => {
   }
 };
 
-export const loginFailure = (state, {payload} : any) => ({
-  ...state,
-  error: payload.error,
-  isLoading: false,
-});
+export const loginFailure = (state, {payload} : any) => {
+  console.log(payload.error)
+  return {
+    ...state,
+    error: payload.error,
+    isLoading: false,
+  }
+};
 
 export const registration = (state = INITIAL_STATE, {payload} : any) => ({
   ...state,
+  registrationData: null,
   registrationLoading: true,
   registrationError: null,
 });
@@ -68,22 +73,26 @@ export const registrationFailure = (state, {payload} : any) => ({
   ...state,
   registrationError: payload.error,
   registrationLoading: false,
+  registrationData: null,
 });
 
 export const postLogin = (state = INITIAL_STATE, {payload} : any) => {
+
+  // setUser(payload.user);
   return {
     ...state,
     user: payload.user,
     language: payload.language,
-    registrationData: {}
+    registrationData: null
   }
 };
 
 export const signOut = async (state = INITIAL_STATE, {payload} : any) => {
   await clearCookies();
   await clearCookiesAndUser();
+  await CookieManager.clearAll();
   return {
-    registrationData: {},
+    registrationData: null,
     user: null,
   };
 };

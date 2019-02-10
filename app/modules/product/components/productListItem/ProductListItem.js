@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import {Text, TouchableOpacity, View} from "react-native";
-import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import Icon from 'react-native-vector-icons/Ionicons';
 import styles from "./ProductListItem.styles";
 import PropTypes from 'prop-types';
@@ -8,23 +8,44 @@ import {
   CachedImage,
 } from 'react-native-cached-image';
 import RatingItem from '../ratingItem/RatingItem';
+import CartActions from '../../../cart/actions/CartActions';
+import Swipeout from 'react-native-swipeout';
 
 const ICON_SIZE = 12;
 
-export default class ProductListItem extends Component {
+class ProductListItem extends Component {
 
   handleOnPress = () => {
     const {item: {item}, onPress} = this.props;
     onPress(item.product_id);
   }
-  addToCart = () => {
-    const {item: {item}, addToCart} = this.props;
-    addToCart(item);
+  addRemoveWatchList = (add, product_id) => {
+    if (add) {
+      this.props.dispatch(CartActions.addToWishList({product_id}))
+    } else {
+      this.props.dispatch(CartActions.removeFromWishList({product_id}))
+    }
   }
 
   render() {
+    let content = null;
     const {item, onPress} = this.props.item;
-    return (
+    const {hasDelete, addedToWishList} = this.props;
+
+    let swipeBtns = [{
+      text: 'Delete',
+      backgroundColor: 'red',
+      onPress: () => { 
+        this.addRemoveWatchList(false, item.product_id)
+      }
+    }];
+
+    let icon = {name: 'ios-heart-empty', color: 'black'};
+    if (addedToWishList) {
+      icon = {name: 'ios-heart', color: 'red'};
+    }
+
+    let itemConent = (
       <TouchableOpacity style={styles.itemContainer} onPress={this.handleOnPress}>
         <CachedImage 
           style={styles.itemImage}
@@ -45,17 +66,46 @@ export default class ProductListItem extends Component {
             </View>
           </View>
           <View style={styles.bottomRow}>
-            <TouchableOpacity style={styles.bottomRowAction} numberOfLines={1}>
-              <EvilIcon name="heart" size={25}/>
+            <TouchableOpacity onPress={() => {
+              this.addRemoveWatchList(!addedToWishList, item.product_id);
+            }} style={styles.bottomRowAction} numberOfLines={1}>
+              <Icon name={icon.name} color={icon.color} size={25}/>
             </TouchableOpacity>
             <TouchableOpacity style={styles.bottomRowAction} numberOfLines={1} onPress={this.addToCart}>
-              <EvilIcon name="cart" size={25}/>
+              <Text></Text>
             </TouchableOpacity>
             <Text style={styles.itemPrice} numberOfLines={1}>{item.price}</Text>
           </View>
         </View>
       </TouchableOpacity>
     );
+
+    if (hasDelete) {
+      content = (
+        <View style={styles.container}>
+          <Swipeout
+            right={swipeBtns}
+            style={styles.swipeout}
+            >
+            {itemConent}
+          </Swipeout>
+        </View>
+      )
+    } else {
+      content = (
+        <View style={styles.container}>
+          <Swipeout
+            right={swipeBtns}
+            style={styles.swipeout}
+            >
+            {itemConent}
+          </Swipeout>
+        </View>
+      )
+    }
+
+   
+    return content;
   }
 }
 
@@ -68,3 +118,18 @@ ProductListItem.defaultProps = {
   item: {},
   onPress: () => {},
 };
+
+const mapStateToProps = (state, ownProps) => {
+  let addedToWishList = false;
+  const wishlist = state.cart.wishListIds;
+  console.log(wishlist)
+  console.log(ownProps.item.item)
+  if (ownProps.item.item) {
+    addedToWishList = wishlist[ownProps.item.item.product_id];
+  }
+  return {
+    addedToWishList: addedToWishList,
+  };
+};
+
+export default connect(mapStateToProps)(ProductListItem);

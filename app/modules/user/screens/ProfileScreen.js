@@ -12,11 +12,11 @@ import {
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import styles from './ProfileScreen.styles';
-import {navigateToMainTabScreen, navigateToLoginScreen, navigateToSignInBuyerScreen, navigateToSettings} from '../../../navigation/RootNavActions';
+import {navigateToMainTabScreen, navigateToLoginScreen, navigateToSignInBuyerScreen, navigateToSettings, navigateToOrderHistoryScreen} from '../../../navigation/RootNavActions';
 import { MAIN_TAB_PROFILE, MAIN_TAB_HOME } from '../../../navigation/mainTab/MainTabRoutes';
 import LoginActions from '../../login/actions/LoginActions';
 import UserActions from '../actions/UserActions';
-import { ACTIVE_SCREEN_SETTINGS, STORAGE_USER, COOKIE_PHPSSID } from '../../../Constants';
+import { ACTIVE_SCREEN_SETTINGS, STORAGE_USER, COOKIE_PHPSSID, ORDER_HISTORY } from '../../../Constants';
 import { getUser } from '../../../store/AsyncStorageHelper';
 import NavigationBar from '../../shared/components/NavigationBar/NavigationBar';
 import Strings from '../../shared/localization/localization';
@@ -83,7 +83,7 @@ class ProfileScreen extends React.Component<any, any> {
   }
 
   handleSettingPress = () => {
-    this.props.navigation.dispatch(navigateToSettings());
+    this.props.navigation.dispatch(navigateToSettings({fromProfile: true}));
   }
 
   renderRightAction = () => {
@@ -124,14 +124,16 @@ class ProfileScreen extends React.Component<any, any> {
           <ImageBackground 
             source={require('../../../../assets/profile.png')}
             style={styles.imageContainer}>
-            <View style={styles.image}>
+            {/* <View style={styles.image}>
               
-            </View>
+            </View> */}
             <Text style={styles.nameText}>{`${userInfo.firstname} ${userInfo.lastname}`}</Text>
             <Text style={styles.emailText}>{userInfo.email}</Text>
           </ImageBackground>
           <View style={styles.itemInfo}>
-            <TouchableOpacity style={styles.listItem} onPress={null}>
+            <TouchableOpacity style={styles.listItem} onPress={() => {
+              this.props.navigation.dispatch(navigateToOrderHistoryScreen({status: ORDER_HISTORY.PROCESSING}))
+            }}>
               <View style={styles.listItemWrapper}>
                 <Text style={styles.settingText}>{Strings.PROCESSING}</Text>
                 <EvilIcons
@@ -139,7 +141,9 @@ class ProfileScreen extends React.Component<any, any> {
                   name='chevron-right' color={Theme.colors.darkGray} size={30}/>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.listItem} onPress={null}>
+            <TouchableOpacity style={styles.listItem} onPress={() => {
+              this.props.navigation.dispatch(navigateToOrderHistoryScreen({status: ORDER_HISTORY.SHIPPED}))
+            }}>
               <View style={styles.listItemWrapper}>
                 <Text style={styles.settingText}>{Strings.SHIPPED}</Text>
                 <EvilIcons
@@ -147,7 +151,9 @@ class ProfileScreen extends React.Component<any, any> {
                   name='chevron-right' color={Theme.colors.darkGray} size={30}/>
               </View>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.listItem} onPress={null}>
+            <TouchableOpacity style={styles.listItem} onPress={() => {
+              this.props.navigation.dispatch(navigateToOrderHistoryScreen({status: ORDER_HISTORY.COMPLETED}))
+            }}>
               <View style={styles.listItemWrapper}>
                 <Text style={styles.settingText}>{Strings.COMPLETED}</Text>
                 <EvilIcons

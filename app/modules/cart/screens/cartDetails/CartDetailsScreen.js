@@ -9,13 +9,14 @@ import Strings from "../../../shared/localization/localization";
 import EvilIcons from "react-native-vector-icons/dist/EvilIcons";
 import LoadingIndicator from "../../../shared/components/loadingIndicator/LoadingIndicator";
 import CartListItem from "../../components/cartListItem/CartListItem";
-import { navigateToItemDetails } from "../../../../navigation/RootNavActions";
+import { navigateToItemDetails, navigateToSettings } from "../../../../navigation/RootNavActions";
 import ArcmallButton from "../../../shared/components/arcmallButton/ArcmallButton";
 import CartActions from "../../actions/CartActions";
-import Toast from "react-native-simple-toast";
 import { getForm, defaultRequestHeaders, getCookie } from "../../../../services/RestService";
 import Config from 'react-native-config';
 import {Picker, Header, Icon} from "native-base";
+import { showToast } from "../../../../theme/Base";
+import { ACTIVE_SCREEN_SHIPPING } from "../../../user/screens/settingsScreen/SettingsScreen";
 
 const BASE_URL: string = `${Config.API_URL}`;
 
@@ -46,12 +47,13 @@ class CartDetailsScreen extends React.Component<any, any> {
       selectedShippingMethod: 'free.free',
     };
 
-    this.props.dispatch(CartActions.getCart());
-    this.getShippingDetails();
+    // this.props.dispatch(CartActions.getCart());
 
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.getShippingDetails();
+  }
 
   static getDerivedStateFromProps(props, state) {
     // Return state object, retun null to update nothing;
@@ -68,9 +70,9 @@ class CartDetailsScreen extends React.Component<any, any> {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if(this.props.cartData) {
-      return false;
-    }
+    // if(this.props.cartData) {
+    //   return false;
+    // }
     return true;
   }
 
@@ -94,12 +96,11 @@ class CartDetailsScreen extends React.Component<any, any> {
   };
 
   getShippingDetails = async (value) => {
-    let cookie = await getCookie();
     let response = await fetch(`${BASE_URL}/shipping/methods`, {
       method: 'GET',
+      credentials: 'include',
       headers: {
         ...defaultRequestHeaders,
-        cookie,
       },
     });
 
@@ -139,25 +140,38 @@ class CartDetailsScreen extends React.Component<any, any> {
   }
 
   setShippingDetails = async (shipping_method) => {
-    let cookie = await getCookie();
-    let response = await fetch(`${BASE_URL}/shipping/method`, {
+    const options = {
       method: 'POST',
+      credentials: 'include',
       headers: {
         ...defaultRequestHeaders,
-        cookie,
-        body: getForm({shipping_method})
       },
-    });
+      body: getForm({shipping_method: shipping_method})
+    }
+
+    console.log(options)
+
+    let response = await fetch(`${BASE_URL}/shipping/method`, options);
     response = await response.json();
-    console.log(response)
+    console.log('TCL: response', response)
+    
     if (response.success) {
       this.props.dispatch(CartActions.getCart());
+      this.setState({
+        selectedShippingMethod: shipping_method,
+      });
+    } else if (response.error) {
+      showToast(response.error);
     }
   }
 
   handleOnBackPress = () => {
     this.props.navigation.goBack(null);
   };
+
+  handleCheckoutPress = () => {
+    this.props.navigation.dispatch(navigateToSettings({activeScreen: ACTIVE_SCREEN_SHIPPING, fromCart: true}))
+  }
 
   renderLeftAction = () => {
     return (
@@ -207,18 +221,10 @@ class CartDetailsScreen extends React.Component<any, any> {
   renderOptions = () => {
     const {shippingMethods} = this.state;
     let content = null;
-    console.log(shippingMethods)
-
-
-    const onValueChange = (value: string) => {
-      
-      // const {shippingMethods, total:{text}} = this.state;
-      // const result = shippingMethods.filter(item => item.code === value)[0];
-      // const shipping = result.price;
-      // const totalPrice = getValueFromCurrency(text) + result.cost;
+    const onValueChange = async (value: string) => {
       this.setState({
-        selectedShippingMethod: value,
-      });
+        isLoading: true,
+      })
       this.setShippingDetails(value);
     }
 
@@ -242,7 +248,6 @@ class CartDetailsScreen extends React.Component<any, any> {
               placeholderIconColor="#007aff"
               iosIcon={<Icon name="arrow-down"/>}
               textStyle={styles.normal}
-              // style={{marginTop: -14}}
               selectedValue={selectedValue}
               onValueChange={onValueChange}
             >
@@ -266,7 +271,6 @@ class CartDetailsScreen extends React.Component<any, any> {
       let views = [];
       let index = 0;
       for (const total of totals) {
-        console.log(total)
         views.push(
           <View style={{height: 30}}>
             {(() => {
@@ -277,11 +281,11 @@ class CartDetailsScreen extends React.Component<any, any> {
               }
             })()}
             <View
-            key={total.title}
-            style={styles.bottomRowAction}>
-              <Text style={styles.textBold}>{total.title}</Text>
-              <Text style={styles.textNormal}>{total.text}</Text>
-            </View>
+              key={total.title}
+              style={styles.bottomRowAction}>
+                <Text style={styles.textBold}>{total.title}</Text>
+                <Text style={styles.textNormal}>{total.text}</Text>
+              </View>
           </View>
           
         )
@@ -291,12 +295,18 @@ class CartDetailsScreen extends React.Component<any, any> {
       return views;
     }
 
+    const client = {
+			sandbox:    'AU0xwkp09ogOUgLWIglNEgjpuxUmAAuh1V.zQx3XPVon.5DddW5vbOhA',
+			production: 'AU0xwkp09ogOUgLWIglNEgjpuxUmAAuh1V.zQx3XPVon.5DddW5vbOhA',
+		}
+
     content = (
       <View style={styles.itemInfoContainer}>
         {this.renderOptions()}
         {getTotalView()}
         <ArcmallButton
           title={Strings.CHECKOUT}
+          onPress={this.handleCheckoutPress}
           style={{ marginTop: 5, marginBottom: 10, width: "80%" }}
         />
       </View>
@@ -319,21 +329,24 @@ class CartDetailsScreen extends React.Component<any, any> {
           <LoadingIndicator />
         </View>
       )
-    } else if(!user) {
-        content = (
-          <View style={styles.container}>
-            {navBar}
-            <Text style={styles.errorText}>{Strings.LOGIN_TO_SEE}</Text>
-          </View>
-        )
-    } else {
+    } 
+    // else if(!user) {
+    //     content = (
+    //       <View style={styles.container}>
+    //         {navBar}
+    //         <Text style={styles.errorText}>{Strings.LOGIN_TO_SEE}</Text>
+    //       </View>
+    //     )
+    // } 
+    
+    else {
       content = (
         <View style={styles.container}>
           {navBar}
           <FlatList
             style={styles.flatStyle}
             extraData={this.props}
-            keyExtractor={item => item.product_id}
+            keyExtractor={(item) => item.product_id}
             data={products}
             renderItem={({ item, index }) => (
               <CartListItem

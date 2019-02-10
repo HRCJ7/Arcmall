@@ -102,6 +102,7 @@ android {
         applicationId "com.arcmall"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+        vectorDrawables.useSupportLibrary = true
         versionCode 1
         versionName "1.0"
         ndk {
@@ -147,8 +148,9 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-image-crop-picker')
     compile project(':react-native-cookies')
+    compile project(':react-native-toast-native')
+    compile project(':react-native-image-crop-picker')
     compile project(':react-native-fetch-blob')
     compile project(':react-native-localization')
     compile project(':react-native-vector-icons')

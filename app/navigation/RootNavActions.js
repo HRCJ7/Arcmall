@@ -13,6 +13,9 @@ import {
   ROOT_NAV_SETTINGS,
   ROOT_NAV_CHANGE_PASSWORD,
   ROOT_NAV_ACCOUNT_SETTINGS,
+  ROOT_NAV_OPTIONS,
+  ROOT_NAV_ADD_ITEM,
+  ROOT_NAV_PRODUCT_LIST,
   ROOT_NAV_ORDER_CONFIRMATION,
   ROOT_NAV_ORDER_HISTORY,
   ROOT_NAV_EDIT_PROFILE,
@@ -84,6 +87,7 @@ export const navigateToOrderConfirmationScreen = (navParams: any) => {
   .router
   .getActionForPathAndParams(`/${ROOT_NAV_ORDER_CONFIRMATION}`, navParams);
 };
+
 export const navigateToOrderHistoryScreen = (navParams: any) => {
   return AppContainer
   .router
@@ -108,6 +112,7 @@ export const navigateToYourCart = (navParams: any) => {
   .router
   .getActionForPathAndParams(`/${ROOT_NAV_YOUR_CART}`, navParams);
 };
+
 export const navigateToReviews = (navParams: any) => {
   return AppContainer
   .router
@@ -122,6 +127,29 @@ export const navigateToSettings = (navParams: any) => {
   return AppContainer
   .router
   .getActionForPathAndParams(route, navParams);
+};
+
+export const navigateToOptions = (navParams: any) => {
+  let route = null;
+  if (navParams && navParams.level) {
+    route = `/${ROOT_NAV_OPTIONS}${navParams.level}`;
+  }
+
+  return AppContainer
+  .router
+  .getActionForPathAndParams(route, navParams);
+};
+
+export const navigateToAddItem = (navParams: any) => {
+  return AppContainer
+  .router
+  .getActionForPathAndParams(`/${ROOT_NAV_ADD_ITEM}`, navParams);
+};
+
+export const navigateToProductList = (navParams: any) => {
+  return AppContainer
+  .router
+  .getActionForPathAndParams(`/${ROOT_NAV_PRODUCT_LIST}`, navParams);
 };
 
 

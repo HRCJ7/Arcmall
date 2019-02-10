@@ -1,3 +1,5 @@
+import Toast from 'react-native-toast-native';
+
 //@flow
 
 const Theme = {
@@ -42,6 +44,10 @@ export const font = {
   fontFamily: 'SFCompactDisplay-black',
   fontWeight: Theme.fontWeight.regular,
   letterSpacing: 1,
+}
+
+export const showToast =  (text) => {
+  Toast.show(text, Toast.SHORT, Toast.BOTTOM);
 }
 
 export default Theme;

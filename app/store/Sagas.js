@@ -29,5 +29,9 @@ export default function* root(): Saga<void> {
 
     fork(createdUserSaga.watchSetLanguage),
     fork(createdUserSaga.watchGetAddreses),
+
+    fork(createdCartSaga.watchGetWishList),
+    fork(createdCartSaga.watchAddtoWishList),
+    fork(createdCartSaga.watchRemoveFromWishList),
   ]);
 }

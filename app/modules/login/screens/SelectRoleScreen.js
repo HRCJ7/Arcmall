@@ -15,7 +15,7 @@ import { navigateToMainTabScreen, navigateToSignInBuyerScreen, navigateToSignInS
 import Icon from "react-native-vector-icons/EvilIcons";
 import ArcmallButton from "../../shared/components/arcmallButton/ArcmallButton";
 import Strings from "../../shared/localization/localization";
-
+import CookieManager from 'react-native-cookies';
 class SelectRoleScreen extends React.Component<any, any> {
   static defaultProps: any;
 
@@ -27,7 +27,9 @@ class SelectRoleScreen extends React.Component<any, any> {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    CookieManager.clearAll();
+  }
 
   static getDerivedStateFromProps(props, state) {
     //Return state object, retun null to update nothing;
@@ -43,11 +45,11 @@ class SelectRoleScreen extends React.Component<any, any> {
   };
 
   handleSignUpBuyer = () => {
-    this.props.navigation.dispatch(navigateToSignInBuyerScreen());
+    this.props.navigation.dispatch(navigateToSignInBuyerScreen({goBackFrom: this.props.navigation.state.key}));
   }
 
   handleSignUpSeller = () => {
-    this.props.navigation.dispatch(navigateToSignInSellerScreen());
+    this.props.navigation.dispatch(navigateToSignInSellerScreen({goBackFrom: this.props.navigation.state.key}));
   }
 
   handleOnBackPress = () => {

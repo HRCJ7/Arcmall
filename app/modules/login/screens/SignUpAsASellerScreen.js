@@ -19,9 +19,8 @@ import Icon from "react-native-vector-icons/EvilIcons";
 import NavigationBar from "../../shared/components/NavigationBar/NavigationBar";
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import ArcmallButton from "../../shared/components/arcmallButton/ArcmallButton";
-import Theme from "../../../theme/Base";
+import Theme, { showToast } from "../../../theme/Base";
 import LoginActions from "../actions/LoginActions";
-import Toast from 'react-native-simple-toast';
 import Strings from "../../shared/localization/localization";
 import { STORAGE_USER } from "../../../Constants";
 import { getUser } from "../../../store/AsyncStorageHelper";
@@ -33,21 +32,29 @@ class SignUpAsASellerScreen extends React.Component<any, any> {
     super(props);
 
     this.state = {
-      checked: true,
-      firstname: 'asd',
-      email: 'asd@asd.com',
-      password: 'aaaaaa',
-      confirm: 'aaaaaa',
-      // lastname: 'asds',
-      shoppartner: 'alofa',
+      checked: false,
+      firstname: null,
+      email: null,
+      password: null,
+      confirm: null,
+      lastname: null,
+      shoppartner: null,
+      errorShown: false,
     };
   }
 
   componentDidMount() {}
 
   static getDerivedStateFromProps(props, state) {
-    //Return state object, retun null to update nothing;
-    return null;
+    let modState = {...state};
+    if(!state.errorShown && props.error) {
+      showToast(props.error);
+      modState.errorShown = true;
+    } else if (props.registrationdata) {
+      console.log(props.navigation.state)
+      props.navigation.goBack(props.navigation.state.params.goBackFrom);
+    }
+    return modState;
   }
 
   async shouldComponentUpdate(nextProps, nextState) {
@@ -68,8 +75,11 @@ class SignUpAsASellerScreen extends React.Component<any, any> {
   }
 
   handleRegister = () => {
-    const {checked, firstname, email, password, lastname, shoppartner} = this.state;
-    if(checked && firstname  && email && password && shoppartner) {
+    this.setState({
+      errorShown: false,
+    })
+    const {checked} = this.state;
+    if(checked) {
       this.props.dispatch(LoginActions.registration(this.state))
     }
   }
@@ -102,10 +112,13 @@ class SignUpAsASellerScreen extends React.Component<any, any> {
       >
         {this.renderLeftAction()}
         <KeyboardAwareScrollView
+          enableOnAndroid
+          automaticallyAdjustContentInsets={false}
+          enableAutomaticScroll={true}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.headerComponent}>
+          style={styles.headerComponent}>
+          <View style={styles.headSpace} />
           <View style={styles.headerComponent}>
-            <View style={styles.headerComponent}></View>
             <View style={styles.textComponent}>
               <Text style={styles.selectRoleText}>Sign up as a Seller</Text>
               <Text style={styles.wordingText}>
@@ -139,7 +152,6 @@ class SignUpAsASellerScreen extends React.Component<any, any> {
                 style={styles.textInput}
               />
             </View>
-            
             <View style={styles.footerComponent}>
               <View style={styles.checkBoxRow}>
                 <CheckBox
@@ -152,6 +164,7 @@ class SignUpAsASellerScreen extends React.Component<any, any> {
                 />
               </View>
               <ArcmallButton
+                style={{height: 40}}
                 title='Register'
                 onPress={this.handleRegister}
               />

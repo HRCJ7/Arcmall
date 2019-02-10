@@ -19,31 +19,56 @@ import LoadingIndicator from '../../../shared/components/loadingIndicator/Loadin
 import ProductListItem from '../../components/productListItem/ProductListItem';
 import { navigateToItemDetails } from '../../../../navigation/RootNavActions';
 import ProductActions from '../../actions/ProductActions';
-import Toast from 'react-native-simple-toast';
+import {SearchBar} from "react-native-elements";
+import { getProductsByOrder, getSellerProducts } from './ProductApis';
 
+let endLoading = false;
+let nextStart = 0;
+const ITEMS_LIMIT = 10;
 class ProductListScreen extends React.Component<any, any> {
   static defaultProps: any
 
   constructor(props) {
     super(props);
-    const params = props.navigation.state.params;
-    props.dispatch(ProductActions.getProductList({
-      search: '',
-      category_id: params.category_id,
-    }))
-
+    let params = props.navigation.state.params;
     this.state = {
-      cartList: [],
+      fromHome: params.fromHome,
+      orderId: params.orderId,
+      productList: [],
+      isLoading: true,
+      itemPressDisabled: params.orderId,
+      productListError: null,
+      isSellerProducts: params.sellerProducts, // Boolean
+      hasLazyLoading: params.sellerProducts, // Boolean
+      loadFromState: params.sellerProducts || params.orderId,
     };
   }
 
   componentDidMount() {
-    
+    const {fromHome, orderId, isSellerProducts} = this.state;
+    if (!fromHome) {
+      if (orderId) {
+        this.loadOrderItems(orderId);
+      } else if (isSellerProducts) {
+        this.loadSellerProducts(nextStart);
+      }
+      else {
+        this.loadItems(this.props.navigation.state.params);
+      }
+    }
   }
 
   static getDerivedStateFromProps(props, state) {
     //Return state object, retun null to update nothing;
-    return state;
+    if (state.loadFromState) {
+      return state;
+    } else {
+      return {
+        productList: props.productList,
+        isLoading: props.productListLoading,
+        productListError: props.productListError,
+      };
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -51,14 +76,84 @@ class ProductListScreen extends React.Component<any, any> {
   }
 
   componentDidUpdate() {
+    
+  }
+
+  componentWillUnmount() {
+    this.loadItems({categoryId: 0})
+  }
+
+  onListEndReached = () => {
+    console.log('end')
+    const {hasLazyLoading, orderId, isSellerProducts} = this.state;
+    if (hasLazyLoading && !endLoading) {
+      this.loadSellerProducts(nextStart);
+    }
   }
 
   handleProductOnPress = (itemId: number) => {
-    this.props.navigation.dispatch(navigateToItemDetails({itemId}));
+    const {itemPressDisabled} = this.state;
+    if(!itemPressDisabled) {
+      this.props.navigation.dispatch(navigateToItemDetails({itemId}));
+    }
   }
 
   handleOnBackPress = () => {
     this.props.navigation.goBack(null);
+  }
+
+  loadItems = (params) => {
+    let nextParams = {};
+    nextParams.search = params.searchText? params.searchText: null;
+    if(params.category_id) {
+      nextParams.category_id = params.category_id;
+    }
+    this.props.dispatch(ProductActions.getProductList(nextParams));
+  }
+
+  loadOrderItems = async (orderId) => {
+    this.setState({
+      isLoading: true,
+    })
+    const response = await getProductsByOrder(orderId);
+    this.setState({
+      productList: response.products,
+      isLoading: false,
+    })
+  }
+
+  loadSellerProducts = async (start) => {
+    if (start === 0) {
+      this.setState({
+        isLoading: true,
+      });
+    }
+    
+    const {productList} = this.state;
+    const {user} = this.props;
+
+    loadingItems = true;
+    const response = await getSellerProducts(user.customer_id, nextStart, ITEMS_LIMIT);
+    nextStart = nextStart + ITEMS_LIMIT;
+    loadingItems = false;
+    if (response.products) {
+      let modifiedProductList = productList.concat(response.products);
+      this.setState({
+        productList: modifiedProductList,
+        isLoading: false,
+      });
+    } else {
+      endLoading = true;
+    }
+    
+  }
+
+
+  loadSearchItems = (text) => {
+    let nextParams = {
+      search: text,
+    };
+    this.props.dispatch(ProductActions.getProductList(nextParams));
   }
 
   renderLeftAction = () => {
@@ -90,19 +185,74 @@ class ProductListScreen extends React.Component<any, any> {
   }
 
   renderEmptyComponent = () => {
-    return (
-      <Text style={styles.headingText}>{Strings.NO_ITEMS}</Text>
-    )
+    const {fromHome} = this.state;
+    let content = null;
+    if (!fromHome) {
+      content = (
+        <Text style={styles.headingText}>{Strings.NO_ITEMS}</Text>
+      )
+    }
+    return content;
+  }
+
+  renderSearchBar = () => {
+    let content = null;
+    const {fromHome} = this.state;
+    if(fromHome) {
+      content = (
+        <View style={styles.searchBarView}>
+          <SearchBar
+            onChangeText={(text) => {
+              this.loadSearchItems(text);
+            }}
+            autoCorrect={false}
+            autoCapitalize={false}
+            autoFocus={true}
+            containerStyle={styles.searchBar}
+            inputStyle={{ backgroundColor: "white" }}
+            lightTheme
+            placeholder={Strings.SEARCH}
+          />
+          <TouchableOpacity
+            onPress={() => {
+              this.props.navigation.goBack();
+            }}
+            style={styles.cancelButton}>
+            <Text style={styles.cancelButtonText}>{Strings.CANCEL}</Text>
+          </TouchableOpacity>
+        </View>
+      )
+    }
+    return content;
   }
 
   render() {
-    const {isLoading, productList, productListError, navigation: {state: {params: {loadingCategories}}}} = this.props;
+    const {
+      navigation
+    } = this.props;
+
+    const {
+      fromHome,
+      isLoading,
+      productList,
+      productListError,
+    } = this.state;
+
     let content = null;
-    const navBar = loadingCategories? null: this.renderNavBar();
+    let navBar = null;
+    let searchBar = null;
+    if (!fromHome) {
+      loadingCategories = navigation.state.params.loadingCategories;
+      navBar = loadingCategories? null: this.renderNavBar();
+    } else {
+      searchBar = this.renderSearchBar();
+    }
+    
     if (isLoading) {
       content = (
         <View style={styles.container}>
           {navBar}
+          {searchBar}
           <LoadingIndicator />
         </View>
       )
@@ -110,7 +260,11 @@ class ProductListScreen extends React.Component<any, any> {
       content = (
         <View style={styles.container}>
           {navBar}
+          {searchBar}
           <FlatList
+            onEndReached={this.onListEndReached}
+            onEndReachedThreshold={0.5}
+            extraData={this.state}
             ListEmptyComponent={this.renderEmptyComponent()}
             keyExtractor={(item, index) => `${item.description}${index}`}
             data={productList}
@@ -134,35 +288,46 @@ ProductListScreen.propTypes = {
 };
 
 ProductListScreen.defaultProps = {
-  isLoading: true,
+  isLoading: false,
   productList: null,
   productListError: null, 
 };
 
 const mapStateToProps = (state, ownProps) => {
   let navigation = ownProps.navigation;
-  const fromCategories = navigation.state.params.category_id;
+  let productList = [];
 
-  //Change navigation object for tab bar.
-  if (fromCategories) {
-    navigation = ownProps.navigation.state.params.navigation;
-    navigation.state.params = {...navigation.state.params, ...ownProps.navigation.state.params};
-  }
+  
+  const fromHome = navigation.state.params.fromHome;
 
-  const categoryId = navigation.state.params.category_id;
-  const products = state.product.productList;
-
-  let productList;
-  if (categoryId && products[categoryId]) {
-    productList = state.product.productList[categoryId].products;
+  if(fromHome) {
+    if (state.product.productList.search) {
+      productList = state.product.productList.search.products;
+    }
   } else {
-    productList = state.product.productList.products;
+    console.log(navigation.state)
+    const categoryId = navigation.state.params.category_id;
+
+    //Change navigation object for tab bar.
+    if (categoryId) {
+      navigation = ownProps.navigation.state.params.navigation;
+      navigation.state.params = {...navigation.state.params, ...ownProps.navigation.state.params};
+    }
+    const products = state.product.productList;
+
+    if (categoryId && products[categoryId]) {
+      productList = state.product.productList[categoryId].products;
+    } else {
+      productList = state.product.productList.products;
+    }
   }
+  
   return {
     productList: productList,
     isLoading: state.product.productListLoading,
     productListError: state.product.productListError,
     navigation: navigation,
+    user: state.login.user,
   };
 };
 

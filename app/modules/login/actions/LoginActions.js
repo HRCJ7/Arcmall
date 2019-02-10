@@ -48,7 +48,7 @@ const registrationSuccess = (data: any) => ({
 const registrationFailure = (error: any) => ({
   type: REGISTRATION_FAILURE,
   payload: {
-    error,
+    error: error,
   },
 });
 

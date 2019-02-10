@@ -5,7 +5,11 @@ const urlFactory = {
   addToCart: (): string => '/cart/add',
   removeFromCart: (): string => '/cart/remove',
   editCart: (): string => '/cart/edit',
-  getCart: (): string => '/cart/products'
+  getCart: (): string => '/cart/products',
+
+  addToWishList: (): string => '/wishlist/add',
+  removeFromWishList: (): string => '/wishlist/remove',
+  getWishList: (): string => '/wishlist'
 };
 
 const CartService = {
@@ -31,7 +35,26 @@ const CartService = {
     const endpoint: string = urlFactory.getCart();
     const urlParams = null;
     const headers = null;
+    return POST(endpoint, urlParams, headers);
+  },
+  addToWishList: async (body): Promise<any> => {
+    const endpoint: string = urlFactory.addToWishList();
+    const urlParams = null;
+    const headers = null;
     return POST(endpoint, body, urlParams, headers);
+  },
+  removeFromWishList: async (body): Promise<any> => {
+		console.log('TCL: body', body)
+    const endpoint: string = urlFactory.removeFromWishList();
+    const urlParams = null;
+    const headers = null;
+    return POST(endpoint, body, urlParams, headers);
+  },
+  getWishList: async (body): Promise<any> => {
+    const endpoint: string = urlFactory.getWishList();
+    const urlParams = null;
+    const headers = null;
+    return GET(endpoint, urlParams, headers);
   },
 }
 

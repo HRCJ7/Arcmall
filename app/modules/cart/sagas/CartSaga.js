@@ -13,6 +13,9 @@ import {
   REMOVE_CART,
   EDIT_CART,
   GET_CART,
+  GET_WISH_LIST,
+  ADD_TO_WISH_LIST,
+  REMOVE_FROM_WISH_LIST,
 } from '../actions/Types';
 import CartService from '../services/CartService';
 import CartActions from '../actions/CartActions';
@@ -21,7 +24,11 @@ export default () => {
   function* addToCart({payload}) {
     try {
       const response = yield call(CartService.addToCart, payload);
-      yield put(CartActions.addToCartSuccess(response));
+      if (response.error) {
+        yield put(CartActions.addToCartFailure(response.error));
+      } else {
+        yield put(CartActions.addToCartSuccess(response));
+      }
     } catch (error) {
       yield put(CartActions.addToCartFailure(error.response));
     }
@@ -73,10 +80,60 @@ export default () => {
     yield takeLatest(GET_CART, getCart);
   }
 
+  function* getWishList({payload}) {
+    console.log(payload)
+    try {
+      const response = yield call(CartService.getWishList, payload);
+      yield put(CartActions.getWishListSuccess(response));
+    } catch (error) {
+      yield put(CartActions.getWishListFailure(error.response));
+    }
+  }
+
+  function* watchGetWishList(): Saga<void> {
+    yield takeLatest(GET_WISH_LIST, getWishList);
+  }
+
+  function* addtoWishList({payload}) {
+    console.log(payload)
+    try {
+      const response = yield call(CartService.addToWishList, payload);
+      yield put(CartActions.addToWishListSuccess(response));
+      yield put(CartActions.getWishList())
+    } catch (error) {
+      yield put(CartActions.addToWishListFailure(error.response));
+    }
+  }
+
+  function* watchAddtoWishList(): Saga<void> {
+    yield takeLatest(ADD_TO_WISH_LIST, addtoWishList);
+  }
+
+  function* removeFromWishList({payload}) {
+    console.log(payload)
+    try {
+      const response = yield call(CartService.removeFromWishList, payload);
+			console.log('TCL: function*removeFromWishList -> response', response)
+      yield put(CartActions.removeFromWishListSuccess(response));
+      yield put(CartActions.getWishList())
+    } catch (error) {
+			console.log('TCL: }catch -> error', error)
+      yield put(CartActions.removeFromWishListFailure(error.response));
+    }
+  }
+
+  function* watchRemoveFromWishList(): Saga<void> {
+    yield takeLatest(REMOVE_FROM_WISH_LIST, removeFromWishList);
+  }
+
   return {
     watchaddToCart,
     watchRemoveFromCart,
     watchEditCart,
     watchGetCart,
+
+    watchGetWishList,
+    watchAddtoWishList,
+    watchRemoveFromWishList,
   };
 };

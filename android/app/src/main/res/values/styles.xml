@@ -5,4 +5,9 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@drawable/launch</item>
+        <item name="android:statusBarColor">@color/mdl_palette_blue_400</item>
+    </style>
+
 </resources>

@@ -4,7 +4,8 @@ import { COOKIE_LANGUAGE } from "../../../Constants";
 
 const urlFactory = {
   setLanguage: (): string => 'language/set',
-  getAddresses: (): string => '/address',
+  setPassword: (): string => '/password/changepassword',
+  getAddresses: (): string => '/address'
 };
 
 const UserService = {
@@ -21,6 +22,13 @@ const UserService = {
     const headers = null;
     return GET(endpoint, urlParams, headers);
   },
+  setPassword: async (password): Promise<any> => {
+    const endpoint: string = urlFactory.setPassword();
+    const body = {password}
+    const urlParams = null;
+    const headers = null;
+    return POST(endpoint,body, urlParams, headers);
+  }
 };
 
 export default UserService;

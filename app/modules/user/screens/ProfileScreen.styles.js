@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
   imageContainer: {
     flex: 1,
     width: '100%',
-    backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',
   },

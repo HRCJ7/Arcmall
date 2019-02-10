@@ -13,13 +13,16 @@ import CategoryTabNavigator from './categoryTab/CategoryTabNavigation';
 import CategoryListScreen from '../modules/product/screens/categoryList/CategoryListScreen';
 import CartDetailsScreen from '../modules/cart/screens/cartDetails/CartDetailsScreen';
 import OrderConfirmationScreen from '../modules/cart/screens/orderConfirmation/OrderConfirmationScreen';
-import OrderHistoryScreen from '../modules/cart/screens/orderHistory/OrderHistoryScreen';
 
 import ReviewsScreen from '../modules/product/screens/reviews/ReviewsScreen';
 import SettingsScreen from '../modules/user/screens/settingsScreen/SettingsScreen';
 import ChangePasswordScreen from '../modules/user/screens/changePassword/ChangePasswordScreen';
 import AccountSettingScreen from '../modules/user/screens/accountSettings/AccountSettingScreen';
 import EditProfileScreen from '../modules/user/screens/editProfile/EditProfileScreen';
+import NavMenuScreen from '../modules/product/screens/navMenu/NavMenuScreen';
+import AddProductScreen from '../modules/product/screens/addProduct/AddProductScreen';
+import OrderHistoryScreen from '../modules/user/screens/orderHistory/OrderHistoryScreen';
+
 
 export const ROOT_NAV_LOGIN = 'Login';
 export const ROOT_NAV_SELECT_ROLE = 'SelectRole';
@@ -33,6 +36,12 @@ export const ROOT_NAV_YOUR_CART = 'CartDetailsScreen';
 export const ROOT_NAV_ORDER_CONFIRMATION = 'OrderConfirmationScreen';
 export const ROOT_NAV_ORDER_HISTORY = 'OrderHistoryScreen';
 export const ROOT_NAV_REVIEWS = 'Reviews';
+export const ROOT_NAV_PRODUCT_LIST = 'ProductList';
+
+export const ROOT_NAV_OPTIONS = 'NavMen';
+export const ROOT_NAV_OPTIONS_1 = 'NavMen1';
+export const ROOT_NAV_OPTIONS_2 = 'NavMen2';
+export const ROOT_NAV_OPTIONS_3 = 'NavMen3';
 
 export const ROOT_NAV_SETTINGS = 'Settings';
 export const ROOT_NAV_SETTINGS_LANGUAGE = 'SettingsLanguage';
@@ -42,6 +51,7 @@ export const ROOT_NAV_CHANGE_PASSWORD = 'SettingsChangePassword';
 export const ROOT_NAV_ACCOUNT_SETTINGS = 'AccountSettingScreen';
 export const ROOT_NAV_EDIT_PROFILE = 'EditProfileScreen';
 export const ROOT_NAV_SHOP_DETAILS = 'ShopDetailScreen';
+export const ROOT_NAV_ADD_ITEM = 'Add Item';
 
 export const rootRoutes = {
   [ROOT_NAV_MAIN_TAB]: {
@@ -107,6 +117,26 @@ export const rootRoutes = {
   [ROOT_NAV_CHANGE_PASSWORD]: {
     screen: SettingsScreen,
     path: `/${ROOT_NAV_CHANGE_PASSWORD}`,
+  },
+  [ROOT_NAV_OPTIONS_1]: {
+    screen: NavMenuScreen,
+    path: `/${ROOT_NAV_OPTIONS_1}`,
+  },
+  [ROOT_NAV_OPTIONS_2]: {
+    screen: NavMenuScreen,
+    path: `/${ROOT_NAV_OPTIONS_2}`,
+  },
+  [ROOT_NAV_OPTIONS_3]: {
+    screen: NavMenuScreen,
+    path: `/${ROOT_NAV_OPTIONS_3}`,
+  },
+  [ROOT_NAV_ADD_ITEM]: {
+    screen: AddProductScreen,
+    path: `/${ROOT_NAV_ADD_ITEM}`,
+  },
+  [ROOT_NAV_PRODUCT_LIST]: {
+    screen: ProductListScreen,
+    path: `/${ROOT_NAV_PRODUCT_LIST}`,
   },
   [ROOT_NAV_ACCOUNT_SETTINGS]: {
     screen: AccountSettingScreen,

@@ -12,7 +12,6 @@ import OrderConfirmationListItem from "../../components/orderConfirmationListIte
 import { navigateToItemDetails } from "../../../../navigation/RootNavActions";
 import ArcmallButton from "../../../shared/components/arcmallButton/ArcmallButton";
 import CartActions from "../../actions/CartActions";
-import Toast from "react-native-simple-toast";
 import { getForm, defaultRequestHeaders, getCookie } from "../../../../services/RestService";
 import Config from 'react-native-config';
 import {Picker, Header, Icon} from "native-base";
@@ -46,7 +45,7 @@ class OrderConfirmationScreen extends React.Component<any, any> {
       selectedShippingMethod: 'free.free',
     };
 
-    this.props.dispatch(CartActions.getCart());
+    // this.props.dispatch(CartActions.getCart());
     this.getShippingDetails();
 
   }

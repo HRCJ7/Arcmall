@@ -19,10 +19,9 @@ import LoginActions from '../../../login/actions/LoginActions';
 import NavigationBar from '../../../shared/components/NavigationBar/NavigationBar';
 import Strings from '../../../shared/localization/localization';
 import EvilIcons from 'react-native-vector-icons/dist/EvilIcons';
-import {navigateToSettings} from '../../../../navigation/RootNavActions';
+import {navigateToSettings, navigateToAddItem, navigateToProductList} from '../../../../navigation/RootNavActions';
 import Theme from '../../../../theme/Base';
 import {CheckBox} from 'react-native-elements'
-import CookieManager from 'react-native-cookies';
 import UserActions from '../../actions/UserActions';
 import { COOKIE_LANGUAGE, COOKIE_LANGUAGE_CHINESE, CODE_ENGLISH, CODE_CHINESE } from '../../../../Constants';
 import LoadingIndicator from '../../../shared/components/loadingIndicator/LoadingIndicator';
@@ -34,27 +33,38 @@ import { getUser } from '../../../../store/AsyncStorageHelper';
 import { MAIN_TAB_HOME } from '../../../../navigation/mainTab/MainTabRoutes';
 import { ROOT_NAV_CHANGE_PASSWORD } from '../../../../navigation/RootRoutes';
 import ChangePasswordScreen from '../changePassword/ChangePasswordScreen';
+import ProductActions from '../../../product/actions/ProductActions';
+import { setLanguage, getZones, setPaymentAddress, logout } from './settingApis';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const BASE_URL: string = `${Config.API_URL}`;
 
 const ACTIVE_SCREEN_SETTINGS = 'Settings';
 const ACTIVE_SCREEN_LANGUAGE = 'Language';
-const ACTIVE_SCREEN_SHIPPING = 'Shipping';
+export const ACTIVE_SCREEN_SHIPPING = 'Shipping';
+const ACTIVE_SCREEN_ADD_ITEM = 'AddItem';
 const ACTIVE_SCREEN_CHANGE_PASSWORD = 'ChangePassword';
-const ACTIVE_SCREEN_SHIPPING_ADD = 'ShippingAdd';
+export const ACTIVE_SCREEN_SHIPPING_ADD = 'ShippingAdd';
 
 class SettingsScreen extends React.Component<any, any> {
   static defaultProps: any
 
+  static navigationOptions: any = ({navigation}) => ({
+    title: Strings.SETTINGS,
+  });
+
   constructor(props) {
     super(props);
     const params = props.navigation.state.params;
-
+    let fromProfile = false;
     let activeScreen = ACTIVE_SCREEN_SETTINGS;
-    let activeList = this.getSettingsList();
+    let fromCart = false;
+    let activeList = this.getSettingsList(false);
     if (params && Object.keys(params).length > 0) {
-      activeScreen = params.activeScreen;
-      activeList = params.activeList;
+      activeScreen = params.activeScreen? params.activeScreen: ACTIVE_SCREEN_SETTINGS;
+      activeList = this.getSettingsList(params.fromProfile);
+      fromProfile = params.fromProfile;
+      fromCart = params.fromCart;
     }
 
     this.state = {
@@ -65,7 +75,9 @@ class SettingsScreen extends React.Component<any, any> {
       language: CODE_ENGLISH,
       countryZones: null,
       countries: null,
+      fromProfile,
       addressFormValues: {},
+      fromCart,
     };
 
     if (activeScreen === ACTIVE_SCREEN_SHIPPING) {
@@ -112,13 +124,24 @@ class SettingsScreen extends React.Component<any, any> {
   }
 
   setLanguage = async (language) => {
+    this.setState({
+      isLoading: true,
+    })
     const {activeScreen} = this.state;
     const {languageLoading} = this.props;
     await AsyncStorage.setItem(COOKIE_LANGUAGE, `language=${language}`);
     this.props.dispatch(UserActions.setLanguage(language))
+    try {
+      await setLanguage(language)
+    } catch(err) {
+
+    }
+    
+    this.props.dispatch(ProductActions.getCategoryList())
     Strings.setLanguage(language);
     this.setState({
       language: language,
+      isLoading: false,
     })
   }
 
@@ -128,22 +151,10 @@ class SettingsScreen extends React.Component<any, any> {
    })
   }
 
-  getSettingsList = () => {
-    const settingsList = [
-      {
-        name: 'Change Language',
-        nextScreen: ACTIVE_SCREEN_LANGUAGE,
-        subList: {
-          list: [
-            {
-              name: Strings.ENG_US,
-            },
-            {
-              name: Strings.CHINESE_SIMPLIFIED,
-            }
-          ]
-        }
-      },
+  getSettingsList = (fromProfile) => {
+    const isSeller = this.props.user.store_id;
+    let list = null;
+    let profileSettingUserList = [
       {
         name: 'Change Password',
         nextScreen: ACTIVE_SCREEN_CHANGE_PASSWORD,
@@ -164,7 +175,65 @@ class SettingsScreen extends React.Component<any, any> {
       },
     ];
 
-    return settingsList;
+    let profileSettingSellerList = [
+      {
+        name: 'Change Password',
+        nextScreen: ACTIVE_SCREEN_CHANGE_PASSWORD,
+        subList:{},
+      },
+      {
+        name: 'Shipping Details',
+        nextScreen: ACTIVE_SCREEN_SHIPPING,
+        subList: {
+          name: 'Add Shipping',
+          nextScreen: ACTIVE_SCREEN_SHIPPING_ADD,
+        }
+      },
+      {
+        name: 'Add Item',
+        action: () => {
+          this.props.navigation.dispatch(navigateToAddItem());
+        }
+      },
+      {
+        name: 'My Items',
+        action: () => {
+          this.props.navigation.dispatch(navigateToProductList({formHome: false, sellerProducts: true}))
+        }
+      },
+      {
+        name: 'Log out',
+        action: this.handleLogout,
+        hideArrow: true,
+      },
+    ];
+
+    const moreSettingsList = [
+      {
+        name: 'Change Language',
+        nextScreen: ACTIVE_SCREEN_LANGUAGE,
+        subList: {
+          list: [
+            {
+              name: Strings.ENG_US,
+            },
+            {
+              name: Strings.CHINESE_SIMPLIFIED,
+            }
+          ]
+        },
+      }
+    ];
+
+    if (!fromProfile) {
+      list = moreSettingsList;
+    } else if (isSeller) {
+      list = profileSettingSellerList;
+    } else {
+      list = profileSettingUserList;
+    }
+
+    return list;
   }
 
   handleOnBackPress = () => {
@@ -172,28 +241,48 @@ class SettingsScreen extends React.Component<any, any> {
   }
 
   handleOnAddAddressPress = () => {
+    const {fromProfile} = this.state;
     this.props.navigation.dispatch(navigateToSettings({
       activeScreen: ACTIVE_SCREEN_SHIPPING_ADD,
       activeList: null,
+      fromProfile: fromProfile,
     }))
   }
 
-  handleOnAddShipingPressed = () => {
-    const {addressFormValues} = this.state;
-
-  }
-
-  handleLogout = () => {
+  handleLogout = async () => {
+    await logout();
     this.props.dispatch(LoginActions.signOut());
     this.props.navigation.navigate(MAIN_TAB_HOME);
   }
 
+  handleAddrssPress = async (address) => {
+    console.log(address)
+    if (this.state.fromCart) {
+      const response = await setPaymentAddress(address);
+      console.log(response)
+    }
+  }
+
   renderLeftAction = () => {
-    return (
-      <TouchableOpacity onPress={this.handleOnBackPress}>
-        <EvilIcons name='chevron-left' color='white' size={50}/>
-      </TouchableOpacity>
-    )
+    let content = null;
+    let {fromProfile, activeScreen} = this.state;
+
+    if (!fromProfile) {
+      if (activeScreen != ACTIVE_SCREEN_SETTINGS) {
+        content = (
+          <TouchableOpacity onPress={this.handleOnBackPress}>
+            <EvilIcons name='chevron-left' color='white' size={50}/>
+          </TouchableOpacity>
+        )
+      }
+    } else {
+      content = (
+        <TouchableOpacity onPress={this.handleOnBackPress}>
+          <EvilIcons name='chevron-left' color='white' size={50}/>
+        </TouchableOpacity>
+      )
+    }
+    return content;
   }
 
   renderRightAction = () => {
@@ -216,12 +305,14 @@ class SettingsScreen extends React.Component<any, any> {
   }
 
   renderFlatlistItem = ({item}) => {
+    const {fromProfile} = this.state;
     const {name, nextScreen, subList, action, hideArrow} = item;
     const onPress = () => {
       if (nextScreen) {
         this.props.navigation.dispatch(navigateToSettings({
           activeScreen: nextScreen,
           activeList: subList.list,
+          fromProfile,
         }))
       } else {
         action();
@@ -307,14 +398,18 @@ class SettingsScreen extends React.Component<any, any> {
     }
 
     return (
-      <View style={styles.addressView}>
+      <TouchableOpacity
+       onPress={() => {
+        this.handleAddrssPress(item);
+       }}
+       style={styles.addressView}>
         <Text style={styles.addressName}>{`${item.firstname} ${item.lastname}`}</Text>
         <Text style={styles.address}>{`${item.address_1}`}</Text>
         {address2}
         <Text style={styles.address}>{`${item.city}`}</Text>
         <Text style={styles.address}>{`${item.country}`}</Text>
         <Text style={styles.address}>{`${item.postcode}`}</Text>
-      </View>
+      </TouchableOpacity>
       
     )
   }
@@ -349,16 +444,8 @@ class SettingsScreen extends React.Component<any, any> {
   onChange = async (value) => {
     let zones = this.state.countryZones;
     if (value.country_id != this.state.addressFormValues.country_id) {
-      let response = await fetch(`${BASE_URL}/address/getZones`, {
-        method: 'POST',
-        headers: {
-          ...defaultRequestHeaders,
-        },
-        body: getForm({country_id: value.country_id})
-      });
-
-      const {zones: oriZones} = await response.json();
-  
+      
+      const {zones: oriZones} = await getZones(value.country_id);
       if (oriZones) {
         zones = {};
         for (const zone of oriZones) {
@@ -374,16 +461,15 @@ class SettingsScreen extends React.Component<any, any> {
   }
 
   onAddressFormSubmit = async () => {
-    let cookies = await getCookie()
     let user = await getUser();
     let data =  {...this.state.addressFormValues};
     data.firstname = user.firstname;
     data.lastname = user.lastname;
     let response = await fetch(`${BASE_URL}/address/save`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         ...defaultRequestHeaders,
-        cookie: cookies,
       },
       body: getForm(data)
     });
@@ -403,7 +489,6 @@ class SettingsScreen extends React.Component<any, any> {
     let content = null;
     let {countries} = this.state;
     var Form = t.form.Form;
-
     if (countries) {
       const stateZones = this.state.countryZones;
       let Zones = t.enums(stateZones? stateZones: {});
@@ -442,7 +527,8 @@ class SettingsScreen extends React.Component<any, any> {
             onPress={Keyboard.dismiss} 
             accessible={false}
             style={styles.container}>
-            <ScrollView style={styles.formStyle}>
+            <KeyboardAwareScrollView 
+              style={styles.formStyle}>
               <Form
                 ref="form"
                 type={Address}
@@ -454,7 +540,7 @@ class SettingsScreen extends React.Component<any, any> {
                 title={'Save'}
                 onPress={this.onAddressFormSubmit}
               />
-            </ScrollView>
+            </KeyboardAwareScrollView>
           </TouchableWithoutFeedback>
         </View>
       )
@@ -475,9 +561,13 @@ class SettingsScreen extends React.Component<any, any> {
   render() {
     let content = null;
     const {activeScreen, isLoading} = this.state;
+    console.log(activeScreen)
     if (isLoading) {
       content = (
-        <LoadingIndicator />
+        <View style={styles.container}>
+          {this.renderNavBar()}
+          <LoadingIndicator />
+        </View>
       )
     } else {
       switch (activeScreen) {
@@ -526,6 +616,7 @@ const mapStateToProps = (state, ownProps) => {
     languageLoading: state.user.languageLoading,
     addresses: state.user.addressesData,
     countries: state.user.countries,
+    user: state.login.user,
   }
 };
 

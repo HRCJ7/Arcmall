@@ -20,13 +20,13 @@ import Icon from "react-native-vector-icons/EvilIcons";
 import NavigationBar from "../../shared/components/NavigationBar/NavigationBar";
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view'
 import ArcmallButton from "../../shared/components/arcmallButton/ArcmallButton";
-import Theme from "../../../theme/Base";
+import Theme, { showToast } from "../../../theme/Base";
 import LoginActions from "../actions/LoginActions";
-import Toast from 'react-native-simple-toast';
 import { HOME_TAB } from "../../../navigation/mainTab/MainTabRoutes";
 import Strings from "../../shared/localization/localization";
 import { STORAGE_USER } from "../../../Constants";
 import { getUser } from "../../../store/AsyncStorageHelper";
+import { ROOT_NAV_SELECT_ROLE } from "../../../navigation/RootRoutes";
 
 class SignUpAsABuyerScreen extends React.Component<any, any> {
   static defaultProps: any;
@@ -41,31 +41,25 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
       password: null,
       confirm: null,
       lastname: null,
-      error: null,
+      errorShown: false,
     };
   }
 
   componentDidMount() {}
 
   static getDerivedStateFromProps(props, state) {
-    //Return state object, retun null to update nothing;
-    // const {error} = state;
-    return null;
+    let modState = {...state};
+    if(!state.errorShown && props.error) {
+      showToast(props.error);
+      modState.errorShown = true;
+    } else if (props.registrationdata) {
+      console.log(props.navigation.state)
+      props.navigation.goBack(props.navigation.state.params.goBackFrom);
+    }
+    return modState;
   }
 
-   async shouldComponentUpdate(nextProps, nextState) {
-    // const {registrationdata} = nextProps;
-    // if (registrationdata) {
-    //   console.log(registrationData)
-    //   this.props.dispatch(LoginActions.login({
-    //     email: registrationdata.email,
-    //     password: registrationdata.password,
-    //   }))
-    // }
-    let user = await getUser();
-    if(user) {
-      this.props.navigation.navigate(HOME_TAB);
-    }
+  shouldComponentUpdate(nextProps, nextState) {
     return true;
   }
 
@@ -80,8 +74,11 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
   }
 
   handleRegister = () => {
-    const {checked, firstname, email, password, lastname} = this.state;
-    if(checked && firstname && lastname && email && password) {
+    const {checked} = this.state;
+    this.setState({
+      errorShown: false,
+    })
+    if(checked) {
       this.props.dispatch(LoginActions.registration(this.state))
     }
   }
@@ -113,8 +110,13 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
       >
         {this.renderLeftAction()}
         <KeyboardAwareScrollView
+          enableOnAndroid
+          automaticallyAdjustContentInsets={false}
+          enableAutomaticScroll={true}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.headerComponent}>
+          style={styles.headerComponent}
+          >
+          <View style={styles.headSpace} />
           <View style={styles.headerComponent}>
             <View style={styles.headerComponent}></View>
             <View style={styles.textComponent}>
@@ -144,7 +146,6 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
                 style={styles.textInput}
               />
             </View>
-            
             <View style={styles.footerComponent}>
               <View style={styles.checkBoxRow}>
                 <CheckBox
@@ -157,6 +158,7 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
                 />
               </View>
               <ArcmallButton
+                style={{height: 40}}
                 title='Register'
                 onPress={this.handleRegister}
               />

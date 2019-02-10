@@ -22,11 +22,15 @@ const styles = StyleSheet.create({
   },
   titleText: {
     ...font,
-    fontSize: Theme.fontSizes.xMedium,
+    fontSize: Theme.fontSizes.medium,
+    fontWeight: Theme.fontWeight.semibold,
+    paddingBottom: 25,
+    paddingTop: 10,
   },
   headingText: {
     ...font,
     fontSize: Theme.fontSizes.medium,
+    color: Theme.colors.thickGray,
   },
   info: {
     flex: 1, 
@@ -97,13 +101,21 @@ const styles = StyleSheet.create({
   },
   textInput: {
      ...font,
-    height: 30,
+    height: 40,
     borderBottomWidth: 0.5,
     borderBottomColor: Theme.colors.darkGray,
     marginBottom: 30,
     fontSize: Theme.fontSizes.medium,
     textAlign: 'left',
     color: Theme.colors.darkGray,
+  },
+  optionView: {
+    flex: 1,
+    flexDirection: 'row',
+    height: 40,
+    marginBottom: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 });
 export default styles;

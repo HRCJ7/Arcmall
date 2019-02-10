@@ -4,7 +4,10 @@ import Theme, { font } from "../../../theme/Base";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 20,
+  },
+  headSpace: {
+    height: 100,
   },
   headerComponent: {
     flex: 1,
@@ -20,7 +23,7 @@ const styles = StyleSheet.create({
   },
   checkBoxRow: {
     flex: 1,
-    marginTop: 10,
+    // marginTop: 20,
   },
   agreementText: {
     ...font,
@@ -35,7 +38,6 @@ const styles = StyleSheet.create({
   },
   footerComponent: {
     flex: 1,
-    // height: 100,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
   textInput: {
     ...font,
     color: Theme.colors.smallText,
-    height: 40,
+    height: 36,
     fontSize: Theme.fontSizes.small,
     fontWeight: Theme.fontWeight.light,
     borderBottomWidth: 0.5,

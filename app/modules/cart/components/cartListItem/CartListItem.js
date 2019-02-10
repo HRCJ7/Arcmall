@@ -82,6 +82,22 @@ class CartListItem extends Component {
     return content;
   }
 
+  getOptionData = () => {
+    const {item} = this.state;
+    let views = [];
+
+    for (const option of item.option) {
+      views.push(
+        <View style={styles.bottomRowAction}>
+          <Text style={styles.textBold}>{`${option.name}: `}</Text>
+          <Text style={styles.textNormal}>{option.value}</Text>
+        </View>
+      )
+    }
+
+    return views;
+  }
+
   render() {
     const {item} = this.state;
     let swipeBtns = [{
@@ -125,18 +141,7 @@ class CartListItem extends Component {
               {this.renderAddSubstract(item)}
             </View>
             <View style={styles.itemInfoContainer}>
-              <View style={styles.bottomRowAction}>
-                <Text style={styles.textBold}>Color:</Text>
-                <Text style={styles.textNormal}>White</Text>
-              </View>
-              <View style={styles.bottomRowAction}>
-                <Text style={styles.textBold}>Color:</Text>
-                <Text style={styles.textNormal}>White</Text>
-              </View>
-              <View style={styles.bottomRowAction}>
-                <Text style={styles.textBold}>Color:</Text>
-                <Text style={styles.textNormal}>White</Text>
-              </View>
+              {this.getOptionData()}
             </View>
           </TouchableOpacity>
         </Swipeout> 

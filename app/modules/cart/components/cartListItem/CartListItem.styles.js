@@ -1,5 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import Theme, { font } from '../../../../theme/Base';
+
 
 const styles = StyleSheet.create({
   container: {
@@ -22,11 +23,11 @@ const styles = StyleSheet.create({
   },
   itemInfoContainer: {
     flex:1,
-    flexDirection: 'row',   
+    flexDirection: 'row',
+    alignItems: 'flex-start',
   },
   itemImage: {
     flex: 1,
-   
   },
   itemSelect: {
     flex: 0.25,
@@ -63,14 +64,16 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
   },
   bottomRowAction : {
-    flex: 1,
-    flexDirection : 'row'
+    // flex: 1,
+    // width: 100,
+    paddingLeft: 10,
+    flexDirection : 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
   },
   minusAction: {
     ...font,
     fontSize: 10,
-    // marginRight:5
-  
   },
   plusAction: {
     ...font,
@@ -115,14 +118,12 @@ const styles = StyleSheet.create({
   textBold: {
     ...font,
     marginTop:10,
-    flex: 1,
     fontSize: Theme.fontSizes.small,
-    textAlign: 'right',
+    textAlign: 'left',
     fontWeight: Theme.fontWeight.bold,
   },
   textNormal: {
     ...font,
-    flex: 1,
     marginTop:10,
     fontSize: Theme.fontSizes.small,
     textAlign: 'left',

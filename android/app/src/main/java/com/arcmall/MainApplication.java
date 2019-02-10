@@ -3,6 +3,7 @@ package com.arcmall;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.taessina.paypal.RNPaypalWrapperPackage;
 import com.psykar.cookiemanager.CookieManagerPackage;
 import com.toast.RCTToastPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
@@ -32,6 +33,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNPaypalWrapperPackage(),
             new RCTToastPackage(),
             new CookieManagerPackage(),
             new PickerPackage(),

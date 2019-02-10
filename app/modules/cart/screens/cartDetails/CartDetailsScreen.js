@@ -9,14 +9,15 @@ import Strings from "../../../shared/localization/localization";
 import EvilIcons from "react-native-vector-icons/dist/EvilIcons";
 import LoadingIndicator from "../../../shared/components/loadingIndicator/LoadingIndicator";
 import CartListItem from "../../components/cartListItem/CartListItem";
-import { navigateToItemDetails, navigateToSettings } from "../../../../navigation/RootNavActions";
+import { navigateToItemDetails, navigateToSettings, navigateToCartCheckoutScreen } from "../../../../navigation/RootNavActions";
 import ArcmallButton from "../../../shared/components/arcmallButton/ArcmallButton";
 import CartActions from "../../actions/CartActions";
 import { getForm, defaultRequestHeaders, getCookie } from "../../../../services/RestService";
 import Config from 'react-native-config';
-import {Picker, Header, Icon} from "native-base";
+import {Header, Icon} from "native-base";
 import { showToast } from "../../../../theme/Base";
 import { ACTIVE_SCREEN_SHIPPING } from "../../../user/screens/settingsScreen/SettingsScreen";
+import { getShippingDetails, setShippingDetails } from "../cartCheckout/CartCheckoutApis";
 
 const BASE_URL: string = `${Config.API_URL}`;
 
@@ -39,20 +40,14 @@ class CartDetailsScreen extends React.Component<any, any> {
       products: null,
       totals: [],
       isLoggedIn: props.user,
-      // subTotal: 0,
-      // total: 0,
-      // tax: 0,
-      // shipping: 0,
       shippingMethods: null,
       selectedShippingMethod: 'free.free',
     };
-
-    // this.props.dispatch(CartActions.getCart());
-
   }
 
   componentDidMount() {
-    this.getShippingDetails();
+    // this.props.dispatch(CartActions.getCart());
+    this.getCart();
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -63,10 +58,18 @@ class CartDetailsScreen extends React.Component<any, any> {
       products: cartData? cartData.products: [],
       isLoading: props.isLoading,
       totals: cartData && cartData.totals? cartData.totals: [],
-      // subTotal: cartData && cartData.totals? cartData.totals[0]: {},
-      // total: cartData && cartData.totals? cartData.totals[1]: {},
-      // shipping: cartData && cartData.totals? ca
     };
+  }
+
+  getCart = async () => {
+    // this.setState({
+    //   isLoading: true,
+    // })
+    // const shippingDetails = await getShippingDetails();
+    // const shippingSet = await setShippingDetails('free.free');
+    // console.log(shippingSet);
+    this.props.dispatch(CartActions.getCart());
+    // console.log(shippingDetails)
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -79,98 +82,13 @@ class CartDetailsScreen extends React.Component<any, any> {
   componentDidUpdate() {
   }
 
-  handleProductOnPress = (item, index) => {
-    const products = [...this.state.products];
-
-    // if (products[index].toggle == false)
-    // {
-    //   products[index].toggle = true;
-    //   this.setState({ products });
-      
-    // }
-    // else {
-    //   products[index].toggle = false;
-    //   this.setState({ products });
-    // }
-   
-  };
-
-  getShippingDetails = async (value) => {
-    let response = await fetch(`${BASE_URL}/shipping/methods`, {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        ...defaultRequestHeaders,
-      },
-    });
-
-    response = await response.json();
-    
-    const shipping_methods = response.shipping_methods;
-    let shippingMethods = [];
-
-    for (const shippingMethod of Object.keys(shipping_methods)) {
-      let shipMethd = shipping_methods[shippingMethod];
-      let title = shipMethd.title;
-      let quote = shipMethd.quote[shippingMethod];
-      let code = null;
-      let cost = null;
-      let price = null;
-      if (quote) {
-        code = shipMethd.quote[shippingMethod].code;
-        cost = shipMethd.quote[shippingMethod].cost;
-        price = shipMethd.quote[shippingMethod].text;
-      }
-      
-      console.log(title, code, cost, price);
-
-      if(title && code && price) {
-        shippingMethods.push({
-          title,
-          code,
-          cost,
-          price,
-        });
-      }
-    }
-    
-    this.setState({
-      shippingMethods: shippingMethods,
-    })
-  }
-
-  setShippingDetails = async (shipping_method) => {
-    const options = {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        ...defaultRequestHeaders,
-      },
-      body: getForm({shipping_method: shipping_method})
-    }
-
-    console.log(options)
-
-    let response = await fetch(`${BASE_URL}/shipping/method`, options);
-    response = await response.json();
-    console.log('TCL: response', response)
-    
-    if (response.success) {
-      this.props.dispatch(CartActions.getCart());
-      this.setState({
-        selectedShippingMethod: shipping_method,
-      });
-    } else if (response.error) {
-      showToast(response.error);
-    }
-  }
-
   handleOnBackPress = () => {
     this.props.navigation.goBack(null);
   };
 
   handleCheckoutPress = () => {
-    this.props.navigation.dispatch(navigateToSettings({activeScreen: ACTIVE_SCREEN_SHIPPING, fromCart: true}))
+    this.props.navigation.dispatch(navigateToCartCheckoutScreen())
+    // this.props.navigation.dispatch(navigateToSettings({activeScreen: ACTIVE_SCREEN_SHIPPING, fromCart: true}))
   }
 
   renderLeftAction = () => {
@@ -185,12 +103,6 @@ class CartDetailsScreen extends React.Component<any, any> {
     return <NavigationBar title={Strings.YOUR_CART} />;
   };
 
-  // renderListItem = (item, index) => {
-  //   return <CartListItem item={item}
-  //   onSubtract={() => this.onSubtract(item, index)}
-  //   onAdd={() => this.onAdd(item, index)} onPress={this.handleProductOnPress} />;
-  // };
-
   onSubtract = (item) => {
     if (item.quantity > 1) {
       let quantity = item.quantity - 1;
@@ -204,62 +116,6 @@ class CartDetailsScreen extends React.Component<any, any> {
 
   onDelete = (item) => {
     this.props.dispatch(CartActions.removeFromCart({key: item.cart_id}));
-  }
-
-  renderOptionsChildren = (shippingMethods) => {
-    let children = shippingMethods.map((optionVal, index) => {
-      return(
-        <Picker.Item 
-          label={`${optionVal.title} (+ ${optionVal.price})`} 
-          value={optionVal.code}
-        />
-      )
-    });
-    return children;
-  }
-
-  renderOptions = () => {
-    const {shippingMethods} = this.state;
-    let content = null;
-    const onValueChange = async (value: string) => {
-      this.setState({
-        isLoading: true,
-      })
-      this.setShippingDetails(value);
-    }
-
-    if (shippingMethods && shippingMethods.length > 0) {
-      let children = this.renderOptionsChildren(shippingMethods);
-      let selectedValue = this.state.selectedShippingMethod;
-
-      content = (
-        <View style={styles.optionContainer}>
-          <Text style={styles.bold}>{'Select shipping'}</Text>
-          <View style={{
-          alignItems: 'flex-end', 
-          flexDirection:'column', 
-          justifyContent: 'center', 
-          marginRight: -12}}>
-            <Picker
-              headerTitleStyle={{height: 0}}
-              mode="dropdown"
-              placeholder={`${Strings.SELECT}`}
-              placeholderStyle={styles.optionsHeadingText}
-              placeholderIconColor="#007aff"
-              iosIcon={<Icon name="arrow-down"/>}
-              textStyle={styles.normal}
-              selectedValue={selectedValue}
-              onValueChange={onValueChange}
-            >
-              {children}
-            </Picker>
-          </View>
-          
-        </View>
-      )
-    }
-      
-    return content;
   }
 
   renderPriceCard = () => {
@@ -295,14 +151,8 @@ class CartDetailsScreen extends React.Component<any, any> {
       return views;
     }
 
-    const client = {
-			sandbox:    'AU0xwkp09ogOUgLWIglNEgjpuxUmAAuh1V.zQx3XPVon.5DddW5vbOhA',
-			production: 'AU0xwkp09ogOUgLWIglNEgjpuxUmAAuh1V.zQx3XPVon.5DddW5vbOhA',
-		}
-
     content = (
       <View style={styles.itemInfoContainer}>
-        {this.renderOptions()}
         {getTotalView()}
         <ArcmallButton
           title={Strings.CHECKOUT}
@@ -354,7 +204,6 @@ class CartDetailsScreen extends React.Component<any, any> {
                 onSubtract={this.onSubtract}
                 onAdd={this.onAdd}
                 onDelete={this.onDelete}
-                onPress={this.handleProductOnPress(item, index)}
               />
             )}
           />

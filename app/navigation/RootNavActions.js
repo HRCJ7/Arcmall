@@ -18,6 +18,7 @@ import {
   ROOT_NAV_PRODUCT_LIST,
   ROOT_NAV_ORDER_CONFIRMATION,
   ROOT_NAV_ORDER_HISTORY,
+  ROOT_NAV_CART_CHECKOUT,
 } from './RootRoutes';
 import {AppContainer} from './RootNavigation';
 
@@ -92,7 +93,6 @@ export const navigateToAllCategories = (navParams: any) => {
   .getActionForPathAndParams(`/${ROOT_NAV_ALL_CATEGORIES}`, navParams);
 };
 
-
 export const navigateToYourCart = (navParams: any) => {
   return AppContainer
   .router
@@ -136,6 +136,12 @@ export const navigateToProductList = (navParams: any) => {
   return AppContainer
   .router
   .getActionForPathAndParams(`/${ROOT_NAV_PRODUCT_LIST}`, navParams);
+};
+
+export const navigateToCartCheckoutScreen = (navParams: any) => {
+  return AppContainer
+  .router
+  .getActionForPathAndParams(`/${ROOT_NAV_CART_CHECKOUT}`, navParams);
 };
 
 

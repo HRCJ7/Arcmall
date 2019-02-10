@@ -8,6 +8,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { CachedImage } from "react-native-cached-image";
 import Swipeout from 'react-native-swipeout';
+import Strings from "../../../shared/localization/localization";
 
 const ICON_SIZE = 12;
 
@@ -17,6 +18,7 @@ class CartListItem extends Component {
     const {item} = props;
     this.state =  {
       item: item,
+      hideAdd: props.hideAdd,
     }
   }
 
@@ -27,6 +29,57 @@ class CartListItem extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return true;
+  }
+
+  renderAddSubstract = (item) => {
+    let content = null;
+    const {hideAdd} = this.state;
+
+    if (!hideAdd) {
+      content = (
+        <View style={{flex: 1}}>
+          <View style={styles.itemCount}>
+            <TouchableOpacity
+              style={styles.plusAction}
+              numberOfLines={1}
+              onPress={()=> {
+                this.props.onAdd(item);
+              }}
+            >
+              <EvilIcon name="plus" size={25} />
+            </TouchableOpacity>
+            <Text style={styles.count} numberOfLines={1}>
+              {item.quantity}
+            </Text>
+            <TouchableOpacity
+              style={styles.minusAction}
+              numberOfLines={1}
+              onPress={()=> {
+                let item = {...this.state.item}
+                this.props.onSubtract(item);
+              }}
+            >
+              <EvilIcon name="minus" size={25} />
+            </TouchableOpacity>
+          </View>
+        </View>
+      )
+    } else {
+      content = (
+        <View style={{flex: 1}}>
+          <View style={styles.itemCount}>
+            <Text style={styles.text} numberOfLines={1}>
+              {`${Strings.QUANTITY}`}
+            </Text>
+            <Text style={styles.text} numberOfLines={1}>
+              {`${item.quantity}`}
+            </Text>
+          </View>
+        </View>
+      )
+    }
+
+    return content;
   }
 
   render() {
@@ -64,32 +117,7 @@ class CartListItem extends Component {
                   </Text>
                 </View>
               </View>
-              <View style={{flex: 1}}>
-                <View style={styles.itemCount}>
-                  <TouchableOpacity
-                    style={styles.plusAction}
-                    numberOfLines={1}
-                    onPress={()=> {
-                      this.props.onAdd(item);
-                    }}
-                  >
-                    <EvilIcon name="plus" size={25} />
-                  </TouchableOpacity>
-                  <Text style={styles.count} numberOfLines={1}>
-                    {item.quantity}
-                  </Text>
-                  <TouchableOpacity
-                    style={styles.minusAction}
-                    numberOfLines={1}
-                    onPress={()=> {
-                      let item = {...this.state.item}
-                      this.props.onSubtract(item);
-                    }}
-                  >
-                    <EvilIcon name="minus" size={25} />
-                  </TouchableOpacity>
-                </View>
-              </View>
+              {this.renderAddSubstract(item)}
             </View>
             <View style={styles.itemInfoContainer}>
               <View style={styles.bottomRowAction}>

@@ -1,4 +1,0 @@
-ENV=qa
-DEV=false
-API_BASE_URL=http://spotme.qas.calcey
-API_REST_PREFIX=api/v1.0

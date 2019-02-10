@@ -26,6 +26,7 @@ import { getUser } from '../../../store/AsyncStorageHelper';
 import CartActions from '../../cart/actions/CartActions';
 import ProductListScreen from '../../product/screens/productList/ProductListScreen';
 import { getFeaturedItems, getLoginStatus, getLatestItems } from './HomeApis';
+import UserActions from '../../user/actions/UserActions';
 
 const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
   const paddingToBottom = 50;
@@ -59,11 +60,12 @@ class HomeScreen extends React.Component<any, any> {
     this.handleScrollEndReached();
     this.getFeaturedItems();
     this.props.dispatch(CartActions.getWishList())
-    this.props.dispatch(CartActions.getCart());
+    // this.props.dispatch(CartActions.getCart());
   }
 
   componentDidMount() {
-    // Cookie.get('http://arcmall.com/').then((cookie) => console.log('cookie', cookie));
+    this.props.dispatch(UserActions.getAddresses());
+    
   }
 
   static getDerivedStateFromProps(props, state) {

@@ -20,6 +20,7 @@ import AccountSettingScreen from '../modules/user/screens/accountSettings/Accoun
 import NavMenuScreen from '../modules/product/screens/navMenu/NavMenuScreen';
 import AddProductScreen from '../modules/product/screens/addProduct/AddProductScreen';
 import OrderHistoryScreen from '../modules/user/screens/orderHistory/OrderHistoryScreen';
+import CartCheckoutScreen from '../modules/cart/screens/cartCheckout/CartCheckoutScreen';
 
 
 export const ROOT_NAV_LOGIN = 'Login';
@@ -35,6 +36,7 @@ export const ROOT_NAV_ORDER_CONFIRMATION = 'OrderConfirmationScreen';
 export const ROOT_NAV_ORDER_HISTORY = 'OrderHistoryScreen';
 export const ROOT_NAV_REVIEWS = 'Reviews';
 export const ROOT_NAV_PRODUCT_LIST = 'ProductList';
+export const ROOT_NAV_CART_CHECKOUT = 'CartCheckout';
 
 export const ROOT_NAV_OPTIONS = 'NavMen';
 export const ROOT_NAV_OPTIONS_1 = 'NavMen1';
@@ -146,4 +148,8 @@ export const rootRoutes = {
     screen: OrderHistoryScreen,
     path: `/${ROOT_NAV_ORDER_HISTORY}`,
   },
+  [ROOT_NAV_CART_CHECKOUT]: {
+    screen: CartCheckoutScreen,
+    path: `/${ROOT_NAV_CART_CHECKOUT}`,
+  }
 };

@@ -1,5 +1,6 @@
 import { StyleSheet } from "react-native";
 import Theme, { font } from "../../../../theme/Base";
+import { Row } from "react-native-easy-grid";
 
 const marginTop = {
   marginTop: 15
@@ -12,25 +13,18 @@ const styles = StyleSheet.create({
   },
   flatStyle: {
     flex: 1,
-    paddingHorizontal: 20,
   },
   itemInfoContainer: {
+    flex: 1,
     paddingTop: 20,
     alignItems: "center",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   bottomRowAction: {
-    flex: 1,
-    width: "80%",
+    width: '100%',
     flexDirection: "row",
   },
-  bottomTotalAction: {
-    flex: 1,
-    marginTop: 5,
-    width: "80%",
 
-    flexDirection: "row"
-  },
   textBold: {
     ...font,
 
@@ -84,6 +78,30 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     textAlign: 'center', 
     paddingTop: 200,
-  }
+  },
+  titleText: {
+    ...font,
+    fontSize: Theme.fontSizes.xMedium,
+  },
+  flexRowView: {
+    paddingTop: 20,
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
+  },
+  addressView: {
+    width: '100%',
+  },
+  addressName: {
+    ...font,
+    fontWeight: Theme.fontWeight.medium,
+    fontSize: Theme.fontSizes.sMedium,
+    color: Theme.colors.darkGray,
+  },
+  address: {
+    ...font,
+    paddingTop: 5,
+    fontWeight: Theme.fontWeight.light,
+    fontSize: Theme.fontSizes.small,
+  },
 });
 export default styles;

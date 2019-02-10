@@ -76,5 +76,6 @@ export default zhStrings = {
     ORDER_CONFIRMATION: 'Order Confirmation',
     ORDER_HISTORY:'Order History',
     PLACED_ON: 'Placed on',
-    STATUS: 'Status'
+    STATUS: 'Status',
+    QUANTITY: 'Quantity',
 }

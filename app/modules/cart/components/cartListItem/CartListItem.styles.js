@@ -4,7 +4,7 @@ import Theme, { font } from '../../../../theme/Base';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
+    paddingVertical: 10,
   },
   itemContainer: {
     flex: 1,
@@ -90,6 +90,14 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'black',
     padding: 10,
+    fontWeight: Theme.fontWeight.light,
+  },
+  text: {
+    ...font,
+    fontSize: Theme.fontSizes.small,
+    textAlign: 'center',
+    color: 'black',
+    paddingTop: 3,
     fontWeight: Theme.fontWeight.light,
   },
   itemCount: {

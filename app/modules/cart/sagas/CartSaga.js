@@ -67,7 +67,6 @@ export default () => {
   }
 
   function* getCart({payload}) {
-    console.log(payload)
     try {
       const response = yield call(CartService.getCart, payload);
       yield put(CartActions.getCartSuccess(response));
@@ -81,7 +80,6 @@ export default () => {
   }
 
   function* getWishList({payload}) {
-    console.log(payload)
     try {
       const response = yield call(CartService.getWishList, payload);
       yield put(CartActions.getWishListSuccess(response));
@@ -95,7 +93,6 @@ export default () => {
   }
 
   function* addtoWishList({payload}) {
-    console.log(payload)
     try {
       const response = yield call(CartService.addToWishList, payload);
       yield put(CartActions.addToWishListSuccess(response));
@@ -110,14 +107,11 @@ export default () => {
   }
 
   function* removeFromWishList({payload}) {
-    console.log(payload)
     try {
       const response = yield call(CartService.removeFromWishList, payload);
-			console.log('TCL: function*removeFromWishList -> response', response)
       yield put(CartActions.removeFromWishListSuccess(response));
       yield put(CartActions.getWishList())
     } catch (error) {
-			console.log('TCL: }catch -> error', error)
       yield put(CartActions.removeFromWishListFailure(error.response));
     }
   }

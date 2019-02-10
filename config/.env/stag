@@ -1,4 +1,0 @@
-ENV=staging
-DEV=false
-API_BASE_URL=http://52.204.53.47
-API_REST_PREFIX=api/v1.0

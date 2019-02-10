@@ -1,3 +1,0 @@
-ENV=development
-DEV=true
-API_BASE_URL=http://35.177.207.208

@@ -27,8 +27,10 @@
     "clean-vector": "rm -f ./node_modules/react-native/local-cli/core/__fixtures__/files/package.json"
   },
   "dependencies": {
+    "body-parser": "^1.18.3",
     "native-base": "^2.10.0",
     "object-to-formdata": "^1.6.2",
+    "paypal-rest-sdk": "^1.8.1",
     "react": "16.6.3",
     "react-native": "0.57.8",
     "react-native-cached-image": "^1.4.3",
@@ -41,6 +43,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.8.0",
     "react-native-localization": "^2.0.3",
     "react-native-material-kit": "^0.5.1",
+    "react-native-paypal-wrapper": "https://github.com/taessina/react-native-paypal-wrapper/#accept-credit-card",
     "react-native-snap-carousel": "^3.7.5",
     "react-native-swipeout": "^2.3.6",
     "react-native-swiper": "^1.5.14",

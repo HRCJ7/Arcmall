@@ -60,11 +60,13 @@ class SettingsScreen extends React.Component<any, any> {
     let activeScreen = ACTIVE_SCREEN_SETTINGS;
     let fromCart = false;
     let activeList = this.getSettingsList(false);
+    let onShippingPressed = null;
     if (params && Object.keys(params).length > 0) {
       activeScreen = params.activeScreen? params.activeScreen: ACTIVE_SCREEN_SETTINGS;
       activeList = this.getSettingsList(params.fromProfile);
       fromProfile = params.fromProfile;
       fromCart = params.fromCart;
+      onShippingPressed = params.onShippingPressed;
     }
 
     this.state = {
@@ -78,6 +80,7 @@ class SettingsScreen extends React.Component<any, any> {
       fromProfile,
       addressFormValues: {},
       fromCart,
+      onShippingPressed,
     };
 
     if (activeScreen === ACTIVE_SCREEN_SHIPPING) {
@@ -152,7 +155,7 @@ class SettingsScreen extends React.Component<any, any> {
   }
 
   getSettingsList = (fromProfile) => {
-    const isSeller = this.props.user.store_id;
+    const isSeller = this.props.user? this.props.user.store_id: false;
     let list = null;
     let profileSettingUserList = [
       {
@@ -257,9 +260,10 @@ class SettingsScreen extends React.Component<any, any> {
 
   handleAddrssPress = async (address) => {
     console.log(address)
-    if (this.state.fromCart) {
+    if (this.state.fromCart && this.state.onShippingPressed) {
       const response = await setPaymentAddress(address);
-      console.log(response)
+      this.state.onShippingPressed(address);
+      this.handleOnBackPress();
     }
   }
 

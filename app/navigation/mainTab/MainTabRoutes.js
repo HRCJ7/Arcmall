@@ -16,6 +16,7 @@ import Strings from "../../modules/shared/localization/localization";
 import AddProductScreen from "../../modules/product/screens/addProduct/AddProductScreen";
 import WishListScreen from "../../modules/cart/screens/wishList/WishListScreen";
 import OrderHistoryScreen from "../../modules/user/screens/orderHistory/OrderHistoryScreen";
+import CartCheckoutScreen from "../../modules/cart/screens/cartCheckout/CartCheckoutScreen";
 
 
 export const HOME_TAB = 'Home';

@@ -53,12 +53,12 @@ class ProductDetailScreen extends React.Component<any, any> {
       },
     };
     
-    this.props.dispatch(ProductActions.getProductById(itemId))
+    // this.props.dispatch(ProductActions.getProductById(itemId))
   }
 
   componentDidMount() {
-    // let {itemId} = this.props.navigation.state.params;
-    // this.props.dispatch(ProductActions.getProductById(itemId))
+    let {itemId} = this.props.navigation.state.params;
+    this.props.dispatch(ProductActions.getProductById(itemId))
   }
 
   static getDerivedStateFromProps(props, state) {

@@ -36,11 +36,12 @@ class ProductListScreen extends React.Component<any, any> {
       orderId: params.orderId,
       productList: [],
       isLoading: true,
+      isComponentsLoading: false,
       itemPressDisabled: params.orderId,
       productListError: null,
       isSellerProducts: params.sellerProducts, // Boolean
       hasLazyLoading: params.sellerProducts, // Boolean
-      loadFromState: params.sellerProducts || params.orderId,
+      loadFromState: params.sellerProducts || params.orderId, //Boolean
     };
   }
 
@@ -103,6 +104,9 @@ class ProductListScreen extends React.Component<any, any> {
   }
 
   loadItems = (params) => {
+    this.setState({
+      isLoading: true,
+    })
     let nextParams = {};
     nextParams.search = params.searchText? params.searchText: null;
     if(params.category_id) {
@@ -236,6 +240,7 @@ class ProductListScreen extends React.Component<any, any> {
       isLoading,
       productList,
       productListError,
+      isComponentsLoading,
     } = this.state;
 
     let content = null;
@@ -248,7 +253,7 @@ class ProductListScreen extends React.Component<any, any> {
       searchBar = this.renderSearchBar();
     }
     
-    if (isLoading) {
+    if (isLoading || isComponentsLoading) {
       content = (
         <View style={styles.container}>
           {navBar}

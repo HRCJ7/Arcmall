@@ -1,12 +1,10 @@
-import {Dimensions} from 'react-native';
+import { Dimensions } from "react-native";
 
-const {height: width} = Dimensions.get('window');
+const { height: width } = Dimensions.get("window");
 
-import {
-  StyleSheet,
-} from 'react-native';
-import Theme, { font } from '../../../../theme/Base';
-  
+import { StyleSheet } from "react-native";
+import Theme, { font } from "../../../../theme/Base";
+
 export const styles = StyleSheet.create({
   container: {
     height: 280,
@@ -20,29 +18,36 @@ export const styles = StyleSheet.create({
   imageContainer: {
     width: "100%",
     height: "100%",
-    borderRadius: 10,
+    borderRadius: 10
   },
- 
+
   imageText: {
-    // height: 60, 
-    position: 'absolute', 
+    // height: 60,
+    position: "absolute",
     right: 10,
-    top: 25,
+    top: 25
   },
   text: {
     ...font,
     textAlign: "right",
-    color: 'black',
-    fontSize: Theme.fontSizes.medium,
+    color: "black",
+    fontSize: Theme.fontSizes.medium
   },
   countText: {
     ...font,
     textAlign: "right",
-    color: 'black',
+    color: "black",
     paddingTop: 5,
-    fontSize: Theme.fontSizes.small,
+    fontSize: Theme.fontSizes.small
   },
   rowStyle: {
-    backgroundColor: "white", marginBottom: 5
+    backgroundColor: "white",
+    marginBottom: 5,
+    marginRight: 5
+  },
+  rowStyle1: {
+    backgroundColor: "white",
+    marginBottom: 5,
+    marginRight: 5
   }
 });

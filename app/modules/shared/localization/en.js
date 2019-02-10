@@ -75,6 +75,12 @@ export default enStrings = {
     CANCEL: 'Cancel',
     ORDER_CONFIRMATION: 'Order Confirmation',
     ORDER_HISTORY: 'Order History',
+    MOBILE_NUMBER: 'Mobile Number',
+    EDIT_PROFILE: 'Edit Profile',
+    STORE_PRODUCTS: 'Store Products',
+    SHOP: 'Shop',
+   
+
     PLACED_ON: 'Placed on',
     STATUS: 'Status',
     QUANTITY: 'Quantity',

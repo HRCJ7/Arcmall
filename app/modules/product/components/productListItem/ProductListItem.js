@@ -19,6 +19,7 @@ class ProductListItem extends Component {
     const {item: {item}, onPress} = this.props;
     onPress(item.product_id);
   }
+
   addRemoveWatchList = (add, product_id) => {
     if (add) {
       this.props.dispatch(CartActions.addToWishList({product_id}))
@@ -44,6 +45,12 @@ class ProductListItem extends Component {
     if (addedToWishList) {
       icon = {name: 'ios-heart', color: 'red'};
     }
+    let category = '';
+    const categoryArr = item.categories? item.categories[item.categories.length - 1]: {};
+
+    if (categoryArr) {
+      category = categoryArr.name;
+    }
 
     let itemConent = (
       <TouchableOpacity style={styles.itemContainer} onPress={this.handleOnPress}>
@@ -57,7 +64,7 @@ class ProductListItem extends Component {
           </View>
           <View style={styles.itemDetails}>
             <View style={styles.container}>
-              <Text style={styles.blueText}>{'item.categotyName'}</Text>
+              <Text style={styles.blueText}>{category}</Text>
             </View>
             <View style={styles.starContainer}>
               <RatingItem 

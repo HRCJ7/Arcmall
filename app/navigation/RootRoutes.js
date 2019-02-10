@@ -3,6 +3,7 @@ import LoginScreen from '../modules/login/screens/LoginScreen';
 import MainTabNavigator from './mainTab/MainTabNavigation';
 import ProductListScreen from '../modules/product/screens/productList/ProductListScreen';
 import ProductDetailScreen from '../modules/product/screens/productDetail/ProductDetailScreen';
+import ShopDetailScreen from '../modules/product/screens/shopDetails/ShopDetailScreen';
 
 import SelectRoleScreen from '../modules/login/screens/SelectRoleScreen';
 import SignUpAsABuyerScreen from '../modules/login/screens/SignUpAsABuyerScreen';
@@ -17,6 +18,7 @@ import ReviewsScreen from '../modules/product/screens/reviews/ReviewsScreen';
 import SettingsScreen from '../modules/user/screens/settingsScreen/SettingsScreen';
 import ChangePasswordScreen from '../modules/user/screens/changePassword/ChangePasswordScreen';
 import AccountSettingScreen from '../modules/user/screens/accountSettings/AccountSettingScreen';
+import EditProfileScreen from '../modules/user/screens/editProfile/EditProfileScreen';
 import NavMenuScreen from '../modules/product/screens/navMenu/NavMenuScreen';
 import AddProductScreen from '../modules/product/screens/addProduct/AddProductScreen';
 import OrderHistoryScreen from '../modules/user/screens/orderHistory/OrderHistoryScreen';
@@ -49,6 +51,8 @@ export const ROOT_NAV_SETTINGS_SHIPPING = 'SettingsShipping';
 export const ROOT_NAV_SETTINGS_SHIPPING_ADD = 'SettingsShippingAdd';
 export const ROOT_NAV_CHANGE_PASSWORD = 'SettingsChangePassword';
 export const ROOT_NAV_ACCOUNT_SETTINGS = 'AccountSettingScreen';
+export const ROOT_NAV_EDIT_PROFILE = 'EditProfileScreen';
+export const ROOT_NAV_SHOP_DETAILS = 'ShopDetailScreen';
 export const ROOT_NAV_ADD_ITEM = 'Add Item';
 
 export const rootRoutes = {
@@ -151,5 +155,13 @@ export const rootRoutes = {
   [ROOT_NAV_CART_CHECKOUT]: {
     screen: CartCheckoutScreen,
     path: `/${ROOT_NAV_CART_CHECKOUT}`,
+  },
+  [ROOT_NAV_EDIT_PROFILE]: {
+    screen: EditProfileScreen,
+    path: `/${ROOT_NAV_EDIT_PROFILE}`,
+  },
+  [ROOT_NAV_SHOP_DETAILS]: {
+    screen: ShopDetailScreen,
+    path: `/${ROOT_NAV_SHOP_DETAILS}`,
   }
 };

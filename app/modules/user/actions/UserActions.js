@@ -1,7 +1,28 @@
-import { SET_LANGUAGE, SET_LANGUAGE_SUCCESS, SET_LANGUAGE_FAILURE, GET_ADDRESSES, GET_ADDRESSES_SUCCESS, GET_ADDRESSES_FAILURE } from "./Types";
+import { SET_PASSWORD,SET_PASSWORD_SUCCESS,SET_LANGUAGE,SET_PASSWORD_FAILURE, SET_LANGUAGE_SUCCESS, SET_LANGUAGE_FAILURE, GET_ADDRESSES, GET_ADDRESSES_SUCCESS, GET_ADDRESSES_FAILURE } from "./Types";
 
 //@flow
 
+
+const setPassword = (password: string) => ({
+  type: SET_PASSWORD,
+  payload: {
+    password,
+  },
+});
+
+const setPasswordSuccess = (data: any) => ({
+  type: SET_PASSWORD_SUCCESS,
+  payload: {
+    data,
+  },
+});
+
+const setPasswordFailure = (error: any) => ({
+  type: SET_PASSWORD_FAILURE,
+  payload: {
+    error,
+  },
+});
 
 const setLanguage = (language: string) => ({
   type: SET_LANGUAGE,
@@ -45,7 +66,16 @@ const getAddressesFailure = (error: any) => ({
   },
 });
 
+
+
 export default {
+  
+ 
+
+  setPassword,
+  setPasswordSuccess,
+  setPasswordFailure,
+
   setLanguage,
   setLanguageSuccess,
   setLanguageFailure,

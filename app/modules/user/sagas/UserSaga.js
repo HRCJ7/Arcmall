@@ -12,6 +12,7 @@ import {
   GET_LOGIN_VERIFICATION,
   PLAYER_REGISTRATION,
   SET_LANGUAGE,
+  SET_PASSWORD,
   GET_ADDRESSES,
 } from '../actions/Types';
 import UserService from '../services/UserService';
@@ -19,6 +20,22 @@ import UserActions from '../actions/UserActions';
 import ProductActions from '../../product/actions/ProductActions';
 
 export default () => {
+
+  function* setPassword(action) {
+    try {
+      const response = yield call(UserService.setPassword, action.payload.password);
+      yield put(UserActions.setPasswordSuccess(response));
+     
+    } catch (error) {
+      yield put(UserActions.setPasswordFailure(error.response));
+     
+    }
+  }
+
+  function* watchSetPassword(): Saga<void> {
+    yield takeLatest(SET_PASSWORD, setPassword);
+  }
+
   function* setLanguage(action) {
     try {
       const response = yield call(UserService.setLanguage, action.payload.code);
@@ -47,7 +64,10 @@ export default () => {
     yield takeLatest(GET_ADDRESSES, getAddreses);
   }
 
+
+
   return {
+    watchSetPassword,
     watchSetLanguage,
     watchGetAddreses,
   };

@@ -19,7 +19,10 @@ import {
   ROOT_NAV_ORDER_CONFIRMATION,
   ROOT_NAV_ORDER_HISTORY,
   ROOT_NAV_CART_CHECKOUT,
+  ROOT_NAV_EDIT_PROFILE,
+  ROOT_NAV_SHOP_DETAILS
 } from './RootRoutes';
+
 import {AppContainer} from './RootNavigation';
 
 export const navigateToMainTabScreen = (navParams: any) => {
@@ -45,10 +48,22 @@ export const navigateToAccountSettingScreen = (navParams: any) => {
   .getActionForPathAndParams(`/${ROOT_NAV_ACCOUNT_SETTINGS}`, navParams);
 };
 
+export const navigateToEditProfileScreen = (navParams: any) => {
+  return AppContainer
+  .router
+  .getActionForPathAndParams(`/${ROOT_NAV_EDIT_PROFILE}`, navParams);
+};
+
 export const navigateToItemDetails = (navParams: any) => {
   return AppContainer
   .router
   .getActionForPathAndParams(`/${ROOT_NAV_ITEM_DETAILS}`, navParams);
+};
+
+export const navigateToShopDetails = (navParams: any) => {
+  return AppContainer
+  .router
+  .getActionForPathAndParams(`/${ROOT_NAV_SHOP_DETAILS}`, navParams);
 };
 
 export const navigateToLoginScreen = (navParams: any) => {

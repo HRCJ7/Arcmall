@@ -3,22 +3,20 @@ import { Text, TouchableOpacity, View } from "react-native";
 
 import EvilIcon from "react-native-vector-icons/EvilIcons";
 import Icon from "react-native-vector-icons/Ionicons";
-import styles from "./CartListItem.styles";
+import styles from "./ShopListItem.styles";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { CachedImage } from "react-native-cached-image";
 import Swipeout from 'react-native-swipeout';
-import Strings from "../../../shared/localization/localization";
 
 const ICON_SIZE = 12;
 
-class CartListItem extends Component {
+class ShopListItem extends Component {
   constructor(props) {
     super(props);
     const {item} = props;
     this.state =  {
       item: item,
-      hideAdd: props.hideAdd,
     }
   }
 
@@ -31,57 +29,6 @@ class CartListItem extends Component {
     return true;
   }
 
-  renderAddSubstract = (item) => {
-    let content = null;
-    const {hideAdd} = this.state;
-
-    if (!hideAdd) {
-      content = (
-        <View style={{flex: 1}}>
-          <View style={styles.itemCount}>
-            <TouchableOpacity
-              style={styles.plusAction}
-              numberOfLines={1}
-              onPress={()=> {
-                this.props.onAdd(item);
-              }}
-            >
-              <EvilIcon name="plus" size={25} />
-            </TouchableOpacity>
-            <Text style={styles.count} numberOfLines={1}>
-              {item.quantity}
-            </Text>
-            <TouchableOpacity
-              style={styles.minusAction}
-              numberOfLines={1}
-              onPress={()=> {
-                let item = {...this.state.item}
-                this.props.onSubtract(item);
-              }}
-            >
-              <EvilIcon name="minus" size={25} />
-            </TouchableOpacity>
-          </View>
-        </View>
-      )
-    } else {
-      content = (
-        <View style={{flex: 1}}>
-          <View style={styles.itemCount}>
-            <Text style={styles.text} numberOfLines={1}>
-              {`${Strings.QUANTITY}`}
-            </Text>
-            <Text style={styles.text} numberOfLines={1}>
-              {`${item.quantity}`}
-            </Text>
-          </View>
-        </View>
-      )
-    }
-
-    return content;
-  }
-
   render() {
     const {item} = this.state;
     let swipeBtns = [{
@@ -89,11 +36,6 @@ class CartListItem extends Component {
       backgroundColor: 'red',
       onPress: () => { this.props.onDelete(item) }
     }];
-    let category = '';
-    const categoryArr = item.categories? item.categories[item.categories.length - 1]: {};
-    if (categoryArr) {
-      category = categoryArr.name;
-    }
     return (
       <View style={styles.container}>
         <Swipeout
@@ -114,15 +56,20 @@ class CartListItem extends Component {
                   <Text style={styles.itemDescriptionText}>{item.name}</Text>
                 </View>
                 <View style={styles.itemDetails}>
-                  <Text style={styles.blueText}>{category}</Text>
+                  <Text style={styles.blueText}>category</Text>
                 </View>
                 <View style={styles.bottomRow}>
                   <Text style={styles.itemPrice} numberOfLines={1}>
                     {item.price}
                   </Text>
+
+                  <Text style={styles.count} numberOfLines={1}>
+                    Quantity : {item.quantity}
+                  </Text>
                 </View>
+                
               </View>
-              {this.renderAddSubstract(item)}
+           
             </View>
             <View style={styles.itemInfoContainer}>
               <View style={styles.bottomRowAction}>
@@ -145,12 +92,12 @@ class CartListItem extends Component {
   }
 }
 
-CartListItem.propTypes = {};
+ShopListItem.propTypes = {};
 
-CartListItem.defaultProps = {};
+ShopListItem.defaultProps = {};
 
 const mapStateToProps = (state, ownProps) => {
   return {};
 };
 
-export default connect(mapStateToProps)(CartListItem);
+export default connect(mapStateToProps)(ShopListItem);

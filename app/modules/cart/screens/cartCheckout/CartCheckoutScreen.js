@@ -24,6 +24,7 @@ import { ListItem } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { ORDER_HISTORY } from "../../../../Constants";
 import { setPaymentAddress } from "../../../user/screens/settingsScreen/settingApis";
+import { ROOT_NAV_YOUR_CART } from "../../../../navigation/RootRoutes";
 
 const BASE_URL: string = `${Config.API_URL}`;
 
@@ -45,6 +46,7 @@ class CartCheckoutScreen extends React.Component<any, any> {
     const params = props.navigation.state.params;
     this.state = {
       isLoading: true,
+      isComponentsLoading: false,
       products: null,
       totals: [],
       isLoggedIn: props.user,
@@ -104,7 +106,7 @@ class CartCheckoutScreen extends React.Component<any, any> {
     }, 2000);
   }
 
-  getCart = async () => {
+  getCart = () => {
     // this.setState({
     //   isLoading: true,
     // })
@@ -125,10 +127,11 @@ class CartCheckoutScreen extends React.Component<any, any> {
   componentDidUpdate() {
   }
 
-  onShippingPressed = (address) => {
+  onAddressSelected = (address) => {
     this.setState({
       address: address,
-    })
+    });
+    this.getCart();
   }
 
   onClose = (variable) => {
@@ -146,19 +149,22 @@ class CartCheckoutScreen extends React.Component<any, any> {
   onShippingMethodSelected = async (method) => {
     this.setState({
       shippingMethod: method,
-      isLoading: true,
+      isComponentsLoading: true,
     });
     const response = await setShippingDetails(method.code);
     const paymentMethods = await getPaymentMethods();
     if (paymentMethods.length > 0) {
       const paymentResponse = await setPaymentMethod(paymentMethods[0].code)
       if (paymentResponse.error) {
+        this.setState({
+          isComponentsLoading: false,
+        });
         alert(paymentResponse.error)
       } else if (paymentResponse.success){
         this.setState({
           paymentMethods: paymentMethods,
           paymentMethod: paymentMethods[0],
-          isLoading: false,
+          isComponentsLoading: false,
         })
         this.getCart();
       }
@@ -173,6 +179,22 @@ class CartCheckoutScreen extends React.Component<any, any> {
   handleCheckoutPress = async () => {
 
     const {total, currency, address} = this.state;
+
+    // const response = await addOrder({
+    //   affiliate_id: 0,
+    //   order_status_id: ORDER_HISTORY.PROCESSING,
+    // });
+    // if (response.success) {
+      const response = await configurePaypal(total, currency, 'Arcmall Cart');
+      console.log(response)
+      this.props.navigation.goBack(null);
+      if (response.response.state === 'approved') {
+        this.props.navigation.goBack(null);
+      }
+      
+    // } else if (response.error) {
+    //   alert(response.error)
+    // }
     
     // let obj = {
     //   intent: 'sale',
@@ -241,8 +263,8 @@ class CartCheckoutScreen extends React.Component<any, any> {
     //   }
     // }
 
-    const response = await configurePaypal(total, currency, 'Arcmall Cart');
-    console.log(response)
+    // const response = await configurePaypal(total, currency, 'Arcmall Cart');
+    // console.log(response)
     // console.log(response)
     // if (response.access_token) {
     //   let token = `Bearer ${response.access_token}`;
@@ -408,7 +430,7 @@ class CartCheckoutScreen extends React.Component<any, any> {
           this.props.navigation.dispatch(navigateToSettings({
             activeScreen: ACTIVE_SCREEN_SHIPPING,
             fromCart: true,
-            onShippingPressed: this.onShippingPressed,
+            onShippingPressed: this.onAddressSelected,
           }))
         }}style={styles.addressView}>
         <WhiteCard>
@@ -474,13 +496,13 @@ class CartCheckoutScreen extends React.Component<any, any> {
   }
 
   render() {
-    const {products, isLoading, shippingMethods, shippingMethod} = this.state;
+    const {products, isLoading, shippingMethods, shippingMethod, isComponentsLoading} = this.state;
     const {user} = this.props;
     const navBar = this.renderNavBar();
     const priceCard = this.renderPriceCard();
     let content = null;
 
-    if (isLoading) {
+    if (isLoading || isComponentsLoading) {
       content = (
         <View style={styles.container}>
           {navBar}

@@ -31,7 +31,7 @@ const INITIAL_STATE = {
   editCartData: {},
   addCartData: {},
 
-  cartLoading: true,
+  cartLoading: false,
   cartError: null,
 
   wishlistData: null,

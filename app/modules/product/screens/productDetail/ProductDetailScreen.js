@@ -20,7 +20,7 @@ import {CachedImage} from 'react-native-cached-image';
 import ProductListItem from '../../components/productListItem/ProductListItem';
 import ProductActions from '../../actions/ProductActions';
 import CategoryTabNavigation from '../../../../navigation/categoryTab/CategoryTabNavigation';
-import { navigateToReviews } from '../../../../navigation/RootNavActions';
+import { navigateToReviews,navigateToShopDetails } from '../../../../navigation/RootNavActions';
 import {Picker, Header} from "native-base";
 import { Button } from 'react-native-elements';
 import CartActions from '../../../cart/actions/CartActions';
@@ -61,6 +61,12 @@ class ProductDetailScreen extends React.Component<any, any> {
     this.props.dispatch(ProductActions.getProductById(itemId))
   }
 
+  goToShop = () => {
+    const {data: {seller}} = this.props;
+        // this.props.navigation.dispatch(navigateToShopDetails({itemId}));
+    this.props.navigation.dispatch(navigateToShopDetails({ seller: seller }));
+       
+      }
   static getDerivedStateFromProps(props, state) {
     //Return state object, retun null to update nothing;
     return {
@@ -200,6 +206,8 @@ class ProductDetailScreen extends React.Component<any, any> {
     )
   }
 
+
+
   renderOptionsChildren = (productOption, optionId) => {
     let children = {props: {}};
     
@@ -292,23 +300,29 @@ class ProductDetailScreen extends React.Component<any, any> {
     let content = null;
     if (seller) {
       content = (
-        <WhiteCard>
-          <Text style={styles.headingText}>{Strings.STORE_DETAILS}</Text>
+        <TouchableOpacity
+        onPress={this.goToShop}
+        >
+        <WhiteCard >
+          <Text style={styles.headingText}>{Strings.STORE_DETAILS}
+            {/* {JSON.stringify(seller)} */}
+           </Text>
           <View style={styles.info}> 
-            <Text style={styles.smallText}>{`${seller.firstname} ${seller.lastname}`}</Text>
+            <Text style={styles.smallText}>{`${seller.companyname}`}</Text>
           </View>
-          <View style={styles.ratings}>
+          {/* <View style={styles.ratings}>
             <IonIcon style={styles.ratingIcon} name="ios-star" size={15}/>
             <IonIcon style={styles.ratingIcon} name="ios-star" size={15} />
             <IonIcon style={styles.ratingIcon} name="ios-star" size={15} />
             <IonIcon style={styles.ratingIcon} name="ios-star-outline" size={15} />
             <IonIcon style={styles.ratingIcon} name="ios-star-outline" size={15} />
-          </View>
+          </View> */}
           <View style={styles.contactSellerView}> 
-            <Text style={styles.smallText}>{`281 items         28 Reviews`}</Text>
+            <Text style={styles.smallText}>{`${seller.firstname} ${seller.lastname}`}</Text>
             {this.renderButton(Strings.CONTACT_SELLER)}
           </View>
-        </WhiteCard>
+          </WhiteCard>
+          </TouchableOpacity>  
       )
     }
     return content;

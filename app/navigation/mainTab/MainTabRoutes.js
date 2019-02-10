@@ -3,15 +3,20 @@ import HomeScreen from "../../modules/home/screens/HomeScreen";
 import ProfileScreen from "../../modules/user/screens/ProfileScreen";
 import ProductDetailScreen from "../../modules/product/screens/productDetail/ProductDetailScreen";
 import ProductListScreen from "../../modules/product/screens/productList/ProductListScreen";
+
 import LoginScreen from "../../modules/login/screens/LoginScreen";
 import SignUpAsABuyerScreen from "../../modules/login/screens/SignUpAsABuyerScreen";
 import SelectRoleScreen from "../../modules/login/screens/SelectRoleScreen";
 import SignUpAsASellerScreen from "../../modules/login/screens/SignUpAsASellerScreen";
 import CartDetailsScreen from '../../modules/cart/screens/cartDetails/CartDetailsScreen';
 import OrderConfirmationScreen from '../../modules/cart/screens/orderConfirmation/OrderConfirmationScreen';
+// import OrderHistoryScreen from '../../modules/cart/screens/orderHistory/OrderHistoryScreen';
+
+import EditProfileScreen from '../../modules/user/screens/editProfile/EditProfileScreen'
 
 import ReviewsScreen from "../../modules/product/screens/reviews/ReviewsScreen";
 import SettingsScreen from "../../modules/user/screens/settingsScreen/SettingsScreen";
+import ChangePasswordScreen from "../../modules/user/screens/changePassword/ChangePasswordScreen";
 import Strings from "../../modules/shared/localization/localization";
 import AddProductScreen from "../../modules/product/screens/addProduct/AddProductScreen";
 import WishListScreen from "../../modules/cart/screens/wishList/WishListScreen";
@@ -19,8 +24,11 @@ import OrderHistoryScreen from "../../modules/user/screens/orderHistory/OrderHis
 import CartCheckoutScreen from "../../modules/cart/screens/cartCheckout/CartCheckoutScreen";
 
 
+
 export const HOME_TAB = 'Home';
 export const PROFILE_TAB = 'Profile';
+
+ import ShopDetailScreen from "../../modules/product/screens/shopDetails/ShopDetailScreen.js";
 
 export const MAIN_TAB_HOME = 'Home';
 export const MAIN_TAB_PROFILE = 'Profile';
@@ -46,7 +54,7 @@ export const mainTabRoutes = {
     path: `/${MAIN_TAB_WISH_LIST}`,
   },
   [MAIN_TAB_MORE_SETTINGS]: {
-    screen: SettingsScreen,
+    screen: ChangePasswordScreen,
     path: `/${MAIN_TAB_MORE_SETTINGS}`,
   },
 };

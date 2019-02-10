@@ -67,7 +67,7 @@ export default class GridView extends Component {
           {images[0]}
           </Row>
           <Row size={2} style={{ backgroundColor: "white" }}>
-            <Col style={styles.rowStyle}>
+            <Col style={styles.rowStyle1}>
             {images[1]}
             </Col>
             <Col>

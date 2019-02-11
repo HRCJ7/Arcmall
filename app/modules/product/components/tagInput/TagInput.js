@@ -19,6 +19,7 @@ import {
   Platform,
 } from 'react-native';
 import invariant from 'invariant';
+import Theme from '../../../../theme/Base';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -424,7 +425,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     height: 36,
-    fontSize: 16,
+    fontSize: Theme.fontSizes.tiny,
     flex: .6,
     marginBottom: 6,
     padding: 0,

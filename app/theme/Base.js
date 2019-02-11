@@ -1,4 +1,5 @@
 import Toast from 'react-native-toast-native';
+import { normalize } from 'react-native-elements';
 
 //@flow
 
@@ -13,6 +14,7 @@ const Theme = {
     smallText: '#777777'
   },
   fontSizes: {
+    tiny: 10,
     xSmall: 11,
     small: 12,
     sMedium: 13,

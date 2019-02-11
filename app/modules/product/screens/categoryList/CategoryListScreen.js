@@ -52,7 +52,7 @@ class CategoryListScreen extends React.Component<any, any> {
   }
 
   handleOnGridPress = (categories) => {
-    this.props.navigation.dispatch(navigateToItemListScreen({categories}))
+    this.props.navigation.dispatch(navigateToItemListScreen({categories, name}))
   }
 
   renderLeftAction = () => {

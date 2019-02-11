@@ -25,6 +25,7 @@ import { COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY, STORAGE_USER } from ".
 import { clearCookies, getUser } from "../../../store/AsyncStorageHelper";
 import { showToast } from "../../../theme/Base";
 import CartActions from "../../cart/actions/CartActions";
+// import { MAIN_TAB_HOME } from "../../../navigation/mainTab/MainTabRoutes";
 
 class SignUpAsABuyerScreen extends React.Component<any, any> {
   static defaultProps: any;
@@ -55,8 +56,8 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
   async shouldComponentUpdate(nextProps, nextState) {
     let user = await getUser();
     if(user) {
-      this.props.dispatch(CartActions.getCart());
       this.props.navigation.goBack(null);
+      // this.props.dispatch(CartActions.getCart());
     }
     return true;
   }

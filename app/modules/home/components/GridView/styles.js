@@ -13,7 +13,8 @@ export const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
-    resizeMode: "stretch"
+    resizeMode: "cover",
+    borderRadius: 3,
   },
   imageContainer: {
     width: "100%",

@@ -20,7 +20,7 @@ const config = {
     scrollEnabled: true,
     labelStyle: {
       ...font,
-      fontSize: 11,
+      fontSize: Theme.fontSizes.xSmall,
       color: 'black',
     },
     style: {
@@ -38,15 +38,17 @@ class CategoryTabNavigation extends React.Component {
 
   constructor(props) {
     super(props);
+    const {routes, name} = this.getRoutes();
     this.state = {
-      routes: this.getRoutes(),
+      routes: routes,
+      pageName: name,
     }
   }
 
   getRoutes = () => {
     let routes = {};
     if (this.props.navigation && this.props.navigation.state) {
-      let {navigation : {state: {params: {categories}}}} = this.props;
+      let {navigation : {state: {params: {categories, name}}}} = this.props;
       for (let categoryIndex in categories) {
         const category = categories[categoryIndex];
         // const {name, count} = splitCategoryName(category.name);
@@ -65,7 +67,9 @@ class CategoryTabNavigation extends React.Component {
         };
       }
 
-      return routes;
+      console.log(name)
+
+      return {routes, name};
     }
     
   }
@@ -85,7 +89,7 @@ class CategoryTabNavigation extends React.Component {
   renderNavBar = () => {
     return (
       <NavigationBar
-        title={Strings.PRODUCT_DETAILS}
+        title={this.state.pageName}
         leftAction={this.renderLeftAction()}
       >
       </NavigationBar>

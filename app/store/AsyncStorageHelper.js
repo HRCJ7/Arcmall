@@ -44,8 +44,19 @@ const getCart = async (cartData) => {
 }
 
 const getCategories = async () => {
+  // await AsyncStorage.removeItem(STORAGE_CATEGORIES)
   let categories = await AsyncStorage.getItem(STORAGE_CATEGORIES);
-  return JSON.parse(categories);
+  console.log(categories)
+  if(categories) {
+    return JSON.parse(categories);
+  } else {
+    return null;
+  }
+  
+}
+
+const setCategories = async (categories) => {
+  await AsyncStorage.setItem(STORAGE_CATEGORIES, categories);
 }
 
 export {
@@ -57,4 +68,5 @@ export {
   addToCart,
   getCart,
   getCategories,
+  setCategories,
 }

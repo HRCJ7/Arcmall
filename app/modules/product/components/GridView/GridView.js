@@ -37,17 +37,14 @@ export default class GridView extends Component {
         style={styles.imageContainer}
         key={`category${category}`}
         onPress={() => {
-          this.handleOnImagePressed(categories[category].categories)
+          this.handleOnImagePressed(categories[category].categories, name)
         }}>
-          <Image
-                style={styles.image}
-                source={{uri: categories[category].image}}
-              />  
-       {/* <CachedImage 
+          <CachedImage
             style={styles.image}
-            resizeMode= 'cover'
+            // transform={{scale:'0.5, 0.5'}}
+            // resizeMode= 'stretech'
             source={{uri: categories[category].image}}
-          /> */}
+          /> 
           <View style={styles.imageText}>
             <Text style={styles.text}>{name}</Text>
             <Text style={styles.countText}>{`${count} items`}</Text>
@@ -58,12 +55,12 @@ export default class GridView extends Component {
     return images;
   }
 
-  handleOnImagePressed = (categories) => {
-    this.props.onPress(categories);
+  handleOnImagePressed = (categories, name) => {
+    this.props.onPress(categories, name);
   }
   render() {
 
-        const {categories} = this.state;
+    const {categories} = this.state;
     const images = this.getImages()
     return (
       <View style={styles.container}>
@@ -72,42 +69,39 @@ export default class GridView extends Component {
           {images[0]}
           </Row>
           <Row size={1} style={styles.rowStyle}>
-          {images[0]}
+          {images[1]}
           </Row>
-
           <Row size={1} style={styles.rowStyle}>
             <Col style={styles.columnStyle}>
-            {images[1]}
+              {images[2]}
             </Col>
             <Col >
-              {images[2]}
-
+              {images[3]}
             </Col>
           </Row>
           <Row size={2} style={styles.rowStyle}>
             <Col style={styles.columnStyle}>
-            {images[1]}
+              {images[4]}
             </Col>
             <Col style={styles.rowStyle}>
               <Row style={styles.rowStyle2}>
-              {images[2]}
+              {images[5]}
               </Row>
               <Row >
-              {images[3]}
+              {images[6]}
               </Row>
             </Col>
           </Row>
 
           <Row size={1} style={styles.rowStyle}>
-          {images[0]}
+            {images[7]}
           </Row>
           <Row size={1} style={styles.rowStyle}>
             <Col style={styles.columnStyle}>
-            {images[1]}
+              {images[8]}
             </Col>
             <Col>
-              {images[2]}
-
+              {images[9]}
             </Col>
           </Row>
         </Grid>

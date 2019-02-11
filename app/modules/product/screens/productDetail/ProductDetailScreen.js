@@ -180,11 +180,17 @@ class ProductDetailScreen extends React.Component<any, any> {
 
   renderDescriptionCard = () => {
     const {data} = this.props;
+    let category = '';
+    const categoryArr = data.categories? data.categories[data.categories.length - 1]: {};
+
+    if (categoryArr) {
+      category = categoryArr.name;
+    }
     return (
       <WhiteCard>
         <Text style={styles.titleText}>{data.heading_title}</Text>
         <View style={styles.info}> 
-          <Text style={styles.categoryText}>{'category name'}</Text>
+          <Text style={styles.categoryText}>{category}</Text>
           <Text style={styles.priceText}>{data.price}</Text>
         </View>
         <View style={styles.description}> 

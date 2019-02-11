@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
   },
   bottomRowActionText: {
     ...font,
-    fontSize: 10,
+    fontSize: Theme.fontSizes.tiny,
     marginLeft: 10,
     marginTop: 5
   },

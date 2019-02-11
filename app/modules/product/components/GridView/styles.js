@@ -10,18 +10,22 @@ import Theme, { font } from '../../../../theme/Base';
 export const styles = StyleSheet.create({
   container: {
     height: 800,
-    width: "100%"
+    width: "100%",
+    padding: 10,
   },
   image: {
     flex: 1,
     width: "100%",
     height: "100%",
-    resizeMode: "cover"
+    resizeMode: "cover",
+    alignSelf: 'flex-start',
+    // transform: ,
+    borderRadius: 4,
   },
   imageContainer: {
     width: "100%",
     height: "100%",
-    borderRadius: 10,
+    // borderRadius: 2,
   },
  
   imageText: {
@@ -44,12 +48,16 @@ export const styles = StyleSheet.create({
     fontSize: Theme.fontSizes.small,
   },
   rowStyle: {
-    backgroundColor: "white", marginBottom: 10
+    backgroundColor: "white", 
+    marginBottom: 10
   },
   rowStyle2: {
-    backgroundColor: "white", marginBottom: 10
+    backgroundColor: "white", 
+    marginBottom: 10,
+    borderRadius: 5,
   },
   columnStyle: {
-    backgroundColor: "white",marginRight :10
+    marginRight :10,
+    borderRadius: 5,
   }
 });

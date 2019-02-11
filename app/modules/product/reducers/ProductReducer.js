@@ -26,7 +26,7 @@ const INITIAL_STATE = {
   productListError: null,
 
   categoryList: null,
-  categoryListLoading: {},
+  categoryListLoading: true,
   categoryListError: null,
 
   reviews: null,
@@ -100,7 +100,7 @@ const getCategoryListFailure = (state, {payload} : any) => ({
 });
 
 export const postLogin = (state = INITIAL_STATE, {payload} : any) => {
-  let categories = JSON.parse(payload.categories);
+  let categories = payload.categories;
   return {
     ...state,
     categoryList: categories? categories: state.categoryList,

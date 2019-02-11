@@ -73,11 +73,11 @@ const styles = StyleSheet.create({
   },
   minusAction: {
     ...font,
-    fontSize: 10,
+    fontSize: Theme.fontSizes.tiny,
   },
   plusAction: {
     ...font,
-    fontSize: 10,
+    fontSize: Theme.fontSizes.tiny,
     // marginLeft:5
   },
   itemPrice: {

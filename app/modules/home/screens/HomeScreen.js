@@ -22,7 +22,7 @@ import LoginActions from '../../login/actions/LoginActions';
 import {navigateToAllCategories, navigateToProductList, navigateToItemListScreen, navigateToItemDetails} from '../../../navigation/RootNavActions';
 import Strings from '../../shared/localization/localization';
 import {COOKIE_LANGUAGE_CHINESE, CODE_CHINESE, CODE_ENGLISH, COOKIE_LANGUAGE, STORAGE_USER, STORAGE_CATEGORIES} from '../../../Constants';
-import { getUser } from '../../../store/AsyncStorageHelper';
+import { getUser, setCategories, getCategories } from '../../../store/AsyncStorageHelper';
 import CartActions from '../../cart/actions/CartActions';
 import ProductListScreen from '../../product/screens/productList/ProductListScreen';
 import { getFeaturedItems, getLoginStatus, getLatestItems } from './HomeApis';
@@ -125,16 +125,16 @@ class HomeScreen extends React.Component<any, any> {
     this.setState({
       categories: categories,
     })
-    await AsyncStorage.setItem(STORAGE_CATEGORIES, JSON.stringify(categories));
+    await setCategories(JSON.stringify(categories));
   }
 
   getCategoryList = async (props) => {
-    let categories = await AsyncStorage.getItem(STORAGE_CATEGORIES);
+    let categories = await getCategories();
     if (!categories) {
       this.props.dispatch(ProductActions.getCategoryList());
     } else {
       this.setState({
-        categories: JSON.parse(categories),
+        categories: categories,
       })
     }
 
@@ -149,8 +149,8 @@ class HomeScreen extends React.Component<any, any> {
     })
   }
 
-  handleOnGridPress = (categories) => {
-    this.props.navigation.dispatch(navigateToItemListScreen({categories}))
+  handleOnGridPress = (categories, name) => {
+    this.props.navigation.dispatch(navigateToItemListScreen({categories, name}))
   }
 
   hanleOnSeeMoreCategoriesPressed = () => {
@@ -166,7 +166,6 @@ class HomeScreen extends React.Component<any, any> {
   handleScrollEndReached = async () => {
     if (!waitingTilResponse) {
       let start = itemStart;
-      console.log(start)
       waitingTilResponse = true;
       let response = await getLatestItems(start, LATEST_ITEM_COUNT);
       itemStart = start + LATEST_ITEM_COUNT;
@@ -252,7 +251,7 @@ class HomeScreen extends React.Component<any, any> {
           </View>
         </ScrollView>
       )
-    } else if(isLoading || languageLoading){
+    } else if(isLoading || languageLoading || !categories){
       content = (
         <View style={styles.container}>
           <LoadingIndicator />

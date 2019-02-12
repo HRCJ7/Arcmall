@@ -114,11 +114,10 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
           automaticallyAdjustContentInsets={false}
           enableAutomaticScroll={true}
           showsVerticalScrollIndicator={false}
-          style={styles.headerComponent}
           >
           <View style={styles.headSpace} />
           <View style={styles.headerComponent}>
-            <View style={styles.headerComponent}></View>
+            <View style={styles.innerHeaderComponent}></View>
             <View style={styles.textComponent}>
               <Text style={styles.selectRoleText}>Sign up as a Buyer</Text>
               <Text style={styles.wordingText}>

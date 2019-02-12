@@ -103,11 +103,12 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
         {this.renderLeftAction()}
         <KeyboardAwareScrollView
         enableOnAndroid
-        extraScrollHeight={100}
+        // extraScrollHeight={100}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.headerComponent}>
+        // contentContainerStyle={styles.headerComponent}
+        >
           <View style={styles.headerComponent}>
-            <View style={styles.headerComponent}></View>
+            <View style={styles.innerHeaderComponent}></View>
             <Image
               resizeMode='contain'
               style={styles.logo}

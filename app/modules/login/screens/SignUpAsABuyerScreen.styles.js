@@ -12,6 +12,9 @@ const styles = StyleSheet.create({
   headerComponent: {
     flex: 1,
   },
+  innerHeaderComponent: {
+    flex: 1,
+  },
   textComponent: {
     flex: 4,
   },

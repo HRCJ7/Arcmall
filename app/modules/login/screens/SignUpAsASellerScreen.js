@@ -116,7 +116,7 @@ class SignUpAsASellerScreen extends React.Component<any, any> {
           automaticallyAdjustContentInsets={false}
           enableAutomaticScroll={true}
           showsVerticalScrollIndicator={false}
-          style={styles.headerComponent}>
+          >
           <View style={styles.headSpace} />
           <View style={styles.headerComponent}>
             <View style={styles.textComponent}>

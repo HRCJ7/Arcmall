@@ -5,13 +5,22 @@ const {height, width} = Dimensions.get('screen');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
   },
   headerComponent: {
+    // flex: 1,
+    width: '100%',
+    height: 200,
+    padding: 20,
+  },
+  innerHeaderComponent: {
     flex: 1,
+    width: '100%',
+    // height: 40,
+    padding: 20,
   },
   textComponent: {
     flex: 2,
+    padding: 20,
   },
   logo: {
     flex: 1,
@@ -61,7 +70,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 30,
+    height: 50,
     flexDirection: 'row',
   },
   signUpText: {

@@ -53,7 +53,6 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
       showToast(props.error);
       modState.errorShown = true;
     } else if (props.registrationdata) {
-      console.log(props.navigation.state)
       props.navigation.goBack(props.navigation.state.params.goBackFrom);
     }
     return modState;

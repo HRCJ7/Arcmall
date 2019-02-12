@@ -38,7 +38,6 @@ export const loginSuccess = (state = INITIAL_STATE, {payload} : any) => {
   let data = {...payload.data}
   delete data['password'];
   data.customer_info.isPartner = data.ispartner === 'true'? true: false;
-  console.log(data)
   setUser(JSON.stringify(data));
   return {
     ...state,

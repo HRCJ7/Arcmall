@@ -85,7 +85,6 @@ class ProductListScreen extends React.Component<any, any> {
   }
 
   onListEndReached = () => {
-    console.log('end')
     const {hasLazyLoading, orderId, isSellerProducts} = this.state;
     if (hasLazyLoading && !endLoading) {
       this.loadSellerProducts(nextStart);
@@ -310,7 +309,6 @@ const mapStateToProps = (state, ownProps) => {
       productList = state.product.productList.search.products;
     }
   } else {
-    console.log(navigation.state)
     const categoryId = navigation.state.params.category_id;
 
     //Change navigation object for tab bar.

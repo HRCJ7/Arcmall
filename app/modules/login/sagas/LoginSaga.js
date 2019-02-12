@@ -39,13 +39,11 @@ export default () => {
           // error[1] == 'warning'         
           const value = response[key];
           if(typeof value === 'string' && value !== '') {
-            console.log(value)
             resposeErr = `${resposeErr} \n ${value}`;
             // resposeErr[error[1]] = value;
           }
         }
       }
-      console.log(resposeErr)
       if (resposeErr) {
         yield put(Actions.registrationFailure(resposeErr));
       } else {
@@ -55,7 +53,6 @@ export default () => {
           password: action.payload.password}));
       }
     } catch (error) {
-      console.log(error)
       let resposeErr = null;
       // for (let key of error.response.json()) {
       //   let error = key.split('_');

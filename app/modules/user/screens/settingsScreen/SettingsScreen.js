@@ -119,7 +119,6 @@ class SettingsScreen extends React.Component<any, any> {
 
   getLanguage = async () => {
     let language = await AsyncStorage.getItem(COOKIE_LANGUAGE);
-    console.log(language)
     language = language && language === COOKIE_LANGUAGE_CHINESE? CODE_CHINESE: CODE_ENGLISH;
     this.setState({
       language: language,
@@ -259,7 +258,6 @@ class SettingsScreen extends React.Component<any, any> {
   }
 
   handleAddrssPress = async (address) => {
-    console.log(address)
     if (this.state.fromCart && this.state.onShippingPressed) {
       const response = await setPaymentAddress(address);
       this.state.onShippingPressed(address);
@@ -565,7 +563,6 @@ class SettingsScreen extends React.Component<any, any> {
   render() {
     let content = null;
     const {activeScreen, isLoading} = this.state;
-    console.log(activeScreen)
     if (isLoading) {
       content = (
         <View style={styles.container}>

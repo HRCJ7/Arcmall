@@ -16,7 +16,6 @@ export const getProductsByOrder = async (order_id) => {
 }
 
 export const getSellerProducts = async (customer_id, start = 0, limit = 1000) => {
-  console.log(start, limit)
   let response = await fetch(`${BASE_URL}/product/getsellerproducts`, {
     method: 'POST',
     credentials: 'include',

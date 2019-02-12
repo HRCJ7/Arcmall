@@ -67,8 +67,6 @@ class CategoryTabNavigation extends React.Component {
         };
       }
 
-      console.log(name)
-
       return {routes, name};
     }
     

@@ -129,8 +129,6 @@ ProductListItem.defaultProps = {
 const mapStateToProps = (state, ownProps) => {
   let addedToWishList = false;
   const wishlist = state.cart.wishListIds;
-  console.log(wishlist)
-  console.log(ownProps.item.item)
   if (ownProps.item.item) {
     addedToWishList = wishlist[ownProps.item.item.product_id];
   }

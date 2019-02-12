@@ -46,7 +46,6 @@ const getCart = async (cartData) => {
 const getCategories = async () => {
   // await AsyncStorage.removeItem(STORAGE_CATEGORIES)
   let categories = await AsyncStorage.getItem(STORAGE_CATEGORIES);
-  console.log(categories)
   if(categories) {
     return JSON.parse(categories);
   } else {

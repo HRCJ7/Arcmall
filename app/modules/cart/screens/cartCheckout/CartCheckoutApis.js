@@ -89,7 +89,6 @@ export const getPaymentMethods = async (details) => {
 
   let response = await fetch(`${BASE_URL}/payment/methods`, options);
   response = await response.json();
-  console.log(response)
 
   for(let key of Object.keys(response.payment_methods)) {
     let obj = response.payment_methods[key];
@@ -151,10 +150,7 @@ export const getPaypalAccessToken = async (details) => {
     body: JSON.stringify({grant_type:'client_credentials'}),
   }
 
-  console.log(options)
-
   let response = await fetch(`${PAYPAL_URL}/oauth2/token`, options);
-  console.log(response)
   return await response.json();
 }
 

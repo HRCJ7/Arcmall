@@ -268,12 +268,9 @@ class ProductDetailScreen extends React.Component<any, any> {
         let children = this.renderOptionsChildren(option.product_option_value, option.product_option_id);
         let  selectedValue = null;
         const {addCartForm: {option: stateOptions}} = this.state;
-        console.log(stateOptions)
         if (stateOptions[option.product_option_id]) {
           selectedValue = `${option.product_option_id}-${stateOptions[option.product_option_id]}`;
         }
-
-        console.log(selectedValue)
 
         content = (
           <WhiteCard>
@@ -416,7 +413,6 @@ ProductDetailScreen.defaultProps = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(state.product.productLoading)
   return {
     data: state.product.productData,
     isLoading: state.product.productLoading,

@@ -109,8 +109,6 @@ class OrderConfirmationScreen extends React.Component<any, any> {
         price = shipMethd.quote[shippingMethod].text;
       }
       
-      console.log(title, code, cost, price);
-
       if(title && code && price) {
         shippingMethods.push({
           title,
@@ -137,7 +135,6 @@ class OrderConfirmationScreen extends React.Component<any, any> {
       },
     });
     response = await response.json();
-    console.log(response)
     if (response.success) {
       this.props.dispatch(CartActions.getCart());
     }
@@ -195,8 +192,6 @@ class OrderConfirmationScreen extends React.Component<any, any> {
   renderOptions = () => {
     const {shippingMethods} = this.state;
     let content = null;
-    console.log(shippingMethods)
-
 
     const onValueChange = (value: string) => {
       
@@ -272,7 +267,6 @@ class OrderConfirmationScreen extends React.Component<any, any> {
       let views = [];
       let index = 0;
       for (const total of totals) {
-        console.log(total)
         views.push(
           <View style={{height: 30}}>
             {(() => {

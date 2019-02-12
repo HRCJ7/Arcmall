@@ -116,7 +116,6 @@ class ShopDetailScreen extends React.Component<any, any> {
     let content = null;
     const {sellerProducts} = this.state;
     const navBar = this.renderNavBar();
-    console.log(sellerProducts)
 
     // if (!userInfo) {
     //   content = (

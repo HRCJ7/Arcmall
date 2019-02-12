@@ -33,7 +33,6 @@ class OrderHistoryScreen extends React.Component<any, any> {
   constructor(props) {
     super(props);
     const params = props.navigation.state.params;
-    console.log(params)
     this.state = {
       isLoading: true,
       products: null,

@@ -27,7 +27,6 @@ export const addItem = async (data) => {
     },
     body: data
   });
-  console.log(response);
   let resp = await response.json();
  
   return resp;
@@ -65,17 +64,12 @@ export const filterCategory = async (categoryData, category_id) => {
 }
 
 
-export const uploadImage = async (image, product_id, isMain?) => {
-  
+export const uploadImage = async (image, product_id, isMain?) => { 
   let imageUploadUri = `${BASE_URL}/product/addproductimage`;
   let mainImageUrl = `${BASE_URL}/product/addmainimage`;
-
-  console.log(image)
-
   if(isMain) {
     imageUploadUri = mainImageUrl;
   }
-  
   const data = new FormData();
   data.append('image', {
     uri: image.path,
@@ -95,11 +89,7 @@ export const uploadImage = async (image, product_id, isMain?) => {
     },
     body: data,
   });
-  
-
-  console.log(resp)
 
   let resp = await response.json();
-  console.log(resp);
   return resp;
 }

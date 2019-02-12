@@ -145,7 +145,6 @@ class AddProductScreen extends React.Component<any, any> {
         });
         if (existing.length > 0) {
           let existeingOption = existing[0];
-          console.log('TCL: addItem -> existeingOption', existeingOption)
           const concatValues = existeingOption.product_option_value.concat([
             {
               option_value_id: item.option_value_id,
@@ -170,16 +169,12 @@ class AddProductScreen extends React.Component<any, any> {
       } else {
         delete requestBody.product_option;
       }
-    
       let form = getForm(requestBody);
-      console.log(form);
-      console.log(form);
       let response = null;
       try {
         response = await addItem(form);
         
         if (response.product_id) {
-          console.log('upload data success');
           this.setState({
             productId: response.product_id,
           }, () => {
@@ -192,7 +187,6 @@ class AddProductScreen extends React.Component<any, any> {
         
       } catch (error) {
         this.setLoadingState(false);
-        console.log(error)
         showToast('Something went wrong.');
       }
     } else {

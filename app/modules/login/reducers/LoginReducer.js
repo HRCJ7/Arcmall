@@ -11,7 +11,8 @@ import {
   REGISTRATION,
   REGISTRATION_SUCCESS,
   REGISTRATION_FAILURE,
-  SIGN_OUT
+  SIGN_OUT,
+  FORGET_PASSWORD
 } from '../actions/Types';
 import { NativeIconAPI } from 'react-native-vector-icons/dist/lib/create-icon-set';
 import { STORAGE_USER, COOKIE_PHPSSID, COOKIE_CURENCY, COOKIE_LANGUAGE } from '../../../Constants';
@@ -27,6 +28,10 @@ const INITIAL_STATE = {
   registrationError: null,
   registrationLoading: true,
 };
+
+export const forgetPassword = (state = INITIAL_STATE, {payload} : any) => ({
+  ...state,
+});
 
 export const login = (state = INITIAL_STATE, {payload} : any) => ({
   ...state,
@@ -103,7 +108,7 @@ const ACTION_HANDLERS = {
   [LOGIN_FAILURE]: loginFailure,
   [POST_LOGIN]: postLogin,
   [SIGN_OUT]: signOut,
-
+  [FORGET_PASSWORD]: forgetPassword,
   [REGISTRATION]: registration,
   [REGISTRATION_SUCCESS]: registrationSuccess,
   [REGISTRATION_FAILURE]: registrationFailure,

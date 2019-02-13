@@ -79,6 +79,12 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
     this.props.navigation.dispatch(navigateToSelectRoleScreen());
   }
 
+  handleForgetPassword = () => {
+    let { email } = this.state;
+    await clearCookies();
+    this.props.dispatch(LoginActions.forgetPassword(email))
+  }
+
   handleOnBackPress = () => {
     this.props.navigation.goBack(null);
   }
@@ -129,7 +135,7 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
               secureTextEntry={true}
               style={styles.textInput}
             />
-            <TouchableOpacity>
+            <TouchableOpacity   onPress={this.handleForgetPassword}>
               <Text style={styles.forgotPasswordText}>{Strings.FORGOT_PASSWORD}</Text>
             </TouchableOpacity>
             <ArcmallButton

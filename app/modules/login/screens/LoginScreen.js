@@ -43,6 +43,10 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
     
   }
 
+  componentWillUnmount() {
+    this.props.dispatch(CartActions.getCart());
+  }
+
   static getDerivedStateFromProps(props, state) {
     //Return state object, retun null to update nothing;
     let modState = {...state};
@@ -63,6 +67,7 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
   }
 
   componentDidUpdate() {}
+
   handleNavigatePress = () => {
     this.props.navigation.dispatch(navigateToMainTabScreen());
   };
@@ -80,7 +85,7 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
     this.props.navigation.dispatch(navigateToSelectRoleScreen());
   }
 
-  handleForgetPassword = () => {
+  handleForgetPassword = async () => {
     let { email } = this.state;
     await clearCookies();
     this.props.dispatch(LoginActions.forgetPassword(email))

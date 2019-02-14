@@ -180,21 +180,20 @@ class CartCheckoutScreen extends React.Component<any, any> {
 
     const {total, currency, address} = this.state;
 
-    // const response = await addOrder({
-    //   affiliate_id: 0,
-    //   order_status_id: ORDER_HISTORY.PROCESSING,
-    // });
-    // if (response.success) {
+    const response = await addOrder({
+      affiliate_id: 0,
+      order_status_id: ORDER_HISTORY.PROCESSING,
+    });
+    if (response.success) {
       const response = await configurePaypal(total, currency, 'Arcmall Cart');
       console.log(response)
       this.props.navigation.goBack(null);
       if (response.response.state === 'approved') {
         this.props.navigation.goBack(null);
       }
-      
-    // } else if (response.error) {
-    //   alert(response.error)
-    // }
+    } else if (response.error) {
+      alert(response.error)
+    }
     
     // let obj = {
     //   intent: 'sale',

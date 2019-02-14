@@ -95,4 +95,5 @@ export default enStrings = {
     ADD_SHIPPING: 'Add Shipping',
     MY_ITEMS: 'My Items',
     CHANGE_LANGUAGE: 'Change Language',
+    EMPTY_CART: 'The cart is empty.'
 }

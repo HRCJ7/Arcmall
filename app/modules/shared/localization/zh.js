@@ -60,7 +60,7 @@ export default zhStrings = {
     CHECKOUT: 'Checkout',
     PAY_WITH_PAYPAL: "Pay with Paypal",
     ITEMS: 'Items',
-    LOGIN_TO_SEE: 'Please login to see content',
+    LOGIN_TO_SEE: 'Please login to continue',
     CURRENT_PASSWORD: 'Current Password',
     NEW_PASSWORD: 'New Password',
     CONFIRM_PASSWORD: 'Confirm Password',
@@ -96,4 +96,5 @@ export default zhStrings = {
     ADD_SHIPPING: 'Add Shipping',
     MY_ITEMS: 'My Items',
     CHANGE_LANGUAGE: 'Change Language',
+    EMPTY_CART: 'The cart is empty.',
 }

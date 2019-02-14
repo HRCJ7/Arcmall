@@ -27,10 +27,8 @@ export default () => {
   }
 
   function* watchForgetPassword(): Saga<void> {
-  function* forgetPassword(action) {
-    yield takeLatest(FORGET_PASSWORD, login);
+    yield takeLatest(FORGET_PASSWORD, forgetPassword);
   }
-
 
   function* login(action) {
     try {
@@ -93,4 +91,4 @@ export default () => {
     watchRegister,
     watchForgetPassword
   };
-};
+}

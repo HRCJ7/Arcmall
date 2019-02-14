@@ -87,8 +87,12 @@ class CartDetailsScreen extends React.Component<any, any> {
   };
 
   handleCheckoutPress = () => {
-    this.props.navigation.dispatch(navigateToCartCheckoutScreen())
-    // this.props.navigation.dispatch(navigateToSettings({activeScreen: ACTIVE_SCREEN_SHIPPING, fromCart: true}))
+    const {products} = this.state;
+    if (products && products.length > 0) {
+      this.props.navigation.dispatch(navigateToCartCheckoutScreen())
+    } else {
+      alert(Strings.EMPTY_CART)
+    }
   }
 
   renderLeftAction = () => {
@@ -180,15 +184,14 @@ class CartDetailsScreen extends React.Component<any, any> {
         </View>
       )
     } 
-    // else if(!user) {
-    //     content = (
-    //       <View style={styles.container}>
-    //         {navBar}
-    //         <Text style={styles.errorText}>{Strings.LOGIN_TO_SEE}</Text>
-    //       </View>
-    //     )
-    // } 
-    
+    else if(!user) {
+        content = (
+          <View style={styles.container}>
+            {navBar}
+            <Text style={styles.errorText}>{Strings.LOGIN_TO_SEE}</Text>
+          </View>
+        )
+    }
     else {
       content = (
         <View style={styles.container}>

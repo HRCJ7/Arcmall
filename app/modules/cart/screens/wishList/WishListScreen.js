@@ -20,6 +20,7 @@ import { navigateToItemDetails } from '../../../../navigation/RootNavActions';
 import ProductListItem from '../../../product/components/productListItem/ProductListItem';
 import ProductActions from '../../../product/actions/ProductActions';
 import CartActions from '../../actions/CartActions';
+import { showToast } from '../../../../theme/Base';
 
 class WishListScreen extends React.Component<any, any> {
   static defaultProps: any
@@ -125,7 +126,7 @@ class WishListScreen extends React.Component<any, any> {
         </View>
       );
     } else {
-      Toast.show(Strings.SOMETHING_WENT_WRONG);
+      showToast(Strings.SOMETHING_WENT_WRONG)
     }
     return (
       content

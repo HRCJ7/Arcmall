@@ -6,9 +6,20 @@ const urlFactory = {
   login: (): string => 'user_login',
   register: (): string => 'user_register',
   saveAddress: (): string => 'address/save',
+  forgetPassword: ():string => 'password',
+
 };
 
 const loginService = {
+  forgetPassword: async (email: string): Promise<any> => {
+    const endpoint: string = urlFactory.forgetPassword;
+    const body: {email: string} = {email};
+    const urlParams = null;
+    const headers = null;
+
+    return POST(endpoint, body, urlParams, headers, [COOKIE_PHPSSID, COOKIE_CURENCY, COOKIE_LANGUAGE]);
+  },
+
   login: async (email: string, password: string): Promise<any> => {
     const endpoint: string = urlFactory.login();
     const body: {email: string, password: string} = {email, password};

@@ -10,12 +10,28 @@ import type {
 import Actions from '../actions/LoginActions';
 import LoginService from '../services/LoginService';
 import {
-  LOGIN, REGISTRATION,
+  LOGIN, REGISTRATION,FORGET_PASSWORD
 } from '../actions/Types';
 import { COOKIE_PHPSSID, COOKIE_LANGUAGE, COOKIE_CURENCY } from '../../../Constants';
 import CartActions from '../../cart/actions/CartActions';
 
 export default () => {
+
+  function* forgetPassword(action) {
+    try {
+      const response = yield call(LoginService.forgetPassword, action.payload.email);
+     
+    } catch (error) {
+      
+    }
+  }
+
+  function* watchForgetPassword(): Saga<void> {
+  function* forgetPassword(action) {
+    yield takeLatest(FORGET_PASSWORD, login);
+  }
+
+
   function* login(action) {
     try {
       const response = yield call(LoginService.login, action.payload.email, action.payload.password);
@@ -75,5 +91,6 @@ export default () => {
   return {
     watchLogin,
     watchRegister,
+    watchForgetPassword
   };
 };

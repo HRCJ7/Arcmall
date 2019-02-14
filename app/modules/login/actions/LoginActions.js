@@ -1,5 +1,14 @@
 //@flow
-import {LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE, POST_LOGIN, REGISTRATION, REGISTRATION_SUCCESS, REGISTRATION_FAILURE, SIGN_OUT} from "./Types";
+import {FORGET_PASSWORD,LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE, POST_LOGIN, REGISTRATION, REGISTRATION_SUCCESS, REGISTRATION_FAILURE, SIGN_OUT} from "./Types";
+
+
+const forgetPassword = (email: string) => ({
+  type: FORGET_PASSWORD,
+  payload: {
+    email,
+   
+  },
+});
 
 const login = (email: string, password: string) => ({
     type: LOGIN,
@@ -58,7 +67,7 @@ export default {
   loginFailure,
   postLogin,
   signOut,
-
+  forgetPassword,
   registration,
   registrationSuccess,
   registrationFailure,

@@ -14,12 +14,45 @@ import {
   SET_LANGUAGE,
   SET_PASSWORD,
   GET_ADDRESSES,
+  SET_PROFILE
 } from '../actions/Types';
 import UserService from '../services/UserService';
 import UserActions from '../actions/UserActions';
 import ProductActions from '../../product/actions/ProductActions';
 
 export default () => {
+
+
+  function* setProfile(action) {
+    try {
+      const response = yield call(UserService.setProfile, action.payload.firstName,action.payload.lastName,action.payload.email,action.payload.mobileNumber);
+      yield put(UserActions.setProfileSuccess(response));
+     
+    } catch (error) {
+      yield put(UserActions.setProfileFailure(error.response));
+     
+    }
+  }
+
+  function* watchSetProfile(): Saga<void> {
+    yield takeLatest(SET_PROFILE, setProfile);
+  }
+
+
+  function* setPassword(action) {
+    try {
+      const response = yield call(UserService.setPassword, action.payload.password);
+      yield put(UserActions.setPasswordSuccess(response));
+     
+    } catch (error) {
+      yield put(UserActions.setPasswordFailure(error.response));
+     
+    }
+  }
+
+  function* watchSetPassword(): Saga<void> {
+    yield takeLatest(SET_PASSWORD, setPassword);
+  }
 
   function* setPassword(action) {
     try {

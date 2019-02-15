@@ -8,6 +8,7 @@ import ShopDetailScreen from '../modules/product/screens/shopDetails/ShopDetailS
 import SelectRoleScreen from '../modules/login/screens/SelectRoleScreen';
 import SignUpAsABuyerScreen from '../modules/login/screens/SignUpAsABuyerScreen';
 import SignUpAsASellerScreen from '../modules/login/screens/SignUpAsASellerScreen';
+import ForgetPasswordScreen from '../modules/login/screens/ForgetPasswordScreen';
 import MainTabNavigation from './mainTab/MainTabNavigation';
 import CategoryTabNavigator from './categoryTab/CategoryTabNavigation';
 import CategoryListScreen from '../modules/product/screens/categoryList/CategoryListScreen';
@@ -52,6 +53,7 @@ export const ROOT_NAV_ACCOUNT_SETTINGS = 'AccountSettingScreen';
 export const ROOT_NAV_EDIT_PROFILE = 'EditProfileScreen';
 export const ROOT_NAV_SHOP_DETAILS = 'ShopDetailScreen';
 export const ROOT_NAV_ADD_ITEM = 'Add Item';
+export const ROOT_NAV_FORGET_PASSWORD = 'Forget Password';
 
 export const rootRoutes = {
   [ROOT_NAV_MAIN_TAB]: {
@@ -157,5 +159,9 @@ export const rootRoutes = {
   [ROOT_NAV_SHOP_DETAILS]: {
     screen: ShopDetailScreen,
     path: `/${ROOT_NAV_SHOP_DETAILS}`,
+  },
+  [ROOT_NAV_FORGET_PASSWORD]: {
+    screen: ForgetPasswordScreen,
+    path: `/${ROOT_NAV_FORGET_PASSWORD}`,
   }
 };

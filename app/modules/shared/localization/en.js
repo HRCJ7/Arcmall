@@ -79,7 +79,7 @@ export default enStrings = {
     EDIT_PROFILE: 'Edit Profile',
     STORE_PRODUCTS: 'Store Products',
     SHOP: 'Shop',
-   
+    SEND: 'Send',
 
     PLACED_ON: 'Placed on',
     STATUS: 'Status'

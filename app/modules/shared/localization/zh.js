@@ -81,5 +81,6 @@ export default zhStrings = {
     SHOP: 'Shop',
     ORDER_HISTORY:'Order History',
     PLACED_ON: 'Placed on',
-    STATUS: 'Status'
+    STATUS: 'Status',
+    SEND: 'Send',
 }

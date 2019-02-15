@@ -14,8 +14,7 @@ import {
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import styles from "./LoginScreen.styles";
-import { navigateToMainTabScreen, navigateToSelectRoleScreen, navigateToAccountSettingScreen,navigateToForgetPasswordScreen } from "../../../navigation/RootNavActions";
+import styles from "./ForgetPasswordScreen.styles";
 import Icon from "react-native-vector-icons/FontAwesome";
 import EvilIcon from "react-native-vector-icons/EvilIcons";
 import Strings from "../../shared/localization/localization";
@@ -26,15 +25,14 @@ import { clearCookies, getUser } from "../../../store/AsyncStorageHelper";
 import { showToast } from "../../../theme/Base";
 import CartActions from "../../cart/actions/CartActions";
 
-class SignUpAsABuyerScreen extends React.Component<any, any> {
+class ForgetPasswordScreen extends React.Component<any, any> {
   static defaultProps: any;
 
   constructor(props) {
     super(props);
     this.state = {
       email: null,
-      password: null,
-      errorShown: false,
+     
     };
   }
 
@@ -42,45 +40,20 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
     
   }
 
-  static getDerivedStateFromProps(props, state) {
-    //Return state object, retun null to update nothing;
-    let modState = {...state};
-    if(!state.errorShown && props.error? props.error.error_warning: false) {
-      showToast(props.error.error_warning);
-      modState.errorShown = true;
-    }
-    return modState;
-  }
 
-  async shouldComponentUpdate(nextProps, nextState) {
-    let user = await getUser();
-    if(user) {
-      this.props.dispatch(CartActions.getCart());
-      this.props.navigation.goBack(null);
-    }
-    return true;
-  }
 
   componentDidUpdate() {}
   handleNavigatePress = () => {
     this.props.navigation.dispatch(navigateToMainTabScreen());
   };
 
-  handleLoginPress = async () => {
-    let {email, password} = this.state;
-    await clearCookies();
-    this.props.dispatch(LoginActions.login(email, password))
-    this.setState({
-      errorShown: false,
-    })
-  }
-
   handleSignUpPress = () => {
     this.props.navigation.dispatch(navigateToSelectRoleScreen());
   }
 
   handleForgetPassword = () => {
-    this.props.navigation.dispatch(navigateToForgetPasswordScreen());
+    let { email } = this.state;
+    this.props.dispatch(LoginActions.forgetPassword(email))
   }
 
   handleOnBackPress = () => {
@@ -118,35 +91,19 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
             />
           </View>
           <View style={styles.textComponent}>
-            <Text style={styles.descriptionText}>
-              {Strings.LOGIN_TEXT}
-            </Text>
-            <Text style={styles.signInContinueText}>{Strings.SIGN_IN_TO_CONTINUE}</Text>
+          
             <Text style={styles.label}>{Strings.EMAIL}</Text>
             <TextInput
               onChangeText={(email) => this.setState({email})}
               style={styles.textInput}
             />
-            <Text style={[styles.label, {paddingTop: 40}]}>{Strings.PASSWORD}</Text>
-            <TextInput
-              onChangeText={(password) => this.setState({password})}
-              secureTextEntry={true}
-              style={styles.textInput}
-            />
-            <TouchableOpacity   onPress={this.handleForgetPassword}>
-              <Text style={styles.forgotPasswordText}>{Strings.FORGOT_PASSWORD}</Text>
-            </TouchableOpacity>
+         
             <ArcmallButton
-              onPress={this.handleLoginPress}
-              title={Strings.SIGN_IN}
+              onPress={this.handleForgetPassword}
+              title={Strings.SEND}
               style={{marginTop: 20}}
             />
-            <View style={styles.footerComponent}>
-              <Text style={styles.label}>{Strings.NEW_TO_THIS}</Text>
-              <TouchableOpacity onPress={this.handleSignUpPress}>
-                <Text style={styles.signUpText}>{` ${Strings.SIGN_UP}`}</Text>
-              </TouchableOpacity>
-            </View>
+          
           </View>
         </KeyboardAwareScrollView>
       </ImageBackground>
@@ -154,9 +111,9 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
   }
 }
 
-SignUpAsABuyerScreen.propTypes = {};
+ForgetPasswordScreen.propTypes = {};
 
-SignUpAsABuyerScreen.defaultProps = {};
+ForgetPasswordScreen.defaultProps = {};
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -166,4 +123,4 @@ const mapStateToProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateToProps)(SignUpAsABuyerScreen);
+export default connect(mapStateToProps)(ForgetPasswordScreen);

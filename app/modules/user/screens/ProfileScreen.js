@@ -49,16 +49,23 @@ class ProfileScreen extends React.Component<any, any> {
     props.navigation.setParams({
       loadProfile: true,
     });
-    this.getUserInfo();
   }
 
   componentDidMount() {
-    
+    this.getUserInfo();
   }
 
   static getDerivedStateFromProps(props, state) {
     //Return state object, retun null to update nothing;
-    return null;
+    let changedState = state;
+    if (props.user) {
+      changedState = {
+        userInfo: props.user,
+      };
+    } else {
+      props.navigation.dispatch(navigateToLoginScreen({fromPassword: true}));
+    }
+    return changedState;
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -181,6 +188,7 @@ ProfileScreen.defaultProps = {
 const mapStateToProps = (state, ownProps) => {
   return {
     ...state,
+    user: state.login.user,
   };
 };
 

@@ -52,7 +52,8 @@ export default () => {
         if (error[0] === 'error') {
           // error[1] == 'warning'         
           const value = response[key];
-          if(typeof value === 'string' && value !== '') {
+          if (typeof value === 'string' && value !== '') {
+            console.log(value)
             resposeErr = `${resposeErr} \n ${value}`;
             // resposeErr[error[1]] = value;
           }
@@ -64,7 +65,8 @@ export default () => {
         yield put(Actions.registrationSuccess({
           ...response,
           email: action.payload.email,
-          password: action.payload.password}));
+          password: action.payload.password
+        }));
       }
     } catch (error) {
       let resposeErr = null;
@@ -91,4 +93,5 @@ export default () => {
     watchRegister,
     watchForgetPassword
   };
-}
+};
+

@@ -23,6 +23,9 @@ import UserActions from "../../actions/UserActions";
 import Strings from "../../../shared/localization/localization";
 import { STORAGE_USER } from "../../../../Constants";
 import { getUser } from "../../../../store/AsyncStorageHelper";
+import { changePassword } from "../EditProfileApis";
+import LoginActions from "../../../login/actions/LoginActions";
+import { navigateToLoginScreen, navigateToMainTabScreen } from "../../../../navigation/RootNavActions";
 
 class ChangePasswordScreen extends React.Component<any, any> {
   static defaultProps: any;
@@ -55,25 +58,26 @@ class ChangePasswordScreen extends React.Component<any, any> {
 
   componentDidUpdate() {}
 
-  handleNavigatePress = () => {
-    this.props.navigation.dispatch(navigateToMainTabScreen());
-  };
-
   handleOnBackPress = () => {
     this.props.navigation.goBack(null);
   };
 
-  handleSavePassword = () => {
-    let { password, confirm } = this.state;
-    if (password == confirm) {
-
-      this.props.dispatch(UserActions.setPassword(password));
+  handleSavePassword = async () => {
+    let { password, confirm, current} = this.state;
+    password = password === ''? null: password;
+    confirm = confirm === ''? null: confirm;
+    if (confirm && password && password === confirm) {
+      const response = await changePassword({password, current});
+      if (response.status === 'success') {
+        this.props.dispatch(LoginActions.signOut());
+        this.props.navigation.dispatch
+        if (response.message) {
+          alert(response.message);
+        }
+      }
+    } else {
+      alert(Strings.PASSWORDS_NOT_MATCH);
     }
-
-    // const {checked, firstname, email, password, lastname} = this.state;
-    // if(checked && firstname && lastname && email && password) {
-    //   this.props.dispatch(LoginActions.registration(this.state))
-    // }
   };
 
   render() {
@@ -131,8 +135,8 @@ ChangePasswordScreen.defaultProps = {};
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    ...state
-    // registrationdata: state.login.registrationData,
+    ...state,
+    navigation: ownProps.navigation,
     // isLoading: state.login.registrationLoading,
     // error: state.login.registrationError,
   };

@@ -1,5 +1,5 @@
 import {createReducer} from 'reduxsauce';
-import { SET_PASSWORD,SET_PASSWORD_SUCCESS,SET_PASSWORD_FAILURE,SET_LANGUAGE, SET_LANGUAGE_SUCCESS, SET_LANGUAGE_FAILURE, GET_ADDRESSES, GET_ADDRESSES_SUCCESS, GET_ADDRESSES_FAILURE } from '../actions/Types';
+import { SET_PROFILE,SET_PASSWORD,SET_PASSWORD_SUCCESS,SET_PASSWORD_FAILURE,SET_LANGUAGE, SET_LANGUAGE_SUCCESS, SET_LANGUAGE_FAILURE, GET_ADDRESSES, GET_ADDRESSES_SUCCESS, GET_ADDRESSES_FAILURE } from '../actions/Types';
 import {
  Alert
 } from "react-native";
@@ -21,6 +21,14 @@ const INITIAL_STATE = {
   regions: null,
   addressesError: null,
 };
+
+
+export const setProfile = (state = INITIAL_STATE, { payload }: any) => ({
+  
+
+  ...state,
+  passwordLoading: true,
+});
 
 
 export const setPassword = (state = INITIAL_STATE, { payload }: any) => ({
@@ -96,6 +104,7 @@ export const getAddressesFailure = (state, {payload} : any) => ({
 });
 
 const ACTION_HANDLERS = {
+  [SET_PROFILE] : setProfile,
   [SET_PASSWORD]: setPassword,
   [SET_PASSWORD_SUCCESS]: setPasswordSuccess,
   [SET_PASSWORD_FAILURE]: setPasswordFailure,

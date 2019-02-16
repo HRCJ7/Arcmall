@@ -22,6 +22,14 @@ const getUser = async (callback) => {
   return user;
 }
 
+const getFullUser = async (callback) => {
+  let user = await AsyncStorage.getItem(STORAGE_USER);
+  if (user) {
+    user = JSON.parse(user);
+  }
+  return user;
+}
+
 const setUser = async (user) => {
   await AsyncStorage.setItem(STORAGE_USER, user);
 }
@@ -68,4 +76,5 @@ export {
   getCart,
   getCategories,
   setCategories,
+  getFullUser,
 }

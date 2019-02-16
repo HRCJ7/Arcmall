@@ -5,10 +5,19 @@ import { COOKIE_LANGUAGE } from "../../../Constants";
 const urlFactory = {
   setLanguage: (): string => 'language/set',
   setPassword: (): string => '/password/changepassword',
-  getAddresses: (): string => '/address'
+  getAddresses: (): string => '/address',
+  setProfile: (): string => '/useredit'
+   
 };
 
 const UserService = {
+  setProfile: async (firstName,lastName,email,mobileNumber): Promise<any> => {
+    const endpoint: string = urlFactory.setProfile();
+    const body = {firstName,lastName,email,mobileNumber}
+    const urlParams = null;
+    const headers = null;
+    return POST(endpoint, body, urlParams, headers);
+  },
   setLanguage: async (code): Promise<any> => {
     const endpoint: string = urlFactory.setLanguage();
     const body = {code}

@@ -15,7 +15,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from "./LoginScreen.styles";
-import { navigateToMainTabScreen, navigateToSelectRoleScreen, navigateToAccountSettingScreen } from "../../../navigation/RootNavActions";
+import { navigateToMainTabScreen, navigateToSelectRoleScreen, navigateToAccountSettingScreen,navigateToForgetPasswordScreen } from "../../../navigation/RootNavActions";
 import Icon from "react-native-vector-icons/FontAwesome";
 import EvilIcon from "react-native-vector-icons/EvilIcons";
 import Strings from "../../shared/localization/localization";
@@ -85,10 +85,8 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
     this.props.navigation.dispatch(navigateToSelectRoleScreen());
   }
 
-  handleForgetPassword = async () => {
-    let { email } = this.state;
-    await clearCookies();
-    this.props.dispatch(LoginActions.forgetPassword(email))
+  handleForgetPassword = () => {
+    this.props.navigation.dispatch(navigateToForgetPasswordScreen());
   }
 
   handleOnBackPress = () => {
@@ -96,13 +94,19 @@ class SignUpAsABuyerScreen extends React.Component<any, any> {
   }
 
   renderLeftAction = () => {
-    return (
-      <TouchableOpacity
-        style={styles.backButton}
-        onPress={this.handleOnBackPress}>
-        <EvilIcon name='close' color='white' size={30}/>
-      </TouchableOpacity>
-    )
+    let content = null;
+    if (!this.props.navigation.state.params.fromPassword) {
+      content =  (
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={this.handleOnBackPress}>
+          <EvilIcon name='close' color='white' size={30}/>
+        </TouchableOpacity>
+      )
+    }
+
+    return content;
+    
   }
 
   render() {

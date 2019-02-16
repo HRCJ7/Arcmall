@@ -79,6 +79,7 @@ export default enStrings = {
     EDIT_PROFILE: 'Edit Profile',
     STORE_PRODUCTS: 'Store Products',
     SHOP: 'Shop',
+    ORDER_HISTORY:'Order History',
     PLACED_ON: 'Placed on',
     STATUS: 'Status',
     QUANTITY: 'Quantity',
@@ -95,5 +96,7 @@ export default enStrings = {
     ADD_SHIPPING: 'Add Shipping',
     MY_ITEMS: 'My Items',
     CHANGE_LANGUAGE: 'Change Language',
-    EMPTY_CART: 'The cart is empty.'
+    EMPTY_CART: 'The cart is empty.',
+    SEND: 'Send',
+    PASSWORDS_NOT_MATCH: 'Passwords do not match',
 }

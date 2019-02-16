@@ -19,7 +19,7 @@ import LoginActions from '../../../login/actions/LoginActions';
 import NavigationBar from '../../../shared/components/NavigationBar/NavigationBar';
 import Strings from '../../../shared/localization/localization';
 import EvilIcons from 'react-native-vector-icons/dist/EvilIcons';
-import {navigateToSettings, navigateToAddItem, navigateToProductList} from '../../../../navigation/RootNavActions';
+import {navigateToSettings, navigateToAddItem, navigateToProductList, navigateToEditProfileScreen} from '../../../../navigation/RootNavActions';
 import Theme from '../../../../theme/Base';
 import {CheckBox} from 'react-native-elements'
 import UserActions from '../../actions/UserActions';
@@ -157,6 +157,12 @@ class SettingsScreen extends React.Component<any, any> {
     const isSeller = this.props.user? this.props.user.isPartner: false;
     let list = null;
     let profileSettingUserList = [
+      {
+        name: Strings.EDIT_PROFILE,
+        action: () => {
+          this.props.navigation.dispatch(navigateToEditProfileScreen());
+        }
+      },
       {
         name: Strings.CHANGE_PASSWORD,
         nextScreen: ACTIVE_SCREEN_CHANGE_PASSWORD,
@@ -555,7 +561,7 @@ class SettingsScreen extends React.Component<any, any> {
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
-        <ChangePasswordScreen />
+        <ChangePasswordScreen navigation={this.props.navigation} />
       </View>
     )
   }

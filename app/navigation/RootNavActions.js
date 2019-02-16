@@ -20,7 +20,8 @@ import {
   ROOT_NAV_ORDER_HISTORY,
   ROOT_NAV_CART_CHECKOUT,
   ROOT_NAV_EDIT_PROFILE,
-  ROOT_NAV_SHOP_DETAILS
+  ROOT_NAV_SHOP_DETAILS,
+  ROOT_NAV_FORGET_PASSWORD
 } from './RootRoutes';
 
 import {AppContainer} from './RootNavigation';
@@ -29,6 +30,12 @@ export const navigateToMainTabScreen = (navParams: any) => {
   return AppContainer
   .router
   .getActionForPathAndParams(`/${ROOT_NAV_MAIN_TAB}`, navParams);
+};
+
+export const navigateToForgetPasswordScreen = (navParams: any) => {
+  return AppContainer
+  .router
+  .getActionForPathAndParams(`/${ROOT_NAV_FORGET_PASSWORD}`, navParams);
 };
 
 export const navigateToItemListScreen = (navParams: any) => {
@@ -158,5 +165,6 @@ export const navigateToCartCheckoutScreen = (navParams: any) => {
   .router
   .getActionForPathAndParams(`/${ROOT_NAV_CART_CHECKOUT}`, navParams);
 };
+
 
 

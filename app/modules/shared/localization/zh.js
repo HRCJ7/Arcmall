@@ -97,4 +97,6 @@ export default zhStrings = {
     MY_ITEMS: 'My Items',
     CHANGE_LANGUAGE: 'Change Language',
     EMPTY_CART: 'The cart is empty.',
+    SEND: 'Send',
+    PASSWORDS_NOT_MATCH: 'Passwords do not match',
 }

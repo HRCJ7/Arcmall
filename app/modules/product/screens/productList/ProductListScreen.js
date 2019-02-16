@@ -21,6 +21,7 @@ import { navigateToItemDetails } from '../../../../navigation/RootNavActions';
 import ProductActions from '../../actions/ProductActions';
 import {SearchBar} from "react-native-elements";
 import { getProductsByOrder, getSellerProducts } from './ProductApis';
+import { showToast } from '../../../../theme/Base';
 
 let endLoading = false;
 let nextStart = 0;
@@ -277,7 +278,7 @@ class ProductListScreen extends React.Component<any, any> {
         </View>
       );
     } else {
-      Toast.show(Strings.SOMETHING_WENT_WRONG);
+      showToast(Strings.SOMETHING_WENT_WRONG);
     }
     return (
       content

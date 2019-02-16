@@ -7,7 +7,7 @@ const BASE_URL: string = `${Config.API_URL}`;
 const PAYPAL_URL: string = `${Config.PAYPAL_URL}`
 
 export const configurePaypal = async (price, currency, description) => {
-  PayPal.initialize(PayPal.NO_NETWORK, "AYuPRdf4_IxjDfCBzrmlzgqCukYstLaCF6JMjEH2F5HYKi6bsrB2tCIP8tmahX9s4aVQ25FqPJr4jbHn");
+  PayPal.initialize(PayPal.SANDBOX, "AYuPRdf4_IxjDfCBzrmlzgqCukYstLaCF6JMjEH2F5HYKi6bsrB2tCIP8tmahX9s4aVQ25FqPJr4jbHn");
   return PayPal.pay({
     price: `${price}`,
     currency: currency,

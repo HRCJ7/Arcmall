@@ -51,7 +51,7 @@ class CategoryListScreen extends React.Component<any, any> {
     this.props.navigation.goBack(null);
   }
 
-  handleOnGridPress = (categories) => {
+  handleOnGridPress = (categories, name) => {
     this.props.navigation.dispatch(navigateToItemListScreen({categories, name}))
   }
 

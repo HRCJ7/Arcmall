@@ -31,7 +31,7 @@ export default class RatingItem extends Component {
   }
 
   render() {
-    const {style, rating, containerStyle} = this.props;
+    const {rating, containerStyle} = this.props;
     return (
       <View style={[styles.container, containerStyle]}>
         {this.getRatingStars(rating)}

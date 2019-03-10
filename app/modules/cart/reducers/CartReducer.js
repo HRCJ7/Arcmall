@@ -29,6 +29,8 @@ const INITIAL_STATE = {
   cartData: null,
   removeCartData: {},
   editCartData: {},
+
+  addCartLoading: false,
   addCartData: {},
 
   cartLoading: false,
@@ -45,7 +47,7 @@ const INITIAL_STATE = {
 
 const addToCart = (state = INITIAL_STATE, {payload} : any) => ({
   ...state,
-  cartLoading: true,
+  addCartLoading: true,
   cartData: null,
   cartError: null,
 });
@@ -53,14 +55,14 @@ const addToCart = (state = INITIAL_STATE, {payload} : any) => ({
 const addToCartSuccess = (state = INITIAL_STATE, {payload} : any) => {  
   return {
     ...state,
-    cartLoading: false,
+    addCartLoading: false,
     addCartData: payload.data,
   }
 };
 
 const addToCartFailure = (state, {payload} : any) => ({
   ...state,
-  cartLoading: false,
+  addCartLoading: false,
   cartError: payload.error,
 });
 

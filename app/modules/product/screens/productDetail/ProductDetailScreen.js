@@ -24,7 +24,8 @@ import { navigateToReviews,navigateToShopDetails } from '../../../../navigation/
 import {Picker, Header} from "native-base";
 import { Button } from 'react-native-elements';
 import CartActions from '../../../cart/actions/CartActions';
-import { showToast } from '../../../../theme/Base';
+import Theme, { showToast } from '../../../../theme/Base';
+import RatingItem from '../../components/ratingItem/RatingItem';
 
 const NONE = 'none';
 const getOptionDataFromString = (value) => {
@@ -46,31 +47,35 @@ class ProductDetailScreen extends React.Component<any, any> {
     this.state = {
       isLoading: true,
       cartLoading: false,
+      cartUpdated: false,
       addCartForm: {
         option: [],
         quantity: 1,
         product_id: itemId,
       },
     };
-    
-    // this.props.dispatch(ProductActions.getProductById(itemId))
   }
 
   componentDidMount() {
     let {itemId} = this.props.navigation.state.params;
-    this.props.dispatch(ProductActions.getProductById(itemId))
+    this.props.dispatch(ProductActions.getProductById(itemId));
   }
 
   goToShop = () => {
     const {data: {seller}} = this.props;
-        // this.props.navigation.dispatch(navigateToShopDetails({itemId}));
     this.props.navigation.dispatch(navigateToShopDetails({ seller: seller }));
-       
-      }
+  }
+
   static getDerivedStateFromProps(props, state) {
     //Return state object, retun null to update nothing;
+    let cartUpdated = state.cartLoading && !props.cartLoading;
+    let cartLoading = props.cartLoading;
+    if (cartUpdated) {
+      props.dispatch(CartActions.getCart())
+    }
     return {
-      cartLoading: props.cartLoading,
+      cartUpdated,
+      cartLoading,
       isLoading: props.isLoading,
     };
   }
@@ -90,6 +95,14 @@ class ProductDetailScreen extends React.Component<any, any> {
     }
   }
 
+  addRemoveWatchList = (add, product_id) => {
+    if (add) {
+      this.props.dispatch(CartActions.addToWishList({product_id}))
+    } else {
+      this.props.dispatch(CartActions.removeFromWishList({product_id}))
+    }
+  }
+
   handleOnBackPress = () => {
     this.props.navigation.goBack(null);
   }
@@ -101,7 +114,6 @@ class ProductDetailScreen extends React.Component<any, any> {
 
   handleAddToCart = () => {
     let cart = {...this.state.addCartForm};
-    
     for (const optionkey of Object.keys(cart.option)) {
       let newKey = `option[${optionkey}]`;
       cart[newKey] = cart.option[optionkey];
@@ -123,12 +135,32 @@ class ProductDetailScreen extends React.Component<any, any> {
     )
   }
 
+  renderRightAction = () => {
+
+    const {addedToWishList} = this.props;
+    const {itemId} = this.props.navigation.state.params;
+
+    let icon = {name: 'ios-heart-empty', color: 'white'};
+    if (addedToWishList) {
+      icon = {name: 'ios-heart', color: 'red'};
+    }
+
+    return (
+      <TouchableOpacity onPress={() => {
+        this.addRemoveWatchList(!addedToWishList, itemId);
+      }} style={styles.bottomRowAction} numberOfLines={1}>
+        <IonIcon name={icon.name} color={icon.color} size={25}/>
+      </TouchableOpacity>
+    )
+  }
+
   renderNavBar = () => {
     const {data: {heading_title}} = this.props;
     return (
       <NavigationBar
         title={heading_title}
         leftAction={this.renderLeftAction()}
+        rightAction={this.renderRightAction()}
       >
       </NavigationBar>
     )
@@ -161,6 +193,7 @@ class ProductDetailScreen extends React.Component<any, any> {
   renderImageSwiper = () => {
     return (
       <Swiper
+        loop={false}
         style={styles.imageSwiper}
         showsButtons={false}>
         {this.renderSlides()}
@@ -202,17 +235,23 @@ class ProductDetailScreen extends React.Component<any, any> {
   }
 
   renderReviewsCard = () => {
+    const {data: {rating}} = this.props;
     return (
       <WhiteCard>
         <Text style={styles.headingText}>{Strings.REVIEWS}</Text>
+        <View style={styles.ratingItem}>
+          <RatingItem
+            iconStyle={{maxWidth: 20}}
+            iconSize={18}
+            rating={rating}
+          />
+        </View>
         <View style={styles.rightButton}> 
           {this.renderButton(Strings.SHOW_ALL, this.handleOnReviewsPress)}
         </View>
       </WhiteCard>
     )
   }
-
-
 
   renderOptionsChildren = (productOption, optionId) => {
     let children = {props: {}};
@@ -299,13 +338,10 @@ class ProductDetailScreen extends React.Component<any, any> {
   }
 
   renderStoreDetailsCard = () => {
-    const {data: {seller}} = this.props;
+    const {data: {seller, rating}} = this.props;
     let content = null;
     if (seller) {
       content = (
-        <TouchableOpacity
-        onPress={this.goToShop}
-        >
         <WhiteCard >
           <Text style={styles.headingText}>{Strings.STORE_DETAILS}
             {/* {JSON.stringify(seller)} */}
@@ -313,19 +349,11 @@ class ProductDetailScreen extends React.Component<any, any> {
           <View style={styles.info}> 
             <Text style={styles.smallText}>{`${seller.companyname}`}</Text>
           </View>
-          {/* <View style={styles.ratings}>
-            <IonIcon style={styles.ratingIcon} name="ios-star" size={15}/>
-            <IonIcon style={styles.ratingIcon} name="ios-star" size={15} />
-            <IonIcon style={styles.ratingIcon} name="ios-star" size={15} />
-            <IonIcon style={styles.ratingIcon} name="ios-star-outline" size={15} />
-            <IonIcon style={styles.ratingIcon} name="ios-star-outline" size={15} />
-          </View> */}
           <View style={styles.contactSellerView}> 
             <Text style={styles.smallText}>{`${seller.firstname} ${seller.lastname}`}</Text>
-            {this.renderButton(Strings.CONTACT_SELLER)}
+            {this.renderButton(Strings.CONTACT_SELLER, this.goToShop)}
           </View>
-          </WhiteCard>
-          </TouchableOpacity>  
+        </WhiteCard>
       )
     }
     return content;
@@ -347,16 +375,26 @@ class ProductDetailScreen extends React.Component<any, any> {
   }
 
   renderCartButton = () => {
+    const {cartUpdated, cartLoading} = this.state;
+    let title = Strings.ADD_TO_CART;
+    let icon = 'shopping-cart';
+    if (cartUpdated) {
+      title = Strings.ADDED_TO_CART;
+      icon = 'check';
+    }
     return (
       <View style={{position: 'absolute', bottom: 10, left: 0, right: 0}}>
         <Button
           raised
-          loading={this.state.cartLoading}
+          disabled={cartUpdated}
+          buttonStyle={{backgroundColor: Theme.colors.primary}}
+          disabledStyle={{backgroundColor: Theme.colors.primary}}
+          loading={cartLoading}
           onPress={this.handleAddToCart}
-          rightIcon={{name: 'shopping-cart'}}
-          title='Add to cart' />
+          rightIcon={{name: icon}}
+          title={title} 
+        />
       </View>
-      
     )
   }
 
@@ -405,20 +443,29 @@ class ProductDetailScreen extends React.Component<any, any> {
 ProductDetailScreen.propTypes = {
   data: PropTypes.any,
   isLoading: PropTypes.bool,
+  addedToWishList: PropTypes.bool,
 };
 
 ProductDetailScreen.defaultProps = {
   isLoading: true,
   data: null,
+  addedToWishList: false,
 };
 
 const mapStateToProps = (state, ownProps) => {
+  let addedToWishList = false;
+  const wishlist = state.cart.wishListIds;
+  const {itemId} = ownProps.navigation.state.params;
+  if (itemId) {
+    addedToWishList = wishlist[itemId];
+  }
   return {
     data: state.product.productData,
     isLoading: state.product.productLoading,
     error: state.product.productError,
-    cartLoading: state.cart.cartLoading,
+    cartLoading: state.cart.addCartLoading,
     cartError: state.cart.cartError,
+    addedToWishList: addedToWishList,
   };
 };
 

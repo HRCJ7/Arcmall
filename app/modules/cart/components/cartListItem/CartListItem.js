@@ -100,11 +100,16 @@ class CartListItem extends Component {
 
   render() {
     const {item} = this.state;
-    let swipeBtns = [{
-      text: 'Delete',
-      backgroundColor: 'red',
-      onPress: () => { this.props.onDelete(item) }
-    }];
+    const {onDelete} = this.props;
+    let swipeBtns = null;
+    if (onDelete) {
+      swipeBtns = [{
+        text: 'Delete',
+        backgroundColor: 'red',
+        onPress: () => { this.props.onDelete(item) }
+      }];
+    }
+
     let category = '';
     const categoryArr = item.categories? item.categories[item.categories.length - 1]: {};
     if (categoryArr) {

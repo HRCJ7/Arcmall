@@ -89,18 +89,21 @@ export const getPaymentMethods = async (details) => {
 
   let response = await fetch(`${BASE_URL}/payment/methods`, options);
   response = await response.json();
-
-  for(let key of Object.keys(response.payment_methods)) {
-    let obj = response.payment_methods[key];
-    methods.push({
-      title: obj.title,
-      code: obj.code,
-      terms: obj.terms,
-      sortOrder: obj.sort_order,
-    })
+  if (response.error) {
+    console.log(response.error)
+    return response;
+  } else {
+    for(let key of Object.keys(response.payment_methods)) {
+      let obj = response.payment_methods[key];
+      methods.push({
+        title: obj.title,
+        code: obj.code,
+        terms: obj.terms,
+        sortOrder: obj.sort_order,
+      })
+    }
+    return methods;
   }
-
-  return methods;
 }
 
 export const setPaymentMethod = async (payment_method) => {

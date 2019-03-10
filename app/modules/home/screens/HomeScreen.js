@@ -221,7 +221,7 @@ class HomeScreen extends React.Component<any, any> {
               />
             </View>
             <View style={styles.seeMoreView}>
-              <SeeMoreTitleBar name="Featured Shops" />
+              <SeeMoreTitleBar hideSeeMore name="Featured Shops" />
               <Image
                 style={styles.featuredShopsImage}
                 resizeMode='contain'

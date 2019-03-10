@@ -12,7 +12,7 @@ export default zhStrings = {
     PRODUCT_DETAILS: 'Product Details',
     DESCRIPTION: 'Description',
     STORE_DETAILS: 'Store Details',
-    CONTACT_SELLER: 'Contact Seller',
+    CONTACT_SELLER: 'Show Details',
     RETURN_POLICY: 'Return Policy',
     RETURN_TEXT: 'Returns accepted if the product is not as described.',
     BUYER_PROTECTION: 'Buyer Protection',
@@ -99,4 +99,6 @@ export default zhStrings = {
     EMPTY_CART: 'The cart is empty.',
     SEND: 'Send',
     PASSWORDS_NOT_MATCH: 'Passwords do not match',
+    ADD_TO_CART: 'Add to Cart',
+    ADDED_TO_CART: 'Added to Cart',
 }

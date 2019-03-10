@@ -37,7 +37,6 @@ class WishListItem extends Component {
             <Text style={styles.price}>$500.00</Text>
             <TouchableOpacity
                     style={styles.heart}
-                  
                   >
                     <EvilIcon name="heart" color="red" size={25} />
                   </TouchableOpacity>

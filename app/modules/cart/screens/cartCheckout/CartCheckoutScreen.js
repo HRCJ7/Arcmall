@@ -86,6 +86,9 @@ class CartCheckoutScreen extends React.Component<any, any> {
   setAddress = async () => {
     if(this.state.address) {
       const response = await setPaymentAddress(this.state.address);
+      if (response.error) {
+        alert(JSON.stringify(response.error));
+      }
     }
   }
 
@@ -152,25 +155,38 @@ class CartCheckoutScreen extends React.Component<any, any> {
       isComponentsLoading: true,
     });
     const response = await setShippingDetails(method.code);
-    const paymentMethods = await getPaymentMethods();
-    if (paymentMethods.length > 0) {
-      const paymentResponse = await setPaymentMethod(paymentMethods[0].code)
-      if (paymentResponse.error) {
+    console.log(response)
+    if (response.error) {
+      this.setState({
+        isComponentsLoading: false,
+      });
+      alert(JSON.stringify(response.error));
+    } else {
+      const paymentMethods = await getPaymentMethods();
+      if (paymentMethods.error) {
         this.setState({
           isComponentsLoading: false,
         });
-        alert(paymentResponse.error)
-      } else if (paymentResponse.success){
-        this.setState({
-          paymentMethods: paymentMethods,
-          paymentMethod: paymentMethods[0],
-          isComponentsLoading: false,
-        })
-        this.getCart();
+        alert(JSON.stringify(paymentMethods.error));
+      }
+      if (paymentMethods.length > 0) {
+        const paymentResponse = await setPaymentMethod(paymentMethods[0].code)
+        if (paymentResponse.error) {
+          this.setState({
+            isComponentsLoading: false,
+          });
+          alert(paymentResponse.error)
+        } else if (paymentResponse.success){
+          this.setState({
+            paymentMethods: paymentMethods,
+            paymentMethod: paymentMethods[0],
+            isComponentsLoading: false,
+          })
+          this.getCart();
+        }
       }
     }
   }
-  
 
   handleOnBackPress = () => {
     this.props.navigation.goBack(null);
@@ -311,7 +327,6 @@ class CartCheckoutScreen extends React.Component<any, any> {
           keyExtractor={(item) => item.key}
           renderItem={({item}) => {
             let isSelected = (item.code === selected? selected.code: '');
-            console.log(isSelected)
             const fontWeight = isSelected? Theme.fontWeight.semibold: Theme.fontWeight.light;
             return (
               <TouchableOpacity
@@ -539,7 +554,6 @@ class CartCheckoutScreen extends React.Component<any, any> {
                     hideAdd
                     onSubtract={this.onSubtract}
                     onAdd={this.onAdd}
-                    onDelete={this.onDelete}
                   />
                 )}
               />

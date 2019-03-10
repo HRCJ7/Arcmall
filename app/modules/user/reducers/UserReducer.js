@@ -83,11 +83,13 @@ export const getAddresses = (state = INITIAL_STATE, {payload} : any) => ({
 });
 
 export const getAddressesSuccess = (state = INITIAL_STATE, {payload} : any) => {
-  const {addresses, countries} = payload.data;
+  let {addresses, countries} = payload.data;
+  // addresses.shift();
   let addressesObj = Object.keys(addresses).map(function(key) {
     return addresses[key];
   });
   addressesObj = addressesObj.reverse();
+  addressesObj.splice(-1,1)
 
   return {
     ...state,

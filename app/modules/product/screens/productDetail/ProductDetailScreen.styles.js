@@ -117,5 +117,9 @@ const styles = StyleSheet.create({
     color: Theme.colors.darkGray,
     marginLeft: -16,
   },
+  ratingItem: {
+    paddingTop: 20,
+    width: 200,
+  },
 });
 export default styles;

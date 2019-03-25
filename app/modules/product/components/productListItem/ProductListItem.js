@@ -102,7 +102,7 @@ class ProductListItem extends Component {
       content = (
         <View style={styles.container}>
           <Swipeout
-            right={swipeBtns}
+            right={null}
             style={styles.swipeout}
             >
             {itemConent}

@@ -121,5 +121,8 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     width: 200,
   },
+  divider: {
+    marginTop: 20,
+  },
 });
 export default styles;

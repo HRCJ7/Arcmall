@@ -88,6 +88,7 @@ class ShopDetailScreen extends React.Component<any, any> {
   }
   
   handleProductOnPress = (itemId: number) => {
+    alert(itemId)
     this.props.navigation.dispatch(navigateToItemDetails({itemId}));
   }
 
@@ -148,6 +149,7 @@ class ShopDetailScreen extends React.Component<any, any> {
           renderItem={({item, index}) => (
             <ProductListItem
               item={{item}}
+              de
               onPress={this.handleProductOnPress}
             />
           )}

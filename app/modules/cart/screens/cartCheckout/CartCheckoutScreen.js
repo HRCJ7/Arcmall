@@ -133,6 +133,8 @@ class CartCheckoutScreen extends React.Component<any, any> {
   onAddressSelected = (address) => {
     this.setState({
       address: address,
+      shippingMethod: null,
+      paymentMethod: null,
     });
     this.getCart();
   }
@@ -196,19 +198,28 @@ class CartCheckoutScreen extends React.Component<any, any> {
 
     const {total, currency, address} = this.state;
 
-    const response = await addOrder({
-      affiliate_id: 0,
-      order_status_id: ORDER_HISTORY.PROCESSING,
-    });
-    if (response.success) {
-      const response = await configurePaypal(total, currency, 'Arcmall Cart');
-      console.log(response)
-      this.props.navigation.goBack(null);
-      if (response.response.state === 'approved') {
+    if(address.address_1 === "" || 
+    address.address_2 === "" ||
+    address.city === "" ||
+    address.zone_id === "0" ||
+    address.country_d === "0"
+    ) {
+      alert(Strings.PLEASE_VALID_ADDRESS);
+    } else {
+      const response = await addOrder({
+        affiliate_id: 0,
+        order_status_id: ORDER_HISTORY.PROCESSING,
+      });
+      if (response.success) {
+        const response = await configurePaypal(total, currency, 'Arcmall Cart');
+        console.log(response)
         this.props.navigation.goBack(null);
+        if (response.response.state === 'approved') {
+          this.props.navigation.goBack(null);
+        }
+      } else if (response.error) {
+        alert(response.error)
       }
-    } else if (response.error) {
-      alert(response.error)
     }
     
     // let obj = {
@@ -461,7 +472,7 @@ class CartCheckoutScreen extends React.Component<any, any> {
   renderShippingComponent = () => {
     let content = null;
 
-    const {shippingMethod} = this.state;
+    const {shippingMethod, address} = this.state;
     if (shippingMethod) {
       content =  (
         <View style={{flex: 1, alignItems: "flex-start"}}>
@@ -472,7 +483,16 @@ class CartCheckoutScreen extends React.Component<any, any> {
     return (
       <TouchableOpacity
         onPress={() => {
-          this.showModal(SHIPPING_METHOD_MODAL)
+          if(address.address_1 === "" ||
+          address.address_2 === "" ||
+          address.city === "" ||
+          address.zone_id === "0" ||
+          address.country_d === "0"
+          ) {
+            alert(Strings.PLEASE_VALID_ADDRESS);
+          } else {
+            this.showModal(SHIPPING_METHOD_MODAL)
+          }
         }}style={styles.addressView}>
         <WhiteCard>
           <Text style={styles.titleText}>{'Shipping'}</Text>

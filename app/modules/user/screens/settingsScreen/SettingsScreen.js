@@ -473,6 +473,7 @@ class SettingsScreen extends React.Component<any, any> {
     let data =  {...this.state.addressFormValues};
     data.firstname = user.firstname;
     data.lastname = user.lastname;
+    
     let response = await fetch(`${BASE_URL}/address/save`, {
       method: 'POST',
       credentials: 'include',
@@ -485,7 +486,13 @@ class SettingsScreen extends React.Component<any, any> {
       this.props.dispatch(LoginActions.signOut());
     } else {
       const parsedJson = await response.json();
-      if('error' in parsedJson) {
+      if ('error' in parsedJson) {
+        let string = '';
+        for(const key of Object.keys(parsedJson.error)) {
+          string += `${parsedJson.error[key]}\n`;
+        }
+        alert(string)
+
       } else {
         this.props.dispatch(UserActions.getAddresses())
         this.props.navigation.goBack();

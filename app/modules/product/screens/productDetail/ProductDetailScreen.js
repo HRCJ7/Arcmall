@@ -12,7 +12,7 @@ import styles from './ProductDetailScreen.styles';
 import LoadingIndicator from '../../../shared/components/loadingIndicator/LoadingIndicator';
 import NavigationBar from '../../../shared/components/NavigationBar/NavigationBar';
 import Icon from 'react-native-vector-icons/dist/EvilIcons';
-import IonIcon from 'react-native-vector-icons/Ionicons';
+import IonIcon from 'react-native-vector-icons/FontAwesome';
 import Strings from '../../../shared/localization/localization';
 import WhiteCard from '../../../shared/components/whiteCard/WhiteCard';
 import Swiper from 'react-native-swiper';
@@ -140,9 +140,9 @@ class ProductDetailScreen extends React.Component<any, any> {
     const {addedToWishList} = this.props;
     const {itemId} = this.props.navigation.state.params;
 
-    let icon = {name: 'ios-heart-empty', color: 'white'};
+    let icon = {name: 'heart-o', color: 'white'};
     if (addedToWishList) {
-      icon = {name: 'ios-heart', color: 'red'};
+      icon = {name: 'heart', color: 'red'};
     }
 
     return (
@@ -281,7 +281,7 @@ class ProductDetailScreen extends React.Component<any, any> {
 
   renderOptions = () => {
     const {data: {options}} = this.props;
-    let content = null;
+    let content = [];
     let optionsArr = null;
 
     const onValueChange = (value: string) => {
@@ -311,30 +311,41 @@ class ProductDetailScreen extends React.Component<any, any> {
           selectedValue = `${option.product_option_id}-${stateOptions[option.product_option_id]}`;
         }
 
-        content = (
-          <WhiteCard>
-            <View style={styles.optionContainer}>
-              <Text style={styles.headingText}>{option.name}</Text>
-              <Picker
-                headerTitleStyle={{height: 0}}
-                mode="dropdown"
-                placeholder={`${Strings.SELECT}`}
-                placeholderStyle={styles.optionsHeadingText}
-                placeholderIconColor="#007aff"
-                textStyle={styles.optionsHeadingText}
-                style={{ width: undefined }}
-                selectedValue={selectedValue}
-                onValueChange={onValueChange}
-              >
-                {children}
-              </Picker>
-            </View>
-          </WhiteCard>
-        )
+        content.push(
+          <View style={styles.optionContainer}>
+            <Text style={styles.headingText}>{option.name}</Text>
+            <Picker
+              headerTitleStyle={{height: 0}}
+              mode="dropdown"
+              placeholder={`${Strings.SELECT}`}
+              placeholderStyle={styles.optionsHeadingText}
+              placeholderIconColor="#007aff"
+              textStyle={styles.optionsHeadingText}
+              style={{ width: undefined }}
+              selectedValue={selectedValue}
+              onValueChange={onValueChange}
+            >
+              {children}
+            </Picker>
+          </View>
+        );
+        if (index < options.length - 1) {
+          content.push(
+            <View style={styles.divider}/>
+          )
+        }
       });
     }
-    
-    return content;
+
+    if (options.length > 0) {
+      return (
+        <WhiteCard>
+          {content}
+        </WhiteCard>
+      );
+    } else {
+      return null;
+    }
   }
 
   renderStoreDetailsCard = () => {

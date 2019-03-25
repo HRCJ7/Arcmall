@@ -101,4 +101,5 @@ export default enStrings = {
     PASSWORDS_NOT_MATCH: 'Passwords do not match',
     ADD_TO_CART: 'Add to Cart',
     ADDED_TO_CART: 'Added to Cart',
+    PLEASE_VALID_ADDRESS: 'Please select a valid address',
 }
